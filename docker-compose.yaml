@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+  blogging:
+    build: .
+    container_name: blogging-platform
+    depends_on:
+      - mongodb
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongodb:27017/blog
+    networks:
+      - app-network
+  mongodb:
+    container_name: test-mongo
+    image: mongo:latest
+    volumes:
+      - mongodb:/data/db
+    env_file:
+      - .env
+    ports:
+      - ${MONGO_PORT}:${MONGO_PORT}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
+    restart: always
+volumes:
+  mongodb:
+networks:
+  app-network:
+    driver: bridge
