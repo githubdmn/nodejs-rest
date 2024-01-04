@@ -1,56 +1,48 @@
 import { Module } from '@nestjs/common';
+import { POSTGRES_BLOG, POSTGRES_USER } from '@/constants/instances.constants';
+import { PostgresBlogService, PostgresUserService } from './sql/postgresdb';
+import { env } from '@/conf';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from '@/entities';
 import { MongooseModule } from '@nestjs/mongoose';
-import { MongodbService } from './mongodb/mongodb.service';
-import {
-  MONGODB_SERVICE,
-  POSTGRES_SERVICE,
-} from '@/constants/instances.constants';
-import { PostgresdbService } from './sql/postgresdb/postgresdb.service';
 
-const Services = [
+const TypeOrmLocal = TypeOrmModule.forFeature([UserEntity]);
+const PostgresServices = [
   {
-    provide: MONGODB_SERVICE,
-    useClass: MongodbService,
+    provide: POSTGRES_USER,
+    useClass: PostgresUserService,
   },
   {
-    provide: POSTGRES_SERVICE,
-    useClass: PostgresdbService,
+    provide: POSTGRES_BLOG,
+    useClass: PostgresBlogService,
   },
 ];
 
-const MongooseModuleLocal = MongooseModule.forRootAsync({
-  useFactory: () => ({
-    connectionFactory: (connection) => {
-      if (connection.readyState === 1) {
-        console.log('Database Connected successfully');
-      }
-      connection.on('disconnected', () => {
-        console.log('Database disconnected');
-      });
-      connection.on('error', (error: any) => {
-        console.log('Database connection failed! for error: ', error);
-      });
+// TODO: implement mongodb service
+const MongooseModuleLocal = MongooseModule.forFeature([
+  { name: 'User', schema: {} },
+]);
 
-      return connection;
-    },
-    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/blog',
-  }),
-});
+// TODO: implement mongodb service
+const MongoServices = [
+  {
+    provide: 'MONGO_USER',
+    useClass: PostgresUserService, // NOT IMPLEMENTED
+  },
+  {
+    provide: 'Mongo_Blog',
+    useClass: PostgresBlogService, // NOT IMPLEMENTED
+  },
+];
 
-const TypeOrmModuleLocal = TypeOrmModule.forRoot({
-  type: 'postgres',
-  schema: 'public',
-  database: env.pgdb,
-  host: env.host,
-  port: env.pgport,
-  username: env.pguser,
-  password: env.pgpassword,
-  synchronize: true,
-  entities: ['dist/src/entities/*.entity.{ts,js}'],
-});
+const SetDB =
+  env.dbUse === 'postgres'
+    ? { Imports: TypeOrmLocal, Services: PostgresServices }
+    : { Imports: MongooseModuleLocal, Services: MongoServices };
 
 @Module({
-  imports: [],
-  providers: [...Services],
+  imports: [SetDB.Imports],
+  providers: [...SetDB.Services],
+  exports: [...SetDB.Services],
 })
 export class DatabaseModule {}
