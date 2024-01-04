@@ -1,9 +1,14 @@
 import { IBlogDatabase } from '@/database/database.inteface';
-import { CreateBlogRequestDto, UpdateBlogRequestDto } from '@/dto';
+import {
+  CreateBlogRequestDto,
+  DeleteBlogResponseDto,
+  UpdateBlogRequestDto,
+} from '@/dto';
+import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';
 import { BlogEntity } from '@/entities';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 
 @Injectable()
 export class PostgresBlogService implements IBlogDatabase {
@@ -21,36 +26,31 @@ export class PostgresBlogService implements IBlogDatabase {
     }
   }
 
+  private getBlogQuery() {
+    return this.blogRepository
+      .createQueryBuilder('blog')
+      .leftJoinAndSelect('blog.user', 'user')
+      .select([
+        'blog.blogId',
+        'blog.title',
+        'blog.text',
+        'user.userId',
+        'user.email',
+      ]);
+  }
+
   async getAllBlogs(): Promise<BlogEntity[]> {
     try {
-      return await this.blogRepository.find();
+      // return await this.blogRepository.find();
+      return await this.getBlogQuery().getMany();
     } catch (error: any) {
       throw new Error(`Error retrieving all blog posts: ${error.message}`);
     }
   }
 
-  async getAllBlogsPagination(
-    page: number = 1,
-    pageSize: number = 10,
-  ): Promise<BlogEntity[]> {
-    try {
-      const skip = (page - 1) * pageSize;
-      const take = pageSize;
-
-      return await this.blogRepository.find({
-        skip,
-        take,
-      });
-    } catch (error: any) {
-      throw new Error(`Error retrieving paginated blogs: ${error.message}`);
-    }
-  }
-
   async getBlogById(blogId: string): Promise<BlogEntity | null> {
     try {
-      return await this.blogRepository.findOneBy({
-        blogId: blogId,
-      });
+      return await this.getBlogQuery().getOne();
     } catch (error: any) {
       throw new Error(`Error retrieving blog post by ID: ${error.message}`);
     }
@@ -58,78 +58,71 @@ export class PostgresBlogService implements IBlogDatabase {
 
   async getAllBlogsByUserId(userId: string): Promise<BlogEntity[]> {
     try {
-      return await this.blogRepository.find({ where: { userId } });
-    } catch (error: any) {
-      throw new Error(`Error retrieving blogs by userId: ${error.message}`);
-    }
-  }
-
-  async getAllBlogsByUserIdPagination(
-    userId: string,
-    page: number = 1,
-    pageSize: number = 10,
-  ): Promise<BlogEntity[]> {
-    try {
-      const skip = (page - 1) * pageSize;
-      const take = pageSize;
-
       return await this.blogRepository.find({
-        where: { userId },
-        skip,
-        take,
+        where: { user: { userId: userId } },
       });
     } catch (error: any) {
-      throw new Error(
-        `Error retrieving paginated blogs by userId: ${error.message}`,
-      );
+      throw new Error(`Error retrieving blogs by userId: ${error.message}`);
     }
   }
 
   async updateBlog(
     blogId: string,
     updateBlogDto: UpdateBlogRequestDto,
-  ): Promise<BlogEntity | null> {
+  ): Promise<UpdateBlogResponseDto | null> {
     try {
       const existingBlog = await this.blogRepository.findOneBy({
         blogId: blogId,
       });
-
       if (!existingBlog) {
         throw new NotFoundException(`Blog post with ID ${blogId} not found`);
       }
-
       this.blogRepository.merge(existingBlog, updateBlogDto);
-      return await this.blogRepository.save(existingBlog);
+      const saved = await this.blogRepository.save(existingBlog);
+      return {
+        title: saved.title,
+        text: saved.text,
+        userId: saved.user.userId,
+      };
     } catch (error: any) {
       throw new Error(`Error updating blog post: ${error.message}`);
     }
   }
 
-  async deleteBlog(blogId: string): Promise<void> {
+  async deleteBlog(blogId: string): Promise<DeleteBlogResponseDto> {
     try {
-      const result = await this.blogRepository.delete(blogId);
-
-      if (result.affected === 0) {
+      const [blog] = await this.blogRepository.find({ where: { blogId } });
+      if (blog == null)
         throw new NotFoundException(`Blog post with ID ${blogId} not found`);
-      }
+      const result = await this.blogRepository.remove(blog);
+      return {
+        blogId: result.blogId,
+        title: result.title,
+        text: result.text,
+      } as DeleteBlogResponseDto;
     } catch (error: any) {
       throw new Error(`Error deleting blog post: ${error.message}`);
     }
   }
 
-  async deleteAllBlogsByUserId(userId: string): Promise<void> {
+  async deleteAllBlogsByUserId(
+    userId: string,
+  ): Promise<DeleteBlogResponseDto[]> {
     try {
       const blogsToDelete = await this.blogRepository.find({
-        where: { userId },
+        where: { user: { userId: userId } },
       });
-
       if (!blogsToDelete || blogsToDelete.length === 0) {
         throw new NotFoundException(
           `No blogs found for user with ID ${userId}`,
         );
       }
-
-      await this.blogRepository.remove(blogsToDelete);
+      const deleted = await this.blogRepository.remove(blogsToDelete);
+      return deleted.map((blog) => ({
+        blogId: blog.blogId,
+        title: blog.title,
+        text: blog.text,
+      })) as DeleteBlogResponseDto[];
     } catch (error: any) {
       throw new Error(`Error deleting blogs by userId: ${error.message}`);
     }

@@ -11,5 +11,5 @@ export default TypeOrmModule.forRoot({
   password: env.pgpassword,
   synchronize: true,
   entities: ['dist/src/entities/*.entity.{ts,js}'],
-  logging: false,
+  logging: true,
 });

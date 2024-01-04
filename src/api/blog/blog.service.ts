@@ -1,10 +1,15 @@
 import { env } from '@/conf';
 import { MONGODB_BLOG, POSTGRES_BLOG } from '@/constants/instances.constants';
 import { IBlogDatabase } from '@/database/database.inteface';
-import { CreateBlogRequestDto, UpdateBlogRequestDto } from '@/dto';
+import {
+  CreateBlogRequestDto,
+  DeleteBlogResponseDto,
+  UpdateBlogRequestDto,
+} from '@/dto';
 import { BlogEntity } from '@/entities';
 import { Inject, Injectable } from '@nestjs/common';
 import { IBlogService } from './blog.interface';
+import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';
 
 const DB_BLOG = env.dbUse === 'postgres' ? POSTGRES_BLOG : MONGODB_BLOG;
 
@@ -26,11 +31,11 @@ export class BlogService implements IBlogService {
   async updateBlog(
     blogId: string,
     updateBlog: UpdateBlogRequestDto,
-  ): Promise<BlogEntity | null> {
+  ): Promise<UpdateBlogResponseDto | null> {
     return await this.blogDB.updateBlog(blogId, updateBlog);
   }
 
-  async deleteBlog(blogId: string): Promise<void> {
+  async deleteBlog(blogId: string): Promise<DeleteBlogResponseDto> {
     return await this.blogDB.deleteBlog(blogId);
   }
 }

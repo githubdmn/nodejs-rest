@@ -1,4 +1,8 @@
-import { CreateBlogRequestDto, UpdateBlogRequestDto } from '@/dto';
+import {
+  CreateBlogRequestDto,
+  DeleteBlogResponseDto,
+  UpdateBlogRequestDto,
+} from '@/dto';
 import { BlogGuard } from '@/guard';
 import {
   Controller,
@@ -23,6 +27,7 @@ import {
 import { IBlogService } from './blog.interface';
 import { BLOG_SERVICE } from '@/constants/instances.constants';
 import { BlogEntity } from '@/entities';
+import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';
 
 @ApiTags('Blog')
 @UseGuards(BlogGuard)
@@ -90,7 +95,7 @@ export class BlogController {
   async updateBlog(
     @Param('id') id: string,
     @Body() updateBlogDto: UpdateBlogRequestDto,
-  ): Promise<BlogEntity | null> {
+  ): Promise<UpdateBlogResponseDto | null> {
     try {
       const updatedBlog = await this.blogService.updateBlog(id, updateBlogDto);
       if (!updatedBlog) {
@@ -105,9 +110,9 @@ export class BlogController {
   @Delete(':id')
   @ApiOkResponse({ description: 'Blog post deleted successfully' })
   @ApiNotFoundResponse({ description: 'Blog post not found' })
-  async deleteBlog(@Param('id') id: string): Promise<void> {
+  async deleteBlog(@Param('id') id: string): Promise<DeleteBlogResponseDto> {
     try {
-      await this.blogService.deleteBlog(id);
+      return await this.blogService.deleteBlog(id);
     } catch (error: any) {
       throw new BadRequestException(`Failed to delete blog: ${error.message}`);
     }

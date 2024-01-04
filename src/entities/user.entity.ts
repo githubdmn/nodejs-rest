@@ -16,6 +16,6 @@ export default class User extends Base {
     this.userId = super.idGenerator();
     this.password = await hashString(this.password);
   }
-  @OneToMany((type) => Blog, (blog) => blog.userId)
+  @OneToMany(() => Blog, (blog) => blog.user)
   blog: Blog[];
 }

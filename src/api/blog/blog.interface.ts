@@ -1,4 +1,9 @@
-import { CreateBlogRequestDto, UpdateBlogRequestDto } from '@/dto';
+import {
+  CreateBlogRequestDto,
+  DeleteBlogResponseDto,
+  UpdateBlogRequestDto,
+} from '@/dto';
+import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';
 import { BlogEntity } from '@/entities';
 
 export interface IBlogService {
@@ -8,6 +13,6 @@ export interface IBlogService {
   updateBlog(
     blogId: string,
     updateBlog: UpdateBlogRequestDto,
-  ): Promise<BlogEntity | null>;
-  deleteBlog(blogId: string): Promise<void>;
+  ): Promise<UpdateBlogResponseDto | null>;
+  deleteBlog(blogId: string): Promise<DeleteBlogResponseDto>;
 }
