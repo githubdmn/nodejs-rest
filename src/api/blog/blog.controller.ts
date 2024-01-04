@@ -1,5 +1,5 @@
 import { CreateBlogRequestDto, UpdateBlogRequestDto } from '@/dto';
-import { BlogGuard } from '@/guard/blog.guard';
+import { BlogGuard } from '@/guard';
 import {
   Controller,
   UseGuards,
