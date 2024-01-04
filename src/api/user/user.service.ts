@@ -46,14 +46,14 @@ export class UserService implements IUser {
         { username: user.email, sub: user.userId },
         {
           expiresIn: '1h',
-          secret: 'access',
+          secret: env.jwtAccess,
         },
       );
       const refreshToken = await this.jwtService.signAsync(
         { username: user.email, sub: user.userId },
         {
           expiresIn: '1d',
-          secret: 'refresh',
+          secret: env.jwtAccess,
         },
       );
       return {

@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 import { USER_SERVICE } from '@/constants/instances.constants';
 import { JwtModule } from '@nestjs/jwt';
 import { DatabaseModule } from '@/database/database.module';
+import { env } from '@/conf';
 
 const Services = [
   {
@@ -19,13 +20,13 @@ const Services = [
     DatabaseModule,
     JwtModule.registerAsync({
       useFactory: async () => ({
-        secret: 'secret',
+        secret: env.jwtSecret,
         signOptions: {
           expiresIn: '60s',
         },
       }),
     }),
   ],
-  exports: [...Services],
+  exports: [],
 })
 export class UserModule {}

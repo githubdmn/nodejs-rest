@@ -7,4 +7,7 @@ export default {
   pgpassword: 'postgres',
   pgport: 5432,
   pgdb: 'blog',
+  jwtAccess: 'access',
+  jwtRefresh: 'refresh',
+  jwtSecret: 'secret',
 };
