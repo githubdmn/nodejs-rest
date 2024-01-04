@@ -1,3 +1,5 @@
-import env from "./dev.env";
+import env from './dev.env';
+import TypeORMConfig from './postresql.connection';
+import MonooseConfig from './mongodb.connection';
 
-export { env };
+export { env, TypeORMConfig, MonooseConfig };

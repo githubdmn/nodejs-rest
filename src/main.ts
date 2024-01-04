@@ -22,12 +22,14 @@ async function bootstrap() {
     .setTitle('JS assignment')
     .setDescription('REST API TASK')
     .setVersion('1.0')
-    .addTag('nestjs')
+    .addTag('RESTful API')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(3000, () => {
+    console.log('Listening on port 3000');
+  });
 }
 bootstrap();
