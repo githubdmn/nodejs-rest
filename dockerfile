@@ -1,20 +1,15 @@
-# Use the official Node.js image as the base image
-FROM node:14
+FROM node:alpine
 
-# Set the working directory in the container
-WORKDIR /app
+RUN mkdir -p /usr/src/app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+WORKDIR /usr/src/app
 
-# Install the application dependencies
-RUN npm install
+COPY package*.json /usr/src/app/
 
-# Copy the rest of the application code to the working directory
-COPY . .
+RUN yarn --network-timeout 100000 --frozen-lockfile
 
-# Expose the port that the application will run on
+COPY . /usr/src/app
+
 EXPOSE 3000
 
-# Command to run the application
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
