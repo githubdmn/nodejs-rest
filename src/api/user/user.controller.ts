@@ -42,12 +42,11 @@ export class UserController {
   @ApiOkResponse({ description: 'Successfully logged in' })
   @ApiResponse({ status: 400, description: 'Invalid credentials' })
   async login(@Body() userLogin: UserLoginRequest, @Res() response: any) {
-    const customer = await this.userService.getJwt(userLogin);
-    if (customer.id === 0)
-      return response.json({ error: 'invalid credentials' });
+    const user = await this.userService.getJwt(userLogin);
+    if (user.id === 0) return response.json({ error: 'invalid credentials' });
     return response
-      .set('access_token', customer.accessToken)
-      .set('refresh_token', customer.refreshToken)
-      .json({ id: customer.id });
+      .set('access_token', user.accessToken)
+      .set('refresh_token', user.refreshToken)
+      .json({ id: user.id, email: userLogin.email });
   }
 }

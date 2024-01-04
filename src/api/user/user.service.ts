@@ -28,9 +28,11 @@ export class UserService implements IUser {
     password: string,
   ): Promise<UserEntity | null> {
     const user = await this.userDatabase.findUserByEmail(email);
-    if (!user) return null;
-    const check = await checkHashedValue(user.password, password);
-    if (!check) return null;
+    if (user == null) return null;
+    else {
+      const check = await checkHashedValue(user.password, password);
+      if (check == null) return null;
+    }
     return user;
   }
 

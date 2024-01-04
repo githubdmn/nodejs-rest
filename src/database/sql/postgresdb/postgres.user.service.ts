@@ -13,8 +13,9 @@ export class PostgresUserService implements IUserDatabase {
   ) {}
 
   async save(user: CreateUserRequest): Promise<UserEntity> {
+    const userPrepared = this.userRepository.create(user);
     try {
-      return await this.userRepository.save(user);
+      return await this.userRepository.save(userPrepared);
     } catch (error) {
       throw new HttpException(
         `Failed to save user to database${error}`,

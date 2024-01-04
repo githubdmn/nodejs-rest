@@ -1,10 +1,10 @@
 export const MONGODB_SERVICE = 'MONGODB_SERVICE';
 export const MONGODB_USER = 'MONGODB_USER';
-export const MONGODB_BLOG = 'MONGODB_USER';
+export const MONGODB_BLOG = 'MONGODB_BLOG';
 
 export const POSTGRES_SERVICE = 'POSTGRES_SERVICE';
 export const POSTGRES_USER = 'POSTGRES_USER';
-export const POSTGRES_BLOG = 'POSTGRES_USER';
+export const POSTGRES_BLOG = 'POSTGRES_BLOG';
 
 export const USER_SERVICE = 'USER_SERVICE';
 export const BLOG_SERVICE = 'BLOG_SERVICE';
