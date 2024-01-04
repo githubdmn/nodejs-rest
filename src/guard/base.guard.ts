@@ -5,8 +5,8 @@ import { env } from '@/conf';
 
 @Injectable()
 export abstract class BaseGuard implements CanActivate {
-  abstract allowedMethods: string[];
-  abstract allowedUrls: string[];
+  protected abstract allowedMethods: string[];
+  protected abstract allowedUrls: string[];
 
   canActivate(
     context: ExecutionContext,
@@ -19,8 +19,7 @@ export abstract class BaseGuard implements CanActivate {
     if (!access_token) return false;
     try {
       const result = verify(access_token, env.jwtAccess);
-      if (!result) return false;
-      return true;
+      return !!result;
     } catch (error: any) {
       console.error(`Error verifying access token: ${error.message}`);
       return false;

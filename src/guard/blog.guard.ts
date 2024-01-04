@@ -1,6 +1,11 @@
+import { Injectable } from '@nestjs/common';
 import { BaseGuard } from './base.guard';
 
+const getBlog = '/api/blog';
+const getBlogs = '/api/blog/get-all';
+
+@Injectable()
 export class BlogGuard extends BaseGuard {
-  allowedMethods = ['GET'];
-  allowedUrls = ['api/blog', 'api/blog/get-all'];
+  protected allowedMethods = ['GET'];
+  protected allowedUrls = [getBlog, getBlogs];
 }
