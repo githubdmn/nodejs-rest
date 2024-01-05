@@ -16,6 +16,7 @@ const settingEnv = {
   logging: false,
 } as TypeOrmModuleOptions;
 
+// in case the env fails mapping
 const settingBackup = {
   type: 'postgres',
   schema: 'public',
@@ -42,4 +43,7 @@ const settingLocal = {
   logging: false,
 } as TypeOrmModuleOptions;
 
-export default TypeOrmModule.forRoot(settingBackup);
+// environment can be 'production' od 'development'
+const setting = env.environment === 'production' ? settingEnv : settingLocal;
+
+export default TypeOrmModule.forRoot(setting);

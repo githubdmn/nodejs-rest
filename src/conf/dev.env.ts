@@ -1,5 +1,9 @@
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
 export default {
-  environment: 'dev',
+  environment: process.env.NODE_ENV,
   host: process.env.DB_HOST,
   port: 3000,
   dbUse: process.env.DATABASE,

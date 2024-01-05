@@ -37,7 +37,7 @@ Provided:
     envCopy code
 
     ```
-    NODE_ENV=development
+    NODE_ENV=production
     PORT=3000
     DATABASE=postgres
     DB_HOST=postgres
@@ -49,6 +49,28 @@ Provided:
 
     or bashCopy code
     `cp -v env .env`
+
+3.1 For running the app locally
+Create a `.env` file in the project root and configure the PostgreSQL environment variables:
+
+    envCopy code
+
+    ```
+    NODE_ENV=development
+    PORT=3000
+    DATABASE=postgres
+    DB_HOST=postgres
+    POSTGRES_PORT=5432
+    POSTGRES_USER=postgres
+    POSTGRES_PASSWORD=postgres
+    POSTGRES_DB=blog
+    ```
+
+    or bashCopy code
+    `cp -v env.localhost .env`
+
+    `docker-compose -f ./postgresql.yaml up -d`
+    `yarn run start:dev`
 
 4.  Build and run the project with Docker Compose:
 
