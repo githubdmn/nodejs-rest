@@ -9,6 +9,7 @@ Provided:
 - `JS-assignment-24-01.postman_collection.json`
 - swagger api documentation `localhost:3000/api#`
 - `nvm`
+- to run tests -> `yarn run test`
 
 ## Prerequisites
 
