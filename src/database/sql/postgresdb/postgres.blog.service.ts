@@ -5,7 +5,7 @@ import {
   UpdateBlogRequestDto,
 } from '@/dto';
 import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';
-import { BlogEntity } from '@/entities';
+import { BlogEntity, UserEntity } from '@/entities';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
@@ -15,11 +15,22 @@ export class PostgresBlogService implements IBlogDatabase {
   constructor(
     @InjectRepository(BlogEntity)
     private blogRepository: Repository<BlogEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
   async createBlog(createBlogDto: CreateBlogRequestDto): Promise<BlogEntity> {
     try {
-      const newBlog = this.blogRepository.create(createBlogDto);
+      const user = await this.userRepository.findOne({
+        where: { userId: createBlogDto.userId },
+      });
+      if (!user)
+        throw new Error(`User with userId ${createBlogDto.userId} not found`);
+      const newBlog = this.blogRepository.create({
+        title: createBlogDto.title,
+        text: createBlogDto.text,
+        user,
+      });
       return await this.blogRepository.save(newBlog);
     } catch (error: any) {
       throw new Error(`Error creating blog post: ${error.message}`);
@@ -27,6 +38,7 @@ export class PostgresBlogService implements IBlogDatabase {
   }
 
   private getBlogQuery() {
+    // To exclude specific fields (blog.id and user.id)
     return this.blogRepository
       .createQueryBuilder('blog')
       .leftJoinAndSelect('blog.user', 'user')
@@ -50,7 +62,9 @@ export class PostgresBlogService implements IBlogDatabase {
 
   async getBlogById(blogId: string): Promise<BlogEntity | null> {
     try {
-      return await this.getBlogQuery().getOne();
+      return await this.getBlogQuery()
+        .where('blog.blogId = :blogId', { blogId })
+        .getOne();
     } catch (error: any) {
       throw new Error(`Error retrieving blog post by ID: ${error.message}`);
     }
@@ -83,7 +97,7 @@ export class PostgresBlogService implements IBlogDatabase {
         title: saved.title,
         text: saved.text,
         userId: saved.user.userId,
-      };
+      } as UpdateBlogResponseDto;
     } catch (error: any) {
       throw new Error(`Error updating blog post: ${error.message}`);
     }

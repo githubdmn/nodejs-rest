@@ -22,7 +22,7 @@ export default class Blog extends Base {
   generateId() {
     this.blogId = super.idGenerator();
   }
-  @ManyToOne(() => User, (user) => user, {
+  @ManyToOne(() => User, (user) => user.blog, {
     cascade: true,
     createForeignKeyConstraints: false,
     eager: true,
