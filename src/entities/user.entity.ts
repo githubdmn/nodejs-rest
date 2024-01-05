@@ -9,7 +9,7 @@ export default class User extends Base {
   userId: string;
   @Column({ unique: true })
   email: string;
-  @Column({ select: false })
+  @Column()
   password: string;
   @BeforeInsert()
   async generateId() {
