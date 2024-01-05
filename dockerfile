@@ -1,14 +1,17 @@
+
 FROM node:alpine
 
 RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
-COPY package*.json /usr/src/app/
+COPY *.json /usr/src/app/
+
+COPY . /usr/src/app
 
 RUN yarn --network-timeout 100000 --frozen-lockfile
 
-COPY . /usr/src/app
+RUN yarn build
 
 EXPOSE 3000
 

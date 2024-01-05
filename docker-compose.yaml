@@ -11,15 +11,28 @@ services:
       - .env
     depends_on:
       - postgres
+    networks:
+      - blogging
 
   postgres:
-    image: 'postgres:alpine'
-    ports:
-      - '5432:5432'
     env_file:
       - .env
+    image: postgres:alpine
+    container_name: app_postgres
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - blogging
 
 volumes:
   postgres_data:
+
+networks:
+  blogging:
+    driver: bridge

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "nest build",
     "start:dev": "nest start --watch",
-    "start": "node ./src/dist/main",
+    "start": "node dist/src/main",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
