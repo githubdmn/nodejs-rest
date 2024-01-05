@@ -7,7 +7,9 @@
     "build": "nest build",
     "start:dev": "nest start --watch",
     "start": "node dist/src/main",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -32,7 +34,7 @@
     "@nestjs/mongoose": "^10.0.2",
     "@nestjs/platform-express": "^10.2.4",
     "@nestjs/swagger": "^7.1.16",
-    "@nestjs/testing": "^10.2.10",
+    "@nestjs/testing": "^10.3.0",
     "@nestjs/typeorm": "^10.0.0",
     "@types/jest": "^29.5.8",
     "@types/jsonwebtoken": "^9.0.5",
