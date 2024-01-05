@@ -10,7 +10,7 @@ import { env } from '@/conf';
 import { UserEntity } from '@/entities';
 import { checkHashedValue } from '@/utils';
 
-const DB_USER = env.dbUse === 'postgres' ? POSTGRES_USER : MONGODB_USER;
+const DB_USER = POSTGRES_USER; //env.dbUse === 'postgres' ? POSTGRES_USER : MONGODB_USER;
 
 @Injectable()
 export class UserService implements IUser {

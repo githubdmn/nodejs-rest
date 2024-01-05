@@ -11,7 +11,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IBlogService } from './blog.interface';
 import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';
 
-const DB_BLOG = env.dbUse === 'postgres' ? POSTGRES_BLOG : MONGODB_BLOG;
+const DB_BLOG = POSTGRES_BLOG; // env.dbUse === 'postgres' ? POSTGRES_BLOG : MONGODB_BLOG;
 
 @Injectable()
 export class BlogService implements IBlogService {

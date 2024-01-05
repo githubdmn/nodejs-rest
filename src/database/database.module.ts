@@ -19,30 +19,30 @@ const PostgresServices = [
 ];
 
 // TODO: implement mongodb service
-const MongooseModuleLocal = MongooseModule.forFeature([
-  { name: 'User', schema: {} },
-]);
+// const MongooseModuleLocal = MongooseModule.forFeature([
+//   { name: 'User', schema: {} },
+// ]);
 
-// TODO: implement mongodb service
-const MongoServices = [
-  {
-    provide: 'MONGO_USER',
-    useClass: PostgresUserService, // NOT IMPLEMENTED
-  },
-  {
-    provide: 'Mongo_Blog',
-    useClass: PostgresBlogService, // NOT IMPLEMENTED
-  },
-];
+// // TODO: implement mongodb service
+// const MongoServices = [
+//   {
+//     provide: 'MONGO_USER',
+//     useClass: PostgresUserService, // NOT IMPLEMENTED
+//   },
+//   {
+//     provide: 'Mongo_Blog',
+//     useClass: PostgresBlogService, // NOT IMPLEMENTED
+//   },
+// ];
 
-const SetDB =
-  env.dbUse === 'postgres'
-    ? { Imports: TypeOrmLocal, Services: PostgresServices }
-    : { Imports: MongooseModuleLocal, Services: MongoServices };
+// const SetDB =
+//   env.dbUse === 'postgres'
+//     ? { Imports: TypeOrmLocal, Services: PostgresServices }
+//     : { Imports: MongooseModuleLocal, Services: MongoServices };
 
 @Module({
-  imports: [SetDB.Imports],
-  providers: [...SetDB.Services],
-  exports: [...SetDB.Services],
+  imports: [TypeOrmLocal],
+  providers: [...PostgresServices],
+  exports: [...PostgresServices],
 })
 export class DatabaseModule {}
