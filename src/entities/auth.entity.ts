@@ -1,11 +1,12 @@
-// auth.entity.ts
-
-import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, BeforeInsert } from 'typeorm';
 import User from './user.entity';
-import Base from './base.entity'; // Assuming you have a Base entity
+import Base from './base.entity';
 
 @Entity('auth')
 export default class Auth extends Base {
+  @Column({ unique: true })
+  authId: string;
+
   @Column({ unique: true })
   accessToken: string;
 
@@ -15,11 +16,18 @@ export default class Auth extends Base {
   @Column()
   expiryDate: Date;
 
+  @Column({ nullable: true })
+  lastUsedDate: Date;
+
+  @Column({ default: false })
+  revoked: boolean;
+
   @ManyToOne(() => User, (user) => user.auth)
   @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
   user: User;
 
-  generateId(): void {
-    this.id = +this.idGenerator(); // Convert the nanoid string to a number
+  @BeforeInsert()
+  generateId() {
+    this.authId = super.idGenerator();
   }
 }

@@ -12,7 +12,7 @@ export class PostgresUserService implements IUserDatabase {
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  async save(user: CreateUserRequest): Promise<UserEntity> {
+  async save(user: CreateUserRequest): Promise<any> {
     const userPrepared = this.userRepository.create(user);
     try {
       return await this.userRepository.save(userPrepared);

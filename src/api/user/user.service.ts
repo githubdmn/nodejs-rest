@@ -1,9 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IUser } from './user.interface';
-import { CreateUserRequest } from '@/dto';
-import UserLoginRequest from '@/dto/userLogin.request.dto';
+import { CreateUserRequest, UserLoginRequest, UserLoginResponse } from '@/dto';
 import { JwtService } from '@nestjs/jwt';
-import UserLoginResponse from '@/dto/userLogin.response.dto';
 import { IUserDatabase } from '@/database/database.inteface';
 import { MONGODB_USER, POSTGRES_USER } from '@/constants/instances.constants';
 import { env } from '@/conf';
