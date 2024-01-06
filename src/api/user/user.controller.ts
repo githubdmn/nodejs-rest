@@ -1,8 +1,18 @@
-import { Body, Controller, Post, Res, Inject, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Inject,
+  UseGuards,
+  Request,
+  Response,
+  UseInterceptors,
+} from '@nestjs/common';
 import { IUser } from './user.interface';
 import { USER_SERVICE } from '@/utils/constants';
-import { SerializeExclude } from '@/interceptor';
+import { JwtInterceptor, SerializeExclude } from '@/interceptor';
 import {
+  ChangePasswordRequestDto,
   CreateUserRequestDto,
   CreateUserResponseDto,
   UserLoginRequestDto,
@@ -19,6 +29,7 @@ import {
 
 @ApiTags('User')
 @UseGuards(UserGuard)
+@UseInterceptors(JwtInterceptor)
 @Controller('user')
 export class UserController {
   constructor(@Inject(USER_SERVICE) private userService: IUser) {}
@@ -39,7 +50,7 @@ export class UserController {
   @ApiResponse({ status: 400, description: 'Invalid credentials' })
   async login(
     @Body() userLogin: UserLoginRequestDto,
-    @Res() response: any,
+    @Response() response: any,
   ): Promise<UserLoginResponseDto> {
     const user = await this.userService.getJwt(userLogin);
     if (user.id === 0) return response.json({ error: 'invalid credentials' });
@@ -47,5 +58,21 @@ export class UserController {
       .set('access_token', user.accessToken)
       .set('refresh_token', user.refreshToken)
       .json({ id: user.id, email: userLogin.email });
+  }
+
+  @Post('change-password')
+  @ApiOperation({ summary: 'change password ' })
+  @ApiOkResponse({ description: 'Password changed successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid credentials' })
+  async resetPassword(
+    @Body() { oldPassword, newPassword }: ChangePasswordRequestDto,
+    @Request() request: any,
+  ): Promise<string> {
+    const updated = await this.userService.resetPassword(
+      request.jwtPayload.sub,
+      oldPassword,
+      newPassword,
+    );
+    return 'Password successfully changed';
   }
 }

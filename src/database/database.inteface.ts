@@ -6,15 +6,20 @@ import {
   DeleteBlogResponseDto,
   GetBlogDto,
   UpdateBlogRequestDto,
+  UpdateUserRequestDto,
+  UpdateUserResponseDto,
   UserDto,
 } from '@/dto';
 import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';
-import { UserEntity } from '@/entities';
 
 export interface IUserDatabase {
   save(user: CreateUserRequestDto): Promise<CreateUserResponseDto>;
   findUserByUserId(userId: string): Promise<UserDto>;
   findUserByEmail(email: string): Promise<UserDto>;
+  updateUser(
+    userId: string,
+    newUser: Partial<UpdateUserRequestDto>,
+  ): Promise<UpdateUserResponseDto>;
 }
 
 export interface IBlogDatabase {

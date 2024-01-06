@@ -1,8 +1,18 @@
 import { IUserDatabase } from '@/database/database.inteface';
-import { CreateUserRequestDto, CreateUserResponseDto } from '@/dto';
+import {
+  CreateUserRequestDto,
+  CreateUserResponseDto,
+  UpdateUserRequestDto,
+  UpdateUserResponseDto,
+} from '@/dto';
 import { UserDto } from '@/dto';
 import { UserEntity } from '@/entities';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -50,6 +60,24 @@ export class PostgresUserService implements IUserDatabase {
         `Failed to save user to database${error}`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  async updateUser(
+    userId: string,
+    newUser: Partial<UpdateUserRequestDto>,
+  ): Promise<UpdateUserResponseDto> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { userId: userId },
+      });
+      if (!user)
+        throw new BadRequestException(`User with ID ${userId} not found`);
+      Object.assign(user, newUser);
+      const updated = await this.userRepository.save(user);
+      return { ...updated } as UpdateUserResponseDto;
+    } catch (error: any) {
+      throw new BadRequestException(`Failed to update user: ${error.message}`);
     }
   }
 }

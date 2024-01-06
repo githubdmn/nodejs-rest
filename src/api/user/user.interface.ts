@@ -1,6 +1,7 @@
 import {
   CreateUserRequestDto,
   CreateUserResponseDto,
+  UpdateUserResponseDto,
   UserLoginRequestDto,
   UserLoginResponseDto,
 } from '@/dto';
@@ -11,4 +12,9 @@ export interface IUser {
     email,
     password,
   }: UserLoginRequestDto): Promise<UserLoginResponseDto>;
+  resetPassword(
+    userId: string,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<UpdateUserResponseDto>;
 }

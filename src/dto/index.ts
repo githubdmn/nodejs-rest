@@ -12,6 +12,9 @@ import { CreateUserResponseDto } from './createUser.response.dto';
 import { UserLoginRequestDto } from './userLogin.request.dto';
 import { UserLoginResponseDto } from './userLogin.response.dto';
 import { UserDto } from './User.dto';
+import { ChangePasswordRequestDto } from './changePassword.request.dto';
+import { UpdateUserRequestDto } from './UpdateUserRequest.dto';
+import { UpdateUserResponseDto } from './UpdateUserResponse.dto';
 
 export {
   CreateUserRequestDto,
@@ -26,4 +29,7 @@ export {
   UpdateBlogInternalRequestDto,
   GetBlogDto,
   UserDto,
+  ChangePasswordRequestDto,
+  UpdateUserRequestDto,
+  UpdateUserResponseDto,
 };

@@ -8,6 +8,7 @@ import { IUser } from './user.interface';
 import {
   CreateUserRequestDto,
   CreateUserResponseDto,
+  UpdateUserResponseDto,
   UserDto,
   UserLoginRequestDto,
   UserLoginResponseDto,
@@ -16,7 +17,7 @@ import { JwtService } from '@nestjs/jwt';
 import { IUserDatabase } from '@/database/database.inteface';
 import { POSTGRES_USER } from '@/utils/constants';
 import { env } from '@/conf';
-import { checkHashedValue } from '@/utils';
+import { checkHashedValue, hashString } from '@/utils';
 
 const DB_USER = POSTGRES_USER; //env.dbUse === 'postgres' ? POSTGRES_USER : MONGODB_USER;
 
@@ -41,6 +42,20 @@ export class UserService implements IUser {
     else {
       const check = await checkHashedValue(user.password, password);
       if (check == null) throw new BadRequestException('Invalid password');
+    }
+    return user;
+  }
+
+  private async getAuthenticatedUserById(
+    userId: string,
+    password: string,
+  ): Promise<UserDto> {
+    const user = await this.userDatabase.findUserByUserId(userId);
+    if (user == null)
+      throw new NotFoundException(`User with email ${userId} is not found`);
+    else {
+      const check = await checkHashedValue(user.password, password);
+      if (check == false) throw new BadRequestException('Invalid credentials');
     }
     return user;
   }
@@ -76,5 +91,15 @@ export class UserService implements IUser {
         refreshToken: '',
         id: 0,
       } as UserLoginResponseDto;
+  }
+
+  async resetPassword(
+    userId: string,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<UpdateUserResponseDto> {
+    const user = await this.getAuthenticatedUserById(userId, oldPassword);
+    const newPasswordHash = await hashString(newPassword);
+    return this.userDatabase.updateUser(userId, { password: newPasswordHash });
   }
 }
