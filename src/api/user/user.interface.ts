@@ -1,7 +1,14 @@
-import { CreateUserRequest, UserLoginRequest, UserLoginResponse } from '@/dto';
-import { UserEntity } from '@/entities';
+import {
+  CreateUserRequestDto,
+  CreateUserResponseDto,
+  UserLoginRequestDto,
+  UserLoginResponseDto,
+} from '@/dto';
 
 export interface IUser {
-  register(user: CreateUserRequest): Promise<UserEntity>;
-  getJwt(user: UserLoginRequest): Promise<UserLoginResponse>;
+  register(user: CreateUserRequestDto): Promise<CreateUserResponseDto>;
+  getJwt({
+    email,
+    password,
+  }: UserLoginRequestDto): Promise<UserLoginResponseDto>;
 }

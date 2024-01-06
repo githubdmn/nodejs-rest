@@ -33,7 +33,7 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { IBlogService } from './blog.interface';
-import { BLOG_SERVICE } from '@/constants/instances.constants';
+import { BLOG_SERVICE } from '@/utils/constants';
 import { BlogEntity } from '@/entities';
 import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';
 import { JwtInterceptor, SerializeExclude } from '@/interceptor';

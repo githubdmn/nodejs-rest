@@ -1,15 +1,12 @@
-import { env } from '@/conf';
-import { MONGODB_BLOG, POSTGRES_BLOG } from '@/constants/instances.constants';
+import { POSTGRES_BLOG } from '@/utils/constants';
 import { IBlogDatabase } from '@/database/database.inteface';
 import {
   CreateBlogInternalRequestDto,
-  CreateBlogRequestDto,
   CreateBlogResponseDto,
   DeleteBlogResponseDto,
   GetBlogDto,
   UpdateBlogRequestDto,
 } from '@/dto';
-import { BlogEntity } from '@/entities';
 import { Inject, Injectable } from '@nestjs/common';
 import { IBlogService } from './blog.interface';
 import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';

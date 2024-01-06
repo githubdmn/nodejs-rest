@@ -1,24 +1,18 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Res,
-  Headers,
-  Inject,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Post, Res, Inject, UseGuards } from '@nestjs/common';
 import { IUser } from './user.interface';
-import { USER_SERVICE } from '@/constants/instances.constants';
+import { USER_SERVICE } from '@/utils/constants';
 import { SerializeExclude } from '@/interceptor';
-import { CreateUserRequest, CreateUserResponse, UserLoginRequest } from '@/dto';
-import User from '@/entities/user.entity';
+import {
+  CreateUserRequestDto,
+  CreateUserResponseDto,
+  UserLoginRequestDto,
+  UserLoginResponseDto,
+} from '@/dto';
 import { UserGuard } from '@/guard';
 import {
   ApiTags,
   ApiOperation,
   ApiCreatedResponse,
-  ApiBadRequestResponse,
   ApiOkResponse,
   ApiResponse,
 } from '@nestjs/swagger';
@@ -30,10 +24,12 @@ export class UserController {
   constructor(@Inject(USER_SERVICE) private userService: IUser) {}
 
   @Post()
-  @SerializeExclude(CreateUserResponse)
+  @SerializeExclude(CreateUserResponseDto)
   @ApiOperation({ summary: 'Register a new user' })
-  @ApiCreatedResponse({ type: CreateUserResponse })
-  async register(@Body() user: CreateUserRequest): Promise<User> {
+  @ApiCreatedResponse({ type: CreateUserResponseDto })
+  async register(
+    @Body() user: CreateUserRequestDto,
+  ): Promise<CreateUserResponseDto> {
     return await this.userService.register(user);
   }
 
@@ -41,7 +37,10 @@ export class UserController {
   @ApiOperation({ summary: 'Login as a user' })
   @ApiOkResponse({ description: 'Successfully logged in' })
   @ApiResponse({ status: 400, description: 'Invalid credentials' })
-  async login(@Body() userLogin: UserLoginRequest, @Res() response: any) {
+  async login(
+    @Body() userLogin: UserLoginRequestDto,
+    @Res() response: any,
+  ): Promise<UserLoginResponseDto> {
     const user = await this.userService.getJwt(userLogin);
     if (user.id === 0) return response.json({ error: 'invalid credentials' });
     return response

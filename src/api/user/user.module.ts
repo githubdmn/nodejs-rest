@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { USER_SERVICE } from '@/constants/instances.constants';
+import { USER_SERVICE } from '@/utils/constants/instances.constants';
 import { JwtModule } from '@nestjs/jwt';
 import { DatabaseModule } from '@/database/database.module';
 import { env } from '@/conf';

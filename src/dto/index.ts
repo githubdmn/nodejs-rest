@@ -7,16 +7,17 @@ import {
   UpdateBlogInternalRequestDto,
 } from './internal';
 import { GetBlogDto } from './getBlog.response.dto';
-import { CreateUserRequest } from './createUser.request.dto';
-import { CreateUserResponse } from './createUser.response.dto';
-import { UserLoginRequest } from './userLogin.request.dto';
-import { UserLoginResponse } from './userLogin.response.dto';
+import { CreateUserRequestDto } from './createUser.request.dto';
+import { CreateUserResponseDto } from './createUser.response.dto';
+import { UserLoginRequestDto } from './userLogin.request.dto';
+import { UserLoginResponseDto } from './userLogin.response.dto';
+import { UserDto } from './User.dto';
 
 export {
-  CreateUserRequest,
-  CreateUserResponse,
-  UserLoginRequest,
-  UserLoginResponse,
+  CreateUserRequestDto,
+  CreateUserResponseDto,
+  UserLoginRequestDto,
+  UserLoginResponseDto,
   CreateBlogRequestDto,
   CreateBlogResponseDto,
   UpdateBlogRequestDto,
@@ -24,4 +25,5 @@ export {
   CreateBlogInternalRequestDto,
   UpdateBlogInternalRequestDto,
   GetBlogDto,
+  UserDto,
 };
