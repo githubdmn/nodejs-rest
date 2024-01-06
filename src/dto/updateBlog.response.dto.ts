@@ -4,13 +4,13 @@ import { IsString } from 'class-validator';
 export class UpdateBlogResponseDto {
   @ApiProperty({})
   @IsString()
-  readonly title: string;
+  title: string;
 
   @ApiProperty({})
   @IsString()
-  readonly text: string;
+  text: string;
 
   @ApiProperty({})
   @IsString()
-  readonly userId: string;
+  userId: string;
 }

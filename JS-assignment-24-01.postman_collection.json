@@ -14,7 +14,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"user-b@mail.com\",\n    \"password\": \"password\"\n}",
+					"raw": "{\n    \"email\": \"user-a@mail.com\",\n    \"password\": \"password\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -327,53 +327,6 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"",
-							"const accessToken = pm.response.headers.get('access_token');",
-							"if (accessToken) {",
-							"    pm.environment.set('access_token', accessToken);",
-							"    console.log('Access Token:', accessToken);",
-							"} else {",
-							"    console.error('Access Token not found in response headers.');",
-							"}",
-							"",
-							"pm.test(\"Response status code is 201\", function () {",
-							"  pm.expect(pm.response.to.have.status(201);",
-							"});",
-							"",
-							"",
-							"pm.test(\"Response has the required fields\", function () {",
-							"    const responseData = pm.response.json();",
-							"    ",
-							"    pm.expect(responseData).to.be.an('object');",
-							"    pm.expect(responseData).to.have.property('title');",
-							"    pm.expect(responseData).to.have.property('text');",
-							"    pm.expect(responseData).to.have.property('userId');",
-							"    pm.expect(responseData).to.have.property('blogId');",
-							"    pm.expect(responseData).to.have.property('id');",
-							"});",
-							"",
-							"",
-							"pm.test(\"Title is a non-empty string\", function () {",
-							"  const responseData = pm.response.json();",
-							"  ",
-							"  pm.expect(responseData).to.be.an('object');",
-							"  pm.expect(responseData.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Title should not be empty\");",
-							"});",
-							"",
-							"",
-							"pm.test(\"User ID is a valid user identifier format\", function () {",
-							"    const responseData = pm.response.json();",
-							"    ",
-							"    pm.expect(responseData.userId).to.match(/[a-f0-9]{24}/);",
-							"});",
-							"",
-							"",
-							"pm.test(\"Blog ID is a non-negative integer\", function () {",
-							"  const responseData = pm.response.json();",
-							"  ",
-							"  pm.expect(responseData.blogId).to.be.a('number').and.to.be.at.least(0);",
-							"});",
-							"",
 							""
 						],
 						"type": "text/javascript"
@@ -383,59 +336,6 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"",
-							"const baseUrl = 'localhost:3000/api';",
-							"",
-							"console.log('API URL:', baseUrl);;",
-							"",
-							"const blogData = [",
-							"    {",
-							"        userId: 70972,",
-							"        title: 'Blog Post 1',",
-							"        content: 'Content for Blog Post 1.'",
-							"    },",
-							"    {",
-							"        userId: 70972,",
-							"        title: 'Blog Post 2',",
-							"        content: 'Content for Blog Post 2.'",
-							"    },",
-							"    {",
-							"        userId: 70972,",
-							"        title: 'Blog Post 3',",
-							"        content: 'Content for Blog Post 3.'",
-							"    },",
-							"    {",
-							"        userId: 70972,",
-							"        title: 'Blog Post 4',",
-							"        content: 'Content for Blog Post 4.'",
-							"    },",
-							"    {",
-							"        userId: 70972,",
-							"        title: 'Blog Post 5',",
-							"        content: 'Content for Blog Post 5.'",
-							"    }",
-							"];",
-							"",
-							"blogData.forEach((blog, index) => {",
-							"    pm.sendRequest({",
-							"        url: `${baseUrl}/api/blogs`,",
-							"        method: 'POST',",
-							"        header: {",
-							"            'Content-Type': 'application/json',",
-							"        },",
-							"        body: {",
-							"            mode: 'raw',",
-							"            raw: JSON.stringify(blog),",
-							"        },",
-							"        callback: function (error, response) {",
-							"            if (error) {",
-							"                console.error(`Error creating Blog Post ${index + 1}:`, error);",
-							"            } else {",
-							"                console.log(`Blog Post ${index + 1} created successfully. Response:`, response.text());",
-							"            }",
-							"        }",
-							"    });",
-							"});",
 							""
 						],
 						"type": "text/javascript"
@@ -453,7 +353,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"userId\": \"70972\",\n  \"title\": \"Sample Blog Post\",\n  \"text\": \"This is the content of the blog post. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\"\n}\n",
+					"raw": "{\n  \"title\": \"Sample Blog Post !@#\",\n  \"text\": \"This is the content of the blog post. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -504,12 +404,137 @@
 					}
 				],
 				"url": {
-					"raw": "{{api}}/blog",
+					"raw": "{{api}}/blog?page=2&pageSize=",
 					"host": [
 						"{{api}}"
 					],
 					"path": [
 						"blog"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "pageSize",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-blogs-users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_token",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api}}/blog/my-blogs?pageNumber=4&numberOfItems=2",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"blog",
+						"my-blogs"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "4"
+						},
+						{
+							"key": "numberOfItems",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-blogs-by-userId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_token",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api}}/blog/user/:userId?pageNumber=2&numberOfItems=3",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"blog",
+						"user",
+						":userId"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "2"
+						},
+						{
+							"key": "numberOfItems",
+							"value": "3"
+						}
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "66605"
+						}
 					]
 				}
 			},
@@ -565,7 +590,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "4066"
+							"value": "18409"
 						}
 					]
 				}
@@ -676,7 +701,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "55168"
+							"value": "28625"
 						}
 					]
 				}
@@ -733,7 +758,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "20226"
+							"value": "90662"
 						}
 					]
 				}

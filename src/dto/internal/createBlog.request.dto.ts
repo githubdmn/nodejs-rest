@@ -1,7 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsArray } from 'class-validator';
 
-export class CreateBlogRequestDto {
+export class CreateBlogInternalRequestDto {
+  @ApiProperty({})
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
+
   @ApiProperty({})
   @IsNotEmpty()
   @IsString()

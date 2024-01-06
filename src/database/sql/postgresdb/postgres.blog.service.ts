@@ -1,11 +1,17 @@
 import { IBlogDatabase } from '@/database/database.inteface';
 import {
-  CreateBlogRequestDto,
+  CreateBlogInternalRequestDto,
+  CreateBlogResponseDto,
   DeleteBlogResponseDto,
+  GetBlogDto,
   UpdateBlogRequestDto,
 } from '@/dto';
 import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';
 import { BlogEntity, UserEntity } from '@/entities';
+import {
+  mapCreatedBlog,
+  mapDeletedAllUsersBlogs,
+} from '@/database/sql/postgresdb/mappers';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
@@ -19,7 +25,9 @@ export class PostgresBlogService implements IBlogDatabase {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async createBlog(createBlogDto: CreateBlogRequestDto): Promise<BlogEntity> {
+  async createBlog(
+    createBlogDto: CreateBlogInternalRequestDto,
+  ): Promise<CreateBlogResponseDto> {
     try {
       const user = await this.userRepository.findOne({
         where: { userId: createBlogDto.userId },
@@ -31,7 +39,8 @@ export class PostgresBlogService implements IBlogDatabase {
         text: createBlogDto.text,
         user,
       });
-      return await this.blogRepository.save(newBlog);
+      const created = await this.blogRepository.save(newBlog);
+      return mapCreatedBlog(created);
     } catch (error: any) {
       throw new Error(`Error creating blog post: ${error.message}`);
     }
@@ -51,16 +60,16 @@ export class PostgresBlogService implements IBlogDatabase {
       ]);
   }
 
-  async getAllBlogs(): Promise<BlogEntity[]> {
+  async getAllBlogs(): Promise<GetBlogDto[]> {
     try {
       // return await this.blogRepository.find();
-      return await this.getBlogQuery().getMany();
+      return (await this.getBlogQuery().getMany()) as GetBlogDto[];
     } catch (error: any) {
       throw new Error(`Error retrieving all blog posts: ${error.message}`);
     }
   }
 
-  async getBlogById(blogId: string): Promise<BlogEntity | null> {
+  async getBlogById(blogId: string): Promise<GetBlogDto | null> {
     try {
       return await this.getBlogQuery()
         .where('blog.blogId = :blogId', { blogId })
@@ -70,23 +79,67 @@ export class PostgresBlogService implements IBlogDatabase {
     }
   }
 
-  async getAllBlogsByUserId(userId: string): Promise<BlogEntity[]> {
+  async getAllBlogsByUserId(userId: string): Promise<GetBlogDto[]> {
     try {
-      return await this.blogRepository.find({
-        where: { user: { userId: userId } },
-      });
+      return (await this.getBlogQuery()
+        .where('blog.userId = :userId', { userId })
+        .getMany()) as GetBlogDto[];
+    } catch (error: any) {
+      throw new Error(`Error retrieving blogs by userId: ${error.message}`);
+    }
+  }
+
+  private getBlogPaginationQuery(pageNumber: number, numberOfItems: number) {
+    return this.getBlogQuery()
+      .addSelect('blog.blogId')
+      .limit(numberOfItems)
+      .offset((pageNumber - 1) * numberOfItems);
+    // .skip(pageNumber)
+    // .take(numberOfItems);
+    // https://github.com/typeorm/typeorm/issues/4742#issuecomment-783857414
+    // https://github.com/typeorm/typeorm/issues/8014
+    // https://stackoverflow.com/questions/72108412/why-skip-and-take-not-works-when-i-use-getrawmany-in-nestjs-with-typeorm
+    // https://stackoverflow.com/questions/68468192/difference-between-limit-and-take-in-typeorm
+  }
+
+  async getAllBlogsPaginable(
+    pageNumber: number,
+    numberOfItems: number,
+  ): Promise<GetBlogDto[]> {
+    try {
+      // return await this.blogRepository.find();
+      return (await this.getBlogPaginationQuery(
+        pageNumber,
+        numberOfItems,
+      ).getMany()) as GetBlogDto[];
+    } catch (error: any) {
+      throw new Error(`Error retrieving all blog posts: ${error.message}`);
+    }
+  }
+
+  async getAllBlogsByUserIdPaginable(
+    userId: string,
+    pageNumber: number,
+    numberOfItems: number,
+  ): Promise<GetBlogDto[]> {
+    try {
+      return (await this.getBlogPaginationQuery(pageNumber, numberOfItems)
+        .where('blog.userId = :userId', { userId })
+        .getMany()) as GetBlogDto[];
     } catch (error: any) {
       throw new Error(`Error retrieving blogs by userId: ${error.message}`);
     }
   }
 
   async updateBlog(
+    userId: string,
     blogId: string,
     updateBlogDto: UpdateBlogRequestDto,
   ): Promise<UpdateBlogResponseDto | null> {
     try {
       const existingBlog = await this.blogRepository.findOneBy({
-        blogId: blogId,
+        blogId,
+        user: { userId },
       });
       if (!existingBlog) {
         throw new NotFoundException(`Blog post with ID ${blogId} not found`);
@@ -103,9 +156,14 @@ export class PostgresBlogService implements IBlogDatabase {
     }
   }
 
-  async deleteBlog(blogId: string): Promise<DeleteBlogResponseDto> {
+  async deleteBlog(
+    userId: string,
+    blogId: string,
+  ): Promise<DeleteBlogResponseDto> {
     try {
-      const [blog] = await this.blogRepository.find({ where: { blogId } });
+      const [blog] = await this.blogRepository.find({
+        where: { blogId, user: { userId } },
+      });
       if (blog == null)
         throw new NotFoundException(`Blog post with ID ${blogId} not found`);
       const result = await this.blogRepository.remove(blog);
@@ -132,11 +190,7 @@ export class PostgresBlogService implements IBlogDatabase {
         );
       }
       const deleted = await this.blogRepository.remove(blogsToDelete);
-      return deleted.map((blog) => ({
-        blogId: blog.blogId,
-        title: blog.title,
-        text: blog.text,
-      })) as DeleteBlogResponseDto[];
+      return mapDeletedAllUsersBlogs(deleted);
     } catch (error: any) {
       throw new Error(`Error deleting blogs by userId: ${error.message}`);
     }

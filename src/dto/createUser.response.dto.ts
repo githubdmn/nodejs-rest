@@ -8,10 +8,6 @@ export default class CreateUserResponse {
   id: number;
 
   @ApiProperty({})
-  @IsString({ always: false })
-  userId: string;
-
-  @ApiProperty({})
   @IsString()
   email: string;
 
