@@ -7,6 +7,8 @@ import {
   Request,
   Response,
   UseInterceptors,
+  Get,
+  Headers,
 } from '@nestjs/common';
 import { IUser } from './user.interface';
 import { USER_SERVICE } from '@/utils/constants';
@@ -25,6 +27,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiResponse,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 @ApiTags('User')
@@ -74,5 +77,42 @@ export class UserController {
       newPassword,
     );
     return 'Password successfully changed';
+  }
+
+  @Get('logout')
+  @ApiOkResponse({ description: 'Successfully logged out' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  async logout(
+    @Headers('refresh_token') refreshToken: string,
+    @Response() res: any,
+  ): Promise<UserLoginResponseDto> {
+    await this.userService.logout(refreshToken);
+    return res
+      .set('access_token', '')
+      .set('refresh_token', '')
+      .json({ message: 'Logout successfully' });
+  }
+
+  @Get('refresh-token')
+  @ApiOkResponse({
+    description: 'Successfully refreshed access token',
+  })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  async refreshAccessToken(
+    @Request() req: any,
+    @Response() res: any,
+  ): Promise<UserLoginResponseDto> {
+    const refreshToken = req.headers.refresh_token;
+    const data = await this.userService.refreshToken(
+      { userId: req.jwtPayload.sub, email: req.jwtPayload.username },
+      refreshToken,
+    );
+    return res
+      .set('access_token', data.accessToken)
+      .set('refresh_token', data.refreshToken)
+      .json({
+        id: data.id,
+        email: req.jwtPayload.username,
+      }) as UserLoginResponseDto;
   }
 }

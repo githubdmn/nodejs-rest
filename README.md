@@ -3,7 +3,8 @@
 According to the assignment, this is a sample code that demonstrates the rather basic use of a Node.js backend RESTful API. Due to time constraints, many features have not been fully implemented. The decision prioritized code simplicity, clarity, and adherence to the assignment's educational objectives.
 
 - Authentication:
-  Usually for this is used third-party service or sometimes implemented as another microservice using different databases.
+  Usually for this is used third-party service or sometimes implemented as another microservice using different databases.  
+  This is only a basic exmaple of using jwt.
 - Caching:
   Caching features were omitted in this sample Node.js backend RESTful API code, due to the assignment's focus on fundamental concepts and time constraints.
 
@@ -197,16 +198,6 @@ Blog-related functionality:
    - Create user profiles to showcase a user's published blog posts.
    - Include a bio, profile picture, and a list of authored posts.
 
-5. **Featured Posts:**
-
-   - Highlight certain blog posts as "featured" on the homepage.
-   - Rotate featured posts periodically to showcase a variety of content.
-
-6. **Drafts and Scheduled Posts:**
-
-   - Allow users to save drafts before publishing.
-   - Implement scheduling for future post publication.
-
-7. **Post Analytics:**
+5. **Post Analytics:**
    - Track and display analytics for each blog post (views, likes, shares).
    - Provide insights into popular content and audience engagement.

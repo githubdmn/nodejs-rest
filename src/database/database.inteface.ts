@@ -1,10 +1,13 @@
 import {
+  AuthResponseDto,
   CreateBlogInternalRequestDto,
   CreateBlogResponseDto,
   CreateUserRequestDto,
   CreateUserResponseDto,
   DeleteBlogResponseDto,
   GetBlogDto,
+  SaveLoginRequestDto,
+  SaveLoginResponseDto,
   UpdateBlogRequestDto,
   UpdateUserRequestDto,
   UpdateUserResponseDto,
@@ -45,4 +48,12 @@ export interface IBlogDatabase {
   ): Promise<UpdateBlogResponseDto | null>;
   deleteBlog(userId: string, blogId: string): Promise<DeleteBlogResponseDto>;
   deleteAllBlogsByUserId(userId: string): Promise<DeleteBlogResponseDto[]>;
+}
+
+export interface IAuth {
+  saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto>;
+  logout(userId: string): Promise<boolean>;
+  findAuthByRefreshToken(
+    refreshToken: string,
+  ): Promise<Partial<AuthResponseDto>>;
 }
