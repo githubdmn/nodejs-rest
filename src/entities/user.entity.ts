@@ -2,6 +2,7 @@ import { BeforeInsert, Column, Entity, OneToMany } from 'typeorm';
 import Blog from './blog.entity';
 import Base from './base.entity';
 import { hashString } from '@/utils';
+import Auth from './auth.entity';
 
 @Entity()
 export default class User extends Base {
@@ -18,4 +19,7 @@ export default class User extends Base {
   }
   @OneToMany(() => Blog, (blog) => blog.user)
   blog: Blog[];
+
+  @OneToMany(() => Auth, (auth) => auth.user)
+  auth: Auth[];
 }
