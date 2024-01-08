@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import User from './user.entity';
 import Base from './base.entity';
-import { UserEntity } from '.';
+import { CommentEntity, UserEntity } from '.';
 
 @Entity()
 export default class Blog extends Base {
@@ -29,4 +29,7 @@ export default class Blog extends Base {
   })
   @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
   user: UserEntity;
+
+  @OneToMany(() => CommentEntity, (comment) => comment.blog)
+  comments: CommentEntity[];
 }
