@@ -11,12 +11,8 @@ export async function hashString(s: string) {
 }
 
 export async function checkHashedValue(existingStr: string, givenStr: string) {
-  const [salt, storedHash] = givenStr.split('.');
-  const hash = (await scryptPromise(
-    existingStr,
-    salt,
-    passwordLength,
-  )) as Buffer;
+  const [salt, storedHash] = existingStr.split('.');
+  const hash = (await scryptPromise(givenStr, salt, passwordLength)) as Buffer;
   if (hash.toString('hex') === storedHash) return true;
   else return false;
 }

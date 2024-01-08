@@ -2,15 +2,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
 export class UpdateBlogResponseDto {
-  @ApiProperty({})
+  @ApiProperty({ example: 'Updated Blog Title' })
   @IsString()
-  readonly title: string;
+  title: string;
 
-  @ApiProperty({})
+  @ApiProperty({ example: 'Updated blog content.' })
   @IsString()
-  readonly text: string;
+  text: string;
 
-  @ApiProperty({})
+  @ApiProperty({ example: 'user@example.com' })
   @IsString()
-  readonly userId: string;
+  userId: string;
 }

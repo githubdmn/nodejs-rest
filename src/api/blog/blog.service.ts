@@ -1,12 +1,12 @@
-import { env } from '@/conf';
-import { MONGODB_BLOG, POSTGRES_BLOG } from '@/constants/instances.constants';
+import { POSTGRES_BLOG } from '@/utils/constants';
 import { IBlogDatabase } from '@/database/database.inteface';
 import {
-  CreateBlogRequestDto,
+  CreateBlogInternalRequestDto,
+  CreateBlogResponseDto,
   DeleteBlogResponseDto,
+  GetBlogDto,
   UpdateBlogRequestDto,
 } from '@/dto';
-import { BlogEntity } from '@/entities';
 import { Inject, Injectable } from '@nestjs/common';
 import { IBlogService } from './blog.interface';
 import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';
@@ -17,25 +17,55 @@ const DB_BLOG = POSTGRES_BLOG; // env.dbUse === 'postgres' ? POSTGRES_BLOG : MON
 export class BlogService implements IBlogService {
   constructor(@Inject(DB_BLOG) private blogDB: IBlogDatabase) {}
 
-  async createBlog(createBlog: CreateBlogRequestDto): Promise<BlogEntity> {
+  async createBlog(
+    createBlog: CreateBlogInternalRequestDto,
+  ): Promise<CreateBlogResponseDto> {
     return await this.blogDB.createBlog(createBlog);
   }
 
-  async getAllBlogs(): Promise<BlogEntity[]> {
+  async getAllBlogs(): Promise<GetBlogDto[]> {
     return await this.blogDB.getAllBlogs();
   }
 
-  async getBlogById(blogId: string): Promise<BlogEntity | null> {
+  async getBlogById(blogId: string): Promise<GetBlogDto | null> {
     return await this.blogDB.getBlogById(blogId);
   }
+
+  async getAllBlogsByUserId(userId: string): Promise<GetBlogDto[]> {
+    return await this.blogDB.getAllBlogsByUserId(userId);
+  }
+
+  async getAllBlogsPaginable(
+    pageNumber: number,
+    numberOfItems: number,
+  ): Promise<GetBlogDto[]> {
+    return await this.blogDB.getAllBlogsPaginable(pageNumber, numberOfItems);
+  }
+
+  async getAllBlogsByUserIdPaginable(
+    userId: string,
+    pageNumber: number,
+    numberOfItems: number,
+  ): Promise<GetBlogDto[]> {
+    return await this.blogDB.getAllBlogsByUserIdPaginable(
+      userId,
+      pageNumber,
+      numberOfItems,
+    );
+  }
+
   async updateBlog(
+    userId: string,
     blogId: string,
     updateBlog: UpdateBlogRequestDto,
   ): Promise<UpdateBlogResponseDto | null> {
-    return await this.blogDB.updateBlog(blogId, updateBlog);
+    return await this.blogDB.updateBlog(userId, blogId, updateBlog);
   }
 
-  async deleteBlog(blogId: string): Promise<DeleteBlogResponseDto> {
-    return await this.blogDB.deleteBlog(blogId);
+  async deleteBlog(
+    userId: string,
+    blogId: string,
+  ): Promise<DeleteBlogResponseDto> {
+    return await this.blogDB.deleteBlog(userId, blogId);
   }
 }

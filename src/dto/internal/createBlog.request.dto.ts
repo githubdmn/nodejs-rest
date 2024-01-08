@@ -1,13 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsArray } from 'class-validator';
 
-export class CreateBlogRequestDto {
-  @ApiProperty({ example: 'Sample Blog Title' })
+export class CreateBlogInternalRequestDto {
+  @ApiProperty({})
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
+
+  @ApiProperty({})
   @IsNotEmpty()
   @IsString()
   title: string;
 
-  @ApiProperty({ example: 'This is the content of the blog post.' })
+  @ApiProperty({})
   @IsNotEmpty()
   @IsString()
   text: string;

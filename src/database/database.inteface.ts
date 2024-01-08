@@ -1,27 +1,48 @@
 import {
-  CreateBlogRequestDto,
-  CreateUserRequest,
+  CreateBlogInternalRequestDto,
+  CreateBlogResponseDto,
+  CreateUserRequestDto,
+  CreateUserResponseDto,
   DeleteBlogResponseDto,
+  GetBlogDto,
   UpdateBlogRequestDto,
+  UpdateUserRequestDto,
+  UpdateUserResponseDto,
+  UserDto,
 } from '@/dto';
 import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';
-import { BlogEntity, UserEntity } from '@/entities';
 
 export interface IUserDatabase {
-  save(user: CreateUserRequest): Promise<UserEntity>;
-  findUserByUserId(userId: string): Promise<UserEntity | null>;
-  findUserByEmail(email: string): Promise<UserEntity | null>;
+  save(user: CreateUserRequestDto): Promise<CreateUserResponseDto>;
+  findUserByUserId(userId: string): Promise<UserDto>;
+  findUserByEmail(email: string): Promise<UserDto>;
+  updateUser(
+    userId: string,
+    newUser: Partial<UpdateUserRequestDto>,
+  ): Promise<UpdateUserResponseDto>;
 }
 
 export interface IBlogDatabase {
-  createBlog(createBlogDto: CreateBlogRequestDto): Promise<BlogEntity>;
-  getAllBlogs(): Promise<BlogEntity[]>;
-  getBlogById(blogId: string): Promise<BlogEntity | null>;
-  getAllBlogsByUserId(userId: string): Promise<BlogEntity[]>;
+  createBlog(
+    createBlogDto: CreateBlogInternalRequestDto,
+  ): Promise<CreateBlogResponseDto>;
+  getAllBlogs(): Promise<GetBlogDto[]>;
+  getBlogById(blogId: string): Promise<GetBlogDto | null>;
+  getAllBlogsByUserId(userId: string): Promise<GetBlogDto[]>;
+  getAllBlogsPaginable(
+    pageNumber: number,
+    numberOfItems: number,
+  ): Promise<GetBlogDto[]>;
+  getAllBlogsByUserIdPaginable(
+    userId: string,
+    pageNumber: number,
+    numberOfItems: number,
+  ): Promise<GetBlogDto[]>;
   updateBlog(
+    userId: string,
     blogId: string,
     updateBlogDto: UpdateBlogRequestDto,
   ): Promise<UpdateBlogResponseDto | null>;
-  deleteBlog(blogId: string): Promise<DeleteBlogResponseDto>;
+  deleteBlog(userId: string, blogId: string): Promise<DeleteBlogResponseDto>;
   deleteAllBlogsByUserId(userId: string): Promise<DeleteBlogResponseDto[]>;
 }

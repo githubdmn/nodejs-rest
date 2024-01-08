@@ -1,14 +1,23 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { IUser } from './user.interface';
-import { CreateUserRequest } from '@/dto';
-import UserLoginRequest from '@/dto/userLogin.request.dto';
+import {
+  CreateUserRequestDto,
+  CreateUserResponseDto,
+  UpdateUserResponseDto,
+  UserDto,
+  UserLoginRequestDto,
+  UserLoginResponseDto,
+} from '@/dto';
 import { JwtService } from '@nestjs/jwt';
-import UserLoginResponse from '@/dto/userLogin.response.dto';
 import { IUserDatabase } from '@/database/database.inteface';
-import { MONGODB_USER, POSTGRES_USER } from '@/constants/instances.constants';
+import { POSTGRES_USER } from '@/utils/constants';
 import { env } from '@/conf';
-import { UserEntity } from '@/entities';
-import { checkHashedValue } from '@/utils';
+import { checkHashedValue, hashString } from '@/utils';
 
 const DB_USER = POSTGRES_USER; //env.dbUse === 'postgres' ? POSTGRES_USER : MONGODB_USER;
 
@@ -19,19 +28,34 @@ export class UserService implements IUser {
     private jwtService: JwtService,
   ) {}
 
-  async register(user: CreateUserRequest): Promise<UserEntity> {
+  async register(user: CreateUserRequestDto): Promise<CreateUserResponseDto> {
     return await this.userDatabase.save(user);
   }
 
   private async getAuthenticatedUser(
     email: string,
     password: string,
-  ): Promise<UserEntity | null> {
+  ): Promise<UserDto> {
     const user = await this.userDatabase.findUserByEmail(email);
-    if (user == null) return null;
+    if (user == null)
+      throw new NotFoundException(`User with email ${email} is not found`);
     else {
       const check = await checkHashedValue(user.password, password);
-      if (check == null) return null;
+      if (check == null) throw new BadRequestException('Invalid password');
+    }
+    return user;
+  }
+
+  private async getAuthenticatedUserById(
+    userId: string,
+    password: string,
+  ): Promise<UserDto> {
+    const user = await this.userDatabase.findUserByUserId(userId);
+    if (user == null)
+      throw new NotFoundException(`User with email ${userId} is not found`);
+    else {
+      const check = await checkHashedValue(user.password, password);
+      if (check == false) throw new BadRequestException('Invalid credentials');
     }
     return user;
   }
@@ -39,7 +63,7 @@ export class UserService implements IUser {
   async getJwt({
     email,
     password,
-  }: UserLoginRequest): Promise<UserLoginResponse> {
+  }: UserLoginRequestDto): Promise<UserLoginResponseDto> {
     const user = await this.getAuthenticatedUser(email, password);
     if (user) {
       const accessToken = await this.jwtService.signAsync(
@@ -60,12 +84,22 @@ export class UserService implements IUser {
         accessToken: accessToken,
         refreshToken: refreshToken,
         id: Number(user.userId),
-      } as UserLoginResponse;
+      } as UserLoginResponseDto;
     } else
       return {
         accessToken: '',
         refreshToken: '',
         id: 0,
-      } as UserLoginResponse;
+      } as UserLoginResponseDto;
+  }
+
+  async resetPassword(
+    userId: string,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<UpdateUserResponseDto> {
+    const user = await this.getAuthenticatedUserById(userId, oldPassword);
+    const newPasswordHash = await hashString(newPassword);
+    return this.userDatabase.updateUser(userId, { password: newPasswordHash });
   }
 }

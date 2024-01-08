@@ -1,7 +1,18 @@
 import { IUserDatabase } from '@/database/database.inteface';
-import { CreateUserRequest } from '@/dto';
+import {
+  CreateUserRequestDto,
+  CreateUserResponseDto,
+  UpdateUserRequestDto,
+  UpdateUserResponseDto,
+} from '@/dto';
+import { UserDto } from '@/dto';
 import { UserEntity } from '@/entities';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -12,10 +23,12 @@ export class PostgresUserService implements IUserDatabase {
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  async save(user: CreateUserRequest): Promise<UserEntity> {
+  async save(user: CreateUserRequestDto): Promise<CreateUserResponseDto> {
     const userPrepared = this.userRepository.create(user);
     try {
-      return await this.userRepository.save(userPrepared);
+      return (await this.userRepository.save(
+        userPrepared,
+      )) as unknown as CreateUserResponseDto;
     } catch (error) {
       throw new HttpException(
         `Failed to save user to database${error}`,
@@ -24,9 +37,11 @@ export class PostgresUserService implements IUserDatabase {
     }
   }
 
-  async findUserByUserId(userId: string): Promise<UserEntity | null> {
+  async findUserByUserId(userId: string): Promise<UserDto> {
     try {
-      return await this.userRepository.findOneBy({ userId: userId });
+      return (await this.userRepository.findOne({
+        where: { userId: userId },
+      })) as unknown as UserDto;
     } catch (error) {
       throw new HttpException(
         `Failed to save user to database${error}`,
@@ -35,14 +50,34 @@ export class PostgresUserService implements IUserDatabase {
     }
   }
 
-  async findUserByEmail(email: string): Promise<UserEntity | null> {
+  async findUserByEmail(email: string): Promise<UserDto> {
     try {
-      return await this.userRepository.findOneBy({ email: email });
+      return (await this.userRepository.findOne({
+        where: { email: email },
+      })) as unknown as UserDto;
     } catch (error) {
       throw new HttpException(
         `Failed to save user to database${error}`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  async updateUser(
+    userId: string,
+    newUser: Partial<UpdateUserRequestDto>,
+  ): Promise<UpdateUserResponseDto> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { userId: userId },
+      });
+      if (!user)
+        throw new BadRequestException(`User with ID ${userId} not found`);
+      Object.assign(user, newUser);
+      const updated = await this.userRepository.save(user);
+      return { ...updated } as UpdateUserResponseDto;
+    } catch (error: any) {
+      throw new BadRequestException(`Failed to update user: ${error.message}`);
     }
   }
 }

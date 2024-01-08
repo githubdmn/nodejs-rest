@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
-import { POSTGRES_BLOG, POSTGRES_USER } from '@/constants/instances.constants';
+import { POSTGRES_BLOG, POSTGRES_USER } from '@/utils/constants';
 import { PostgresBlogService, PostgresUserService } from './sql/postgresdb';
-import { env } from '@/conf';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BlogEntity, UserEntity } from '@/entities';
-import { MongooseModule } from '@nestjs/mongoose';
 
 const TypeOrmLocal = TypeOrmModule.forFeature([UserEntity, BlogEntity]);
 const PostgresServices = [
