@@ -16,7 +16,7 @@ export abstract class BaseGuard implements CanActivate {
     const isUrlAllowed = this.allowedUrls.includes(url);
     if (isMethodAllowed && isUrlAllowed) return true;
     const { access_token } = context.switchToHttp().getRequest().headers;
-    if (!access_token) return false;
+    if (!access_token) throw new Error('Invalid token');
     try {
       const result = verify(access_token, env.jwtAccess);
       return !!result;

@@ -15,6 +15,9 @@ import { UserDto } from './User.dto';
 import { ChangePasswordRequestDto } from './changePassword.request.dto';
 import { UpdateUserRequestDto } from './UpdateUserRequest.dto';
 import { UpdateUserResponseDto } from './UpdateUserResponse.dto';
+import { SaveLoginRequestDto } from './saveLogin.request.dto';
+import { SaveLoginResponseDto } from './saveLogin.response.dto';
+import { AuthResponseDto } from './auth.response.dto';
 
 export {
   CreateUserRequestDto,
@@ -32,4 +35,7 @@ export {
   ChangePasswordRequestDto,
   UpdateUserRequestDto,
   UpdateUserResponseDto,
+  SaveLoginRequestDto,
+  SaveLoginResponseDto,
+  AuthResponseDto,
 };

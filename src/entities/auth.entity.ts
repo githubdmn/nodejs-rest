@@ -8,9 +8,6 @@ export default class Auth extends Base {
   authId: string;
 
   @Column({ unique: true })
-  accessToken: string;
-
-  @Column({ unique: true })
   refreshToken: string;
 
   @Column()

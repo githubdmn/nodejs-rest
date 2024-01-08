@@ -1,10 +1,18 @@
 import { Module } from '@nestjs/common';
-import { POSTGRES_BLOG, POSTGRES_USER } from '@/utils/constants';
-import { PostgresBlogService, PostgresUserService } from './sql/postgresdb';
+import { POSTGRES_BLOG, POSTGRES_USER, POSTGRES_AUTH } from '@/utils/constants';
+import {
+  PostgresAuthService,
+  PostgresBlogService,
+  PostgresUserService,
+} from './sql/postgresdb';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BlogEntity, UserEntity } from '@/entities';
+import { AuthEntity, BlogEntity, UserEntity } from '@/entities';
 
-const TypeOrmLocal = TypeOrmModule.forFeature([UserEntity, BlogEntity]);
+const TypeOrmLocal = TypeOrmModule.forFeature([
+  UserEntity,
+  BlogEntity,
+  AuthEntity,
+]);
 const PostgresServices = [
   {
     provide: POSTGRES_USER,
@@ -13,6 +21,10 @@ const PostgresServices = [
   {
     provide: POSTGRES_BLOG,
     useClass: PostgresBlogService,
+  },
+  {
+    provide: POSTGRES_AUTH,
+    useClass: PostgresAuthService,
   },
 ];
 
