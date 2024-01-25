@@ -10,7 +10,7 @@ import { DeleteResult, Repository } from 'typeorm';
 import { mapAuthResponse, mapSaveLoginResponse } from './mappers';
 
 @Injectable()
-export class PostgresAuthService {
+export default class PostgresAuthService {
   constructor(
     @InjectRepository(AuthEntity)
     private authRepository: Repository<AuthEntity>,

@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { POSTGRES_BLOG, POSTGRES_USER, POSTGRES_AUTH } from '@/utils/constants';
+import { POSTGRES_USER, POSTGRES_AUTH, POSTGRES_TODO } from '@/utils/constants';
 import {
   PostgresAuthService,
-  PostgresBlogService,
+  PostgresTodoService,
   PostgresUserService,
 } from './sql/postgresdb';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthEntity, BlogEntity, UserEntity } from '@/entities';
+import { AuthEntity, TodoItem, TodoList, UserEntity } from '@/entities';
 
 const TypeOrmLocal = TypeOrmModule.forFeature([
   UserEntity,
-  BlogEntity,
+  TodoItem,
+  TodoList,
   AuthEntity,
 ]);
 const PostgresServices = [
@@ -19,8 +20,8 @@ const PostgresServices = [
     useClass: PostgresUserService,
   },
   {
-    provide: POSTGRES_BLOG,
-    useClass: PostgresBlogService,
+    provide: POSTGRES_TODO,
+    useClass: PostgresTodoService,
   },
   {
     provide: POSTGRES_AUTH,
@@ -40,8 +41,8 @@ const PostgresServices = [
 //     useClass: PostgresUserService, // NOT IMPLEMENTED
 //   },
 //   {
-//     provide: 'Mongo_Blog',
-//     useClass: PostgresBlogService, // NOT IMPLEMENTED
+//     provide: 'Mongo_Todo',
+//     useClass: MongoTodoService, // NOT IMPLEMENTED
 //   },
 // ];
 

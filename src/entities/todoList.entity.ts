@@ -19,6 +19,9 @@ export default class TodoList extends BaseEntity {
   @ManyToOne(() => User, (user) => user.todoLists)
   user: User;
 
-  @OneToMany(() => TodoItem, (todoItem) => todoItem.todoList)
+  @OneToMany(() => TodoItem, (todoItem) => todoItem.todoList, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   items: TodoItem[];
 }

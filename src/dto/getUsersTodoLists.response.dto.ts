@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
-export class UpdateBlogInternalRequestDto {
-  @ApiProperty({})
+export default class GetUsersTodoListsResponseDto {
+  @ApiProperty()
   @IsString()
-  title?: string;
+  listId: string;
 
-  @ApiProperty({})
+  @ApiProperty()
   @IsString()
-  text?: string;
+  title: string;
 }

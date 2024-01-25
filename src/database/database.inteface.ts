@@ -1,58 +1,74 @@
 import {
   AuthResponseDto,
-  CreateBlogInternalRequestDto,
-  CreateBlogResponseDto,
   CreateUserRequestDto,
   CreateUserResponseDto,
-  DeleteBlogResponseDto,
-  GetBlogDto,
   SaveLoginRequestDto,
   SaveLoginResponseDto,
-  UpdateBlogRequestDto,
   UpdateUserRequestDto,
   UpdateUserResponseDto,
   UserDto,
+  CreateTodoItemRequestDto,
+  CreateTodoListRequestDto,
+  CreateTodoListResponseDto,
+  DeleteTodoListRequestDto,
+  DeleteTodoListResponseDto,
+  GetUsersTodoListRequestDto,
+  GetUsersTodoListResponseDto,
+  GetUsersTodoListsRequestDto,
+  GetUsersTodoListsResponseDto,
+  UpdateTodoListRequestDto,
+  GetUsersTodoListsResponseWithItemsDto,
+  TodoItemDto,
 } from '@/dto';
-import { UpdateBlogResponseDto } from '@/dto/updateBlog.response.dto';
 
 export interface IUserDatabase {
   save(user: CreateUserRequestDto): Promise<CreateUserResponseDto>;
+
   findUserByUserId(userId: string): Promise<UserDto>;
+
   findUserByEmail(email: string): Promise<UserDto>;
+
   updateUser(
     userId: string,
     newUser: Partial<UpdateUserRequestDto>,
   ): Promise<UpdateUserResponseDto>;
 }
 
-export interface IBlogDatabase {
-  createBlog(
-    createBlogDto: CreateBlogInternalRequestDto,
-  ): Promise<CreateBlogResponseDto>;
-  getAllBlogs(): Promise<GetBlogDto[]>;
-  getBlogById(blogId: string): Promise<GetBlogDto | null>;
-  getAllBlogsByUserId(userId: string): Promise<GetBlogDto[]>;
-  getAllBlogsPaginable(
-    pageNumber: number,
-    numberOfItems: number,
-  ): Promise<GetBlogDto[]>;
-  getAllBlogsByUserIdPaginable(
-    userId: string,
-    pageNumber: number,
-    numberOfItems: number,
-  ): Promise<GetBlogDto[]>;
-  updateBlog(
-    userId: string,
-    blogId: string,
-    updateBlogDto: UpdateBlogRequestDto,
-  ): Promise<UpdateBlogResponseDto | null>;
-  deleteBlog(userId: string, blogId: string): Promise<DeleteBlogResponseDto>;
-  deleteAllBlogsByUserId(userId: string): Promise<DeleteBlogResponseDto[]>;
+export interface ITodoDatabase {
+  createTodoList(
+    createTodoListDto: CreateTodoListRequestDto,
+  ): Promise<Partial<CreateTodoListResponseDto>>;
+
+  getUsersTodoLists(
+    req: GetUsersTodoListsRequestDto,
+  ): Promise<GetUsersTodoListsResponseDto[]>;
+
+  getUsersTodoListsWithItems(
+    req: GetUsersTodoListsRequestDto,
+  ): Promise<GetUsersTodoListsResponseWithItemsDto[]>;
+
+  getUsersTodoList(
+    req: GetUsersTodoListRequestDto,
+  ): Promise<GetUsersTodoListResponseDto>;
+
+  updateTodoList(
+    req: UpdateTodoListRequestDto,
+  ): Promise<Partial<CreateTodoListResponseDto>>;
+
+  deleteTodoList(
+    req: DeleteTodoListRequestDto,
+  ): Promise<DeleteTodoListResponseDto>;
+
+  createTodoItem(req: CreateTodoItemRequestDto): Promise<TodoItemDto>;
+
+  updateTodoItem(req: CreateTodoItemRequestDto): Promise<TodoItemDto>;
 }
 
 export interface IAuth {
   saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto>;
+
   logout(userId: string): Promise<boolean>;
+
   findAuthByRefreshToken(
     refreshToken: string,
   ): Promise<Partial<AuthResponseDto>>;

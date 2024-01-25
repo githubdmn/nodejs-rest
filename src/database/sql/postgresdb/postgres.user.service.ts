@@ -17,7 +17,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class PostgresUserService implements IUserDatabase {
+export default class PostgresUserService implements IUserDatabase {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,

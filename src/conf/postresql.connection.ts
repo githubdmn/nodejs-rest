@@ -20,7 +20,7 @@ const settingEnv = {
 const settingBackup = {
   type: 'postgres',
   schema: 'public',
-  database: 'blog',
+  database: 'technical',
   host: 'postgres',
   port: 5432,
   username: 'postgres',
@@ -33,7 +33,7 @@ const settingBackup = {
 const settingLocal = {
   type: 'postgres',
   schema: 'public',
-  database: 'blog',
+  database: 'technical',
   host: 'localhost',
   port: 5432,
   username: 'postgres',
