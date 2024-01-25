@@ -16,4 +16,4 @@ const Service = [
   controllers: [TodoController],
   imports: [DatabaseModule],
 })
-export class BlogModule {}
+export class TodoModule {}
