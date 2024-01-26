@@ -102,7 +102,7 @@ export class TodoController {
     return this.todoService.getUsersTodoList(req);
   }
 
-  @Post(':listId')
+  @Post('item')
   @ApiOperation({ summary: 'Create a new Todo Item within a Todo List' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -119,7 +119,7 @@ export class TodoController {
     return this.todoService.createTodoItem(req);
   }
 
-  @Patch()
+  @Patch('item')
   @ApiOperation({ summary: 'Update a Todo Item' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -130,10 +130,27 @@ export class TodoController {
   @ApiNotFoundResponse({ description: 'Todo Item not found' })
   async updateTodoItem(
     @Request() request: any,
-    @Body() req: CreateTodoItemRequestDto,
+    @Body() req: UpdateTodoItemRequestDto,
   ): Promise<TodoItemDto> {
     req.userId = request.jwtPayload.sub;
     return this.todoService.updateTodoItem(req);
+  }
+
+  @Patch('list')
+  @ApiOperation({ summary: 'Update a Todo List' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Successfully updated Todo List',
+    type: TodoList,
+  })
+  @ApiBadRequestResponse({ description: 'Failed to update Todo List' })
+  @ApiNotFoundResponse({ description: 'Todo List not found' })
+  async updateTodoList(
+    @Request() request: any,
+    @Body() req: UpdateTodoListRequestDto,
+  ): Promise<Partial<CreateTodoListResponseDto>> {
+    req.userId = request.jwtPayload.sub;
+    return this.todoService.updateTodoList(req);
   }
 
   @Delete(':listId')
@@ -153,22 +170,5 @@ export class TodoController {
       listId,
       userId: request.jwtPayload.sub,
     });
-  }
-
-  @Patch()
-  @ApiOperation({ summary: 'Update a Todo List' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Successfully updated Todo List',
-    type: TodoList,
-  })
-  @ApiBadRequestResponse({ description: 'Failed to update Todo List' })
-  @ApiNotFoundResponse({ description: 'Todo List not found' })
-  async updateTodoList(
-    @Request() request: any,
-    @Body() req: UpdateTodoListRequestDto,
-  ): Promise<Partial<CreateTodoListResponseDto>> {
-    req.userId = request.jwtPayload.sub;
-    return this.todoService.updateTodoList(req);
   }
 }

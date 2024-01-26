@@ -10,6 +10,7 @@ import {
   CreateTodoItemRequestDto,
   TodoItemDto,
   UpdateTodoListRequestDto,
+  UpdateTodoItemRequestDto,
 } from '@/dto';
 
 export interface ITodoService {
@@ -35,5 +36,5 @@ export interface ITodoService {
 
   createTodoItem(req: CreateTodoItemRequestDto): Promise<TodoItemDto>;
 
-  updateTodoItem(req: CreateTodoItemRequestDto): Promise<TodoItemDto>;
+  updateTodoItem(req: UpdateTodoItemRequestDto): Promise<TodoItemDto>;
 }

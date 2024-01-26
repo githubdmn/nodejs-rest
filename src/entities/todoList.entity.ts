@@ -1,4 +1,11 @@
-import { Entity, Column, ManyToOne, OneToMany, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  OneToMany,
+  BeforeInsert,
+  JoinColumn,
+} from 'typeorm';
 import User from './user.entity';
 import TodoItem from './todoItem.entity';
 import BaseEntity from './base.entity';
@@ -17,10 +24,12 @@ export default class TodoList extends BaseEntity {
   }
 
   @ManyToOne(() => User, (user) => user.todoLists)
+  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
   user: User;
 
   @OneToMany(() => TodoItem, (todoItem) => todoItem.todoList, {
-    cascade: true,
+    cascade: ['remove'],
+    createForeignKeyConstraints: false,
     onDelete: 'CASCADE',
   })
   items: TodoItem[];

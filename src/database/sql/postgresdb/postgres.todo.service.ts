@@ -133,6 +133,8 @@ export default class PostgresTodoService implements ITodoDatabase {
       const todoList = await this.todoListRepository.findOneOrFail({
         where: { listId, user: { userId } },
       });
+      console.log(todoList);
+
       this.todoListRepository.merge(todoList, { ...data });
       const updatedTodoList = await this.todoListRepository.save(todoList);
       return mapCreateTodoListResponse(updatedTodoList);
@@ -156,6 +158,7 @@ export default class PostgresTodoService implements ITodoDatabase {
       const { userId, listId } = req;
       const todoList = await this.todoListRepository.findOneOrFail({
         where: { listId, user: { userId } },
+        relations: ['items'],
       });
       const deletedTodoList = await this.todoListRepository.remove(todoList);
       return mapDeleteTodoListResponse(deletedTodoList);
@@ -194,12 +197,12 @@ export default class PostgresTodoService implements ITodoDatabase {
     }
   }
 
-  async updateTodoItem(req: CreateTodoItemRequestDto): Promise<TodoItemDto> {
+  async updateTodoItem(req: UpdateTodoItemRequestDto): Promise<TodoItemDto> {
     try {
       const { userId, listId, itemId, ...data } = req;
       const todoItem = await this.todoItemRepository.findOneOrFail({
         where: { itemId },
-        relations: ['todoList'],
+        relations: ['todoList', 'todoList.user'],
       });
       if (todoItem.todoList.user.userId !== userId) {
         throw new UnauthorizedException(

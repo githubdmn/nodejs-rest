@@ -3,9 +3,19 @@ import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export default class UpdateTodoItemRequestDto {
   @ApiProperty()
-  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
   @IsString()
   listId: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  itemId: string;
 
   @ApiProperty()
   @IsNotEmpty()

@@ -15,11 +15,6 @@ export default class CreateTodoItemRequestDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  itemId: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
   text: string;
 
   @ApiProperty()

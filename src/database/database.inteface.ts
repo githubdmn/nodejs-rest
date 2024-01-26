@@ -19,6 +19,7 @@ import {
   UpdateTodoListRequestDto,
   GetUsersTodoListsResponseWithItemsDto,
   TodoItemDto,
+  UpdateTodoItemRequestDto,
 } from '@/dto';
 
 export interface IUserDatabase {
@@ -61,7 +62,7 @@ export interface ITodoDatabase {
 
   createTodoItem(req: CreateTodoItemRequestDto): Promise<TodoItemDto>;
 
-  updateTodoItem(req: CreateTodoItemRequestDto): Promise<TodoItemDto>;
+  updateTodoItem(req: UpdateTodoItemRequestDto): Promise<TodoItemDto>;
 }
 
 export interface IAuth {

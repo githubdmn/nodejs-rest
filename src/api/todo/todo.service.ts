@@ -11,6 +11,7 @@ import {
   CreateTodoItemRequestDto,
   TodoItemDto,
   UpdateTodoListRequestDto,
+  UpdateTodoItemRequestDto,
 } from '@/dto';
 import { ITodoDatabase } from '@/database/database.inteface';
 import { POSTGRES_TODO } from '@/utils/constants';
@@ -56,7 +57,7 @@ export class TodoService implements ITodoService {
     try {
       return await this.tododb.updateTodoList(req);
     } catch (error: any) {
-      throw new Error(`Failed to delete todo list: ${error.message}`);
+      throw new Error(`Failed to update todo list: ${error.message}`);
     }
   }
 
@@ -78,7 +79,7 @@ export class TodoService implements ITodoService {
     }
   }
 
-  async updateTodoItem(req: CreateTodoItemRequestDto): Promise<TodoItemDto> {
+  async updateTodoItem(req: UpdateTodoItemRequestDto): Promise<TodoItemDto> {
     try {
       return await this.tododb.updateTodoItem(req);
     } catch (error: any) {
