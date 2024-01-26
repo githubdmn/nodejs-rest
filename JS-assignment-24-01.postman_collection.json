@@ -1,770 +1,645 @@
 {
-  "info": {
-    "_postman_id": "010e59ee-55ea-4424-af91-b8a839197373",
-    "name": "JS-assignment-24-01",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "10205969",
-    "_collection_link": "https://planetary-meteor-43388.postman.co/workspace/My-Workspace~1e78eed1-3045-4ad2-8b2d-f6a7310a9e01/collection/10205969-010e59ee-55ea-4424-af91-b8a839197373?action=share&source=collection_link&creator=10205969"
-  },
-  "item": [
-    {
-      "name": "user-register",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"email\": \"user-a@mail.com\",\n    \"password\": \"password\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{api}}/user",
-          "host": ["{{api}}"],
-          "path": ["user"]
-        }
-      },
-      "response": [
-        {
-          "name": "user-register-same-email",
-          "originalRequest": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"email\": \"user-b@mail.com\",\n    \"password\": \"password\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "localhost:3000/api/user",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "user"]
-            }
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "_postman_previewlanguage": "json",
-          "header": [
-            {
-              "key": "X-Powered-By",
-              "value": "Express"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json; charset=utf-8"
-            },
-            {
-              "key": "Content-Length",
-              "value": "161"
-            },
-            {
-              "key": "ETag",
-              "value": "W/\"a1-L9laYujwJ7Qqg1bmXj/7DbKD9+I\""
-            },
-            {
-              "key": "Date",
-              "value": "Thu, 04 Jan 2024 16:13:03 GMT"
-            },
-            {
-              "key": "Connection",
-              "value": "keep-alive"
-            },
-            {
-              "key": "Keep-Alive",
-              "value": "timeout=5"
-            }
-          ],
-          "cookie": [],
-          "body": "{\n    \"statusCode\": 500,\n    \"message\": \"Failed to save user to databaseQueryFailedError: duplicate key value violates unique constraint \\\"UQ_e12875dfb3b1d92d7d7c5377e22\\\"\"\n}"
-        },
-        {
-          "name": "user-register-success",
-          "originalRequest": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"email\": \"user-b@mail.com\",\n    \"password\": \"password\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "localhost:3000/api/user",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "user"]
-            }
-          },
-          "status": "Created",
-          "code": 201,
-          "_postman_previewlanguage": "json",
-          "header": [
-            {
-              "key": "X-Powered-By",
-              "value": "Express"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json; charset=utf-8"
-            },
-            {
-              "key": "Content-Length",
-              "value": "44"
-            },
-            {
-              "key": "ETag",
-              "value": "W/\"2c-aIdFXv5zTQU/yvPMdzMo6vvm8wE\""
-            },
-            {
-              "key": "Date",
-              "value": "Thu, 04 Jan 2024 16:13:27 GMT"
-            },
-            {
-              "key": "Connection",
-              "value": "keep-alive"
-            },
-            {
-              "key": "Keep-Alive",
-              "value": "timeout=5"
-            }
-          ],
-          "cookie": [],
-          "body": "{\n    \"email\": \"user-b@mail.com\",\n    \"userId\": \"00388\"\n}"
-        }
-      ]
-    },
-    {
-      "name": "user-login",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"email\": \"user-a@mail.com\",\n    \"password\": \"password\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{api}}/user/login",
-          "host": ["{{api}}"],
-          "path": ["user", "login"]
-        }
-      },
-      "response": [
-        {
-          "name": "error",
-          "originalRequest": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"email\": \"user-a@mail.com\",\n    \"password\": \"passwor\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "localhost:3000/api/user/login",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "user", "login"]
-            }
-          },
-          "status": "Forbidden",
-          "code": 403,
-          "_postman_previewlanguage": "json",
-          "header": [
-            {
-              "key": "X-Powered-By",
-              "value": "Express"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json; charset=utf-8"
-            },
-            {
-              "key": "Content-Length",
-              "value": "69"
-            },
-            {
-              "key": "ETag",
-              "value": "W/\"45-MZJWZc+Y+RUbHpnhz2B2Vipii24\""
-            },
-            {
-              "key": "Date",
-              "value": "Thu, 04 Jan 2024 15:41:08 GMT"
-            },
-            {
-              "key": "Connection",
-              "value": "keep-alive"
-            },
-            {
-              "key": "Keep-Alive",
-              "value": "timeout=5"
-            }
-          ],
-          "cookie": [],
-          "body": "{\n    \"message\": \"Forbidden resource\",\n    \"error\": \"Forbidden\",\n    \"statusCode\": 403\n}"
-        },
-        {
-          "name": "user-login",
-          "originalRequest": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"email\": \"user-a@mail.com\",\n    \"password\": \"password\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "localhost:3000/api/user/login",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "user", "login"]
-            }
-          },
-          "status": "Created",
-          "code": 201,
-          "_postman_previewlanguage": "json",
-          "header": [
-            {
-              "key": "X-Powered-By",
-              "value": "Express"
-            },
-            {
-              "key": "access_token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXItYUBtYWlsLmNvbSIsInN1YiI6IjcwOTcyIiwiaWF0IjoxNzA0Mzg0NjE4LCJleHAiOjE3MDQzODgyMTh9.95GISUsQF_ABhN5pqNN6K1_lay2CWBvPC1zylhuAV44"
-            },
-            {
-              "key": "refresh_token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXItYUBtYWlsLmNvbSIsInN1YiI6IjcwOTcyIiwiaWF0IjoxNzA0Mzg0NjE4LCJleHAiOjE3MDQ0NzEwMTh9.heMaE0UKNu_ZlMWNW3PMZ89AQOHQ-q6vduHuilFcUbc"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json; charset=utf-8"
-            },
-            {
-              "key": "Content-Length",
-              "value": "38"
-            },
-            {
-              "key": "ETag",
-              "value": "W/\"26-OdTkrSOdbAtYMctdAdDiwJgESBA\""
-            },
-            {
-              "key": "Date",
-              "value": "Thu, 04 Jan 2024 16:10:18 GMT"
-            },
-            {
-              "key": "Connection",
-              "value": "keep-alive"
-            },
-            {
-              "key": "Keep-Alive",
-              "value": "timeout=5"
-            }
-          ],
-          "cookie": [],
-          "body": "{\n    \"id\": 70972,\n    \"email\": \"user-a@mail.com\"\n}"
-        }
-      ]
-    },
-    {
-      "name": "user-change-pass",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "access_token",
-            "value": "{{access_token}}",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"oldPassword\": \"112233\",\n    \"newPassword\": \"password\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{api}}/user/change-password",
-          "host": ["{{api}}"],
-          "path": ["user", "change-password"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "create-blog",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "access_token",
-            "value": "{{access_token}}",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"title\": \"Sample Blog Post !@#\",\n  \"text\": \"This is the content of the blog post. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\"\n}\n",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{api}}/blog",
-          "host": ["{{api}}"],
-          "path": ["blog"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "get-blogs",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "access_token",
-            "value": "{{access_token}}",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{api}}/blog?page=2&pageSize=",
-          "host": ["{{api}}"],
-          "path": ["blog"],
-          "query": [
-            {
-              "key": "page",
-              "value": "2"
-            },
-            {
-              "key": "pageSize",
-              "value": ""
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "get-blogs-users",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "access_token",
-            "value": "{{access_token}}",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{api}}/blog/my-blogs?pageNumber=4&numberOfItems=2",
-          "host": ["{{api}}"],
-          "path": ["blog", "my-blogs"],
-          "query": [
-            {
-              "key": "pageNumber",
-              "value": "4"
-            },
-            {
-              "key": "numberOfItems",
-              "value": "2"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "get-blogs-by-userId",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "access_token",
-            "value": "{{access_token}}",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{api}}/blog/user/:userId?pageNumber=2&numberOfItems=3",
-          "host": ["{{api}}"],
-          "path": ["blog", "user", ":userId"],
-          "query": [
-            {
-              "key": "pageNumber",
-              "value": "2"
-            },
-            {
-              "key": "numberOfItems",
-              "value": "3"
-            }
-          ],
-          "variable": [
-            {
-              "key": "userId",
-              "value": "66605"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "get-blog-by-id",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "access_token",
-            "value": "{{access_token}}",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{api}}/blog/:id",
-          "host": ["{{api}}"],
-          "path": ["blog", ":id"],
-          "query": [
-            {
-              "key": null,
-              "value": "",
-              "disabled": true
-            }
-          ],
-          "variable": [
-            {
-              "key": "id",
-              "value": "18409"
-            }
-          ]
-        }
-      },
-      "response": [
-        {
-          "name": "get-blog-by-id",
-          "originalRequest": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "access_token",
-                "value": "{{access_token}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{api}}/blog/:id",
-              "host": ["{{api}}"],
-              "path": ["blog", ":id"],
-              "query": [
-                {
-                  "key": null,
-                  "value": "",
-                  "disabled": true
-                }
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "4066"
-                }
-              ]
-            }
-          },
-          "status": "OK",
-          "code": 200,
-          "_postman_previewlanguage": "json",
-          "header": [
-            {
-              "key": "X-Powered-By",
-              "value": "Express"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json; charset=utf-8"
-            },
-            {
-              "key": "Content-Length",
-              "value": "203"
-            },
-            {
-              "key": "ETag",
-              "value": "W/\"cb-/Ihvz2XviqmOeMGWclxjEPbsInE\""
-            },
-            {
-              "key": "Date",
-              "value": "Thu, 04 Jan 2024 17:18:21 GMT"
-            },
-            {
-              "key": "Connection",
-              "value": "keep-alive"
-            },
-            {
-              "key": "Keep-Alive",
-              "value": "timeout=5"
-            }
-          ],
-          "cookie": [],
-          "body": "{\n    \"blogId\": \"40667\",\n    \"title\": \"Sample Blog Post\",\n    \"text\": \"This is the content of the blog post. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\",\n    \"userId\": {\n        \"userId\": \"70972\",\n        \"email\": \"user-a@mail.com\"\n    }\n}"
-        }
-      ]
-    },
-    {
-      "name": "update-blog",
-      "request": {
-        "method": "PATCH",
-        "header": [
-          {
-            "key": "access_token",
-            "value": "{{access_token}}",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"title\": \"Change 5\",\n    \"text\": \"ABC 123 CCC AAA BBB CCC\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{api}}/blog/:id",
-          "host": ["{{api}}"],
-          "path": ["blog", ":id"],
-          "variable": [
-            {
-              "key": "id",
-              "value": "28625"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "get-blog-by-id",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "DELETE",
-        "header": [
-          {
-            "key": "access_token",
-            "value": "{{access_token}}",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{api}}/blog/:id",
-          "host": ["{{api}}"],
-          "path": ["blog", ":id"],
-          "query": [
-            {
-              "key": null,
-              "value": "",
-              "disabled": true
-            }
-          ],
-          "variable": [
-            {
-              "key": "id",
-              "value": "90662"
-            }
-          ]
-        }
-      },
-      "response": [
-        {
-          "name": "get-blog-by-id",
-          "originalRequest": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "access_token",
-                "value": "{{access_token}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{api}}/blog/:id",
-              "host": ["{{api}}"],
-              "path": ["blog", ":id"],
-              "query": [
-                {
-                  "key": null,
-                  "value": "",
-                  "disabled": true
-                }
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "4066"
-                }
-              ]
-            }
-          },
-          "status": "OK",
-          "code": 200,
-          "_postman_previewlanguage": "json",
-          "header": [
-            {
-              "key": "X-Powered-By",
-              "value": "Express"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json; charset=utf-8"
-            },
-            {
-              "key": "Content-Length",
-              "value": "203"
-            },
-            {
-              "key": "ETag",
-              "value": "W/\"cb-/Ihvz2XviqmOeMGWclxjEPbsInE\""
-            },
-            {
-              "key": "Date",
-              "value": "Thu, 04 Jan 2024 17:18:21 GMT"
-            },
-            {
-              "key": "Connection",
-              "value": "keep-alive"
-            },
-            {
-              "key": "Keep-Alive",
-              "value": "timeout=5"
-            }
-          ],
-          "cookie": [],
-          "body": "{\n    \"blogId\": \"40667\",\n    \"title\": \"Sample Blog Post\",\n    \"text\": \"This is the content of the blog post. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\",\n    \"userId\": {\n        \"userId\": \"70972\",\n        \"email\": \"user-a@mail.com\"\n    }\n}"
-        }
-      ]
-    }
-  ]
+	"info": {
+		"_postman_id": "8f6b7c4e-015b-4ce7-9a21-62fd063ce961",
+		"name": "js-assignment-todo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10205969",
+		"_collection_link": "https://planetary-meteor-43388.postman.co/workspace/My-Workspace~1e78eed1-3045-4ad2-8b2d-f6a7310a9e01/collection/10205969-8f6b7c4e-015b-4ce7-9a21-62fd063ce961?action=share&source=collection_link&creator=10205969"
+	},
+	"item": [
+		{
+			"name": "user-register Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"user-445@mail.com\",\n    \"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/user",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "user-register-same-email",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user-b@mail.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/user",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "161"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"a1-L9laYujwJ7Qqg1bmXj/7DbKD9+I\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Jan 2024 16:13:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 500,\n    \"message\": \"Failed to save user to databaseQueryFailedError: duplicate key value violates unique constraint \\\"UQ_e12875dfb3b1d92d7d7c5377e22\\\"\"\n}"
+				},
+				{
+					"name": "user-register-success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user-b@mail.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/user",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "44"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2c-aIdFXv5zTQU/yvPMdzMo6vvm8wE\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Jan 2024 16:13:27 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"email\": \"user-b@mail.com\",\n    \"userId\": \"00388\"\n}"
+				}
+			]
+		},
+		{
+			"name": "user-login Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"user-445@mail.com\",\n    \"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/user/login",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user-a@mail.com\",\n    \"password\": \"passwor\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/user/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "69"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"45-MZJWZc+Y+RUbHpnhz2B2Vipii24\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Jan 2024 15:41:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Forbidden resource\",\n    \"error\": \"Forbidden\",\n    \"statusCode\": 403\n}"
+				},
+				{
+					"name": "user-login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user-a@mail.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/user/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "access_token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXItYUBtYWlsLmNvbSIsInN1YiI6IjcwOTcyIiwiaWF0IjoxNzA0Mzg0NjE4LCJleHAiOjE3MDQzODgyMTh9.95GISUsQF_ABhN5pqNN6K1_lay2CWBvPC1zylhuAV44"
+						},
+						{
+							"key": "refresh_token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXItYUBtYWlsLmNvbSIsInN1YiI6IjcwOTcyIiwiaWF0IjoxNzA0Mzg0NjE4LCJleHAiOjE3MDQ0NzEwMTh9.heMaE0UKNu_ZlMWNW3PMZ89AQOHQ-q6vduHuilFcUbc"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "38"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"26-OdTkrSOdbAtYMctdAdDiwJgESBA\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Jan 2024 16:10:18 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 70972,\n    \"email\": \"user-a@mail.com\"\n}"
+				}
+			]
+		},
+		{
+			"name": "logout Copy",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_token",
+						"value": "{{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "refresh_token",
+						"value": "{{refresh_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api}}/user/logout",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"user",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "refresh-token Copy",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_token",
+						"value": "{{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "refresh_token",
+						"value": "{{refresh_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api}}/user/refresh-token",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"user",
+						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user-change-pass Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "access_token",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"oldPassword\": \"123123\",\n    \"newPassword\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/user/change-password",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"user",
+						"change-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-list",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "access_token",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"3\",\n    \"title\": \"abc\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/todo",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"todo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update list",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "access_token",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"3\",\n    \"listId\": \"49013\",\n    \"title\": \"first first\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/todo/list",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"todo",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get users lists",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_token",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api}}/todo/lists",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"todo",
+						"lists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get users list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_token",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"3\",\n    \"listId\": \"49013\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/todo/list",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"todo",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create item",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "access_token",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"3\",\n    \"listId\": \"49013\",\n    \"text\": \"3\",\n    \"isDone\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/todo/item",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"todo",
+						"item"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update item",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "access_token",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"3\",\n    \"listId\": \"34581\",\n    \"itemId\": \"89614\",\n    \"text\": \"delete this\",\n    \"isDone\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/todo/item",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"todo",
+						"item"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete list",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "access_token",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"3\",\n    \"listId\": \"34581\",\n    \"itemId\": \"00919\",\n    \"text\": \"Second\",\n    \"isDone\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/todo/:listId",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"todo",
+						":listId"
+					],
+					"variable": [
+						{
+							"key": "listId",
+							"value": "49013"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
 }
