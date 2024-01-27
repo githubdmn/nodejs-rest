@@ -3,8 +3,11 @@ import { Exclude } from 'class-transformer';
 import { IsEmail, IsString } from 'class-validator';
 
 export class CreateUserResponseDto {
+  @Exclude()
+  id: string;
+
   @ApiProperty({ example: 1 })
-  userId: number;
+  userId: string;
 
   @ApiProperty({ example: 'user@example.com' })
   @IsString()

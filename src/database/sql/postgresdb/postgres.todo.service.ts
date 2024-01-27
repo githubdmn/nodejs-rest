@@ -151,6 +151,30 @@ export default class PostgresTodoService implements ITodoDatabase {
     }
   }
 
+  // async deleteTodoList(
+  //   req: DeleteTodoListRequestDto,
+  // ): Promise<DeleteTodoListResponseDto> {
+  //   try {
+  //     const { userId, listId } = req;
+  //     const todoList = await this.todoListRepository.findOneOrFail({
+  //       where: { listId, user: { userId } },
+  //       relations: ['items'],
+  //     });
+  //     const deletedTodoList = await this.todoListRepository.remove(todoList);
+  //     return mapDeleteTodoListResponse(deletedTodoList);
+  //   } catch (error: any) {
+  //     if (error instanceof NotFoundException)
+  //       throw new NotFoundException(
+  //         `Todo list with ID ${req.listId} not found.`,
+  //       );
+  //     else if (error instanceof UnauthorizedException)
+  //       throw new UnauthorizedException(
+  //         'You are not authorized to delete this todo list.',
+  //       );
+  //     throw new Error(`Failed to delete todo list: ${error.message}`);
+  //   }
+  // }
+
   async deleteTodoList(
     req: DeleteTodoListRequestDto,
   ): Promise<DeleteTodoListResponseDto> {
@@ -158,8 +182,12 @@ export default class PostgresTodoService implements ITodoDatabase {
       const { userId, listId } = req;
       const todoList = await this.todoListRepository.findOneOrFail({
         where: { listId, user: { userId } },
-        relations: ['items'],
       });
+      const todoItems = await this.todoItemRepository.find({
+        where: { todoList: { listId } },
+      });
+      for (const todoItem of todoItems)
+        await this.todoItemRepository.remove(todoItem);
       const deletedTodoList = await this.todoListRepository.remove(todoList);
       return mapDeleteTodoListResponse(deletedTodoList);
     } catch (error: any) {

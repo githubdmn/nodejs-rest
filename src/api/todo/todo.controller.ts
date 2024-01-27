@@ -116,6 +116,7 @@ export class TodoController {
     @Body() req: CreateTodoItemRequestDto,
   ): Promise<TodoItemDto> {
     req.userId = request.jwtPayload.sub;
+    req.isDone = false;
     return this.todoService.createTodoItem(req);
   }
 
