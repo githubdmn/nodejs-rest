@@ -8,13 +8,13 @@
 	},
 	"item": [
 		{
-			"name": "user-register Copy",
+			"name": "user-register",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"user-445@mail.com\",\n    \"password\": \"password\"\n}",
+					"raw": "{\n    \"email\": \"user-4451@mail.com\",\n    \"password\": \"password\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -159,7 +159,7 @@
 			]
 		},
 		{
-			"name": "user-login Copy",
+			"name": "user-login",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -321,7 +321,7 @@
 			]
 		},
 		{
-			"name": "logout Copy",
+			"name": "logout",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -350,7 +350,7 @@
 			"response": []
 		},
 		{
-			"name": "refresh-token Copy",
+			"name": "refresh-token",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -379,7 +379,7 @@
 			"response": []
 		},
 		{
-			"name": "user-change-pass Copy",
+			"name": "user-change-pass",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -516,7 +516,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"userId\": \"3\",\n    \"listId\": \"49013\"\n}",
+					"raw": "{\n    \"userId\": \"3\",\n    \"listId\": \"01639\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -549,7 +549,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"userId\": \"3\",\n    \"listId\": \"49013\",\n    \"text\": \"3\",\n    \"isDone\": true\n}",
+					"raw": "{\n    \"userId\": \"3\",\n    \"listId\": \"01639\",\n    \"text\": \"3\",\n    \"isDone\": false\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -582,7 +582,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"userId\": \"3\",\n    \"listId\": \"34581\",\n    \"itemId\": \"89614\",\n    \"text\": \"delete this\",\n    \"isDone\": true\n}",
+					"raw": "{\n    \"userId\": \"3\",\n    \"listId\": \"01639\",\n    \"itemId\": \"01710\",\n    \"text\": \"2 - delete this\",\n    \"isDone\": true\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -615,7 +615,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"userId\": \"3\",\n    \"listId\": \"34581\",\n    \"itemId\": \"00919\",\n    \"text\": \"Second\",\n    \"isDone\": true\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -634,7 +634,7 @@
 					"variable": [
 						{
 							"key": "listId",
-							"value": "49013"
+							"value": "01639"
 						}
 					]
 				}
