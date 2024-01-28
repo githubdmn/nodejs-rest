@@ -1,12 +1,45 @@
 # technical-assignment-nodejs
 
-According to the assignment, this is a sample code that demonstrates the rather basic use of a Node.js backend RESTful API. Due to time constraints, many features have not been fully implemented. The decision prioritized code simplicity, clarity, and adherence to the assignment's educational objectives.
+OVERALL REQUIREMENTS/RECOMMENDATIONS
+●
+The codebase should be hosted on a public version control
+repository (e.g., GitHub, Bitbucket).
+●
+You may use technologies of your choice (JavaScript, TypeScript,
+Python, etc.), selecting what you believe is most appropriate for
+the task.
+●
+Integrate a simple database (e.g., SQLite, MongoDB, PostgreSQL)
+to store data.
+●
+We appreciate the ease of setup. It would be ideal if we could
+simply clone the project and run it on any machine without
+encountering dependency issues or the need for additional
+installations. ("It works on my machine" scenario.)
+●
+The UI does not need to be elaborate. Avoid animations and
+transformations; focus on creating a clean and functional
+interface.
 
-- Authentication:
-  Usually for this is used third-party service or sometimes implemented as another microservice using different databases.  
-  This is only a basic exmaple of using jwt.
-- Caching:
-  Caching features were omitted in this sample Node.js backend RESTful API code, due to the assignment's focus on fundamental concepts and time constraints.
+TASK 1: Simple To-Do Web Application
+Functionality to group To-Dos by users. A user can have multiple To-Do
+lists (e.g., Grocery list, Do it tomorrow, Notes for a meeting).
+Users should be able to view their created To-Do lists, each with a
+title and items.
+Example To-Do lists for a user:
+User: Bob
+●Grocery list
+●Do it tomorrow
+●Notes for a meeting
+Upon selecting a To-Do list, users should see the items within, along
+with their current state (marked as done or not).
+When a To-Do item is marked as done, it should move to the end of the
+list and be styled with a strikethrough.Example items in a To-Do list:
+●Do this tomorrow.
+●Go there.
+●Check this.
+●Buy a book.
+●Sell unused stuff.
 
 # NestJS Project
 
@@ -15,9 +48,9 @@ This is a sample NestJS project with Docker Compose for containerization and Pos
 **Provided**:
 
 - `JS-assignment-24-01.postman_collection.json`
+- - `JS-assignment-24-01.environment.json`
 - swagger api documentation `localhost:3000/api#`
 - `nvm`
-- to run tests -> `yarn run test`
 
 ## Prerequisites
 
@@ -77,6 +110,8 @@ This is a sample NestJS project with Docker Compose for containerization and Pos
   or bashCopy code
   `cp -v env.localhost .env`
 
+  `nvm use` - optional
+
   `docker-compose -f ./postgresql.yaml up -d`
   `yarn run start:dev`
 
@@ -130,74 +165,3 @@ If you want to run the NestJS application without Docker for development purpose
 
 In case `process.env` does not map variables form `.env` file, use the configuration data form  
 `src/conf/postgresql.connection.ts`
-
-## Considered features
-
-User-related functionality:
-
-1. **User Profile Management**:
-
-   - Allow users to view and edit their profiles.
-   - Add functionality to upload and update user avatars or profile pictures.
-
-2. **Password Recovery**:
-
-   - Implement a password recovery mechanism, such as sending a reset link to the user's email.
-
-3. **Email Verification**:
-
-   - Include an email verification step during the user registration process.
-
-4. **User Roles and Permissions**:
-
-   - Implement roles (e.g., admin, regular user) and permissions for different user types.
-
-5. **Social Authentication**:
-
-   - Allow users to sign in using third-party authentication providers (Google, Facebook, etc.).
-
-6. **Two-Factor Authentication (2FA)**:
-
-   - Enhance security by implementing two-factor authentication for user accounts.
-
-7. **User Activity Logs**:
-
-   - Log and track user activities, such as login attempts, profile changes, etc.
-
-8. **User Search and Filtering**:
-
-   - Implement search and filtering functionality for users.
-
-9. **User Deactivation/Reactivation**:
-
-   - Allow administrators to deactivate or reactivate user accounts.
-
-10. **User Preferences**:
-
-    - Allow users to set preferences for their accounts, such as theme, language, etc.
-
-Blog-related functionality:
-
-1. **Comments and Replies:**
-
-   - Allow users to leave comments on blog posts.
-   - Support threaded replies for more structured discussions.
-
-2. **Tags and Categories:**
-
-   - Implement a tagging system to categorize blog posts.
-   - Allow users to filter and search for posts based on tags or categories.
-
-3. **Search Functionality:**
-
-   - Add a search bar for users to easily find specific blog posts.
-   - Implement a search algorithm that considers titles, content, and tags.
-
-4. **User Profiles:**
-
-   - Create user profiles to showcase a user's published blog posts.
-   - Include a bio, profile picture, and a list of authored posts.
-
-5. **Post Analytics:**
-   - Track and display analytics for each blog post (views, likes, shares).
-   - Provide insights into popular content and audience engagement.
