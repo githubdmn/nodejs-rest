@@ -20,6 +20,12 @@ async function bootstrap() {
     // })
     .setGlobalPrefix('api');
 
+  app.enableCors({
+    origin: 'http://localhost:4200',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   const config = new DocumentBuilder()
     .setTitle('JS assignment')
     .setDescription('REST API TASK')
