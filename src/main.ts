@@ -24,6 +24,8 @@ async function bootstrap() {
     origin: 'http://localhost:4200',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
+    allowedHeaders: 'Content-Type, Accept, access_token, refresh_token',
+    exposedHeaders: 'Content-Type, Accept, access_token, refresh_token',
   });
 
   const config = new DocumentBuilder()

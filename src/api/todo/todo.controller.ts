@@ -86,7 +86,7 @@ export class TodoController {
     return this.todoService.getUsersTodoLists(req);
   }
 
-  @Get('list')
+  @Get('list/:listId')
   @ApiOperation({ summary: "Get User's Todo List" })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -96,10 +96,13 @@ export class TodoController {
   @ApiNotFoundResponse({ description: 'Todo List not found' })
   async getUsersTodoList(
     @Request() request: any,
-    @Body() req: GetUsersTodoListRequestDto,
+    @Param('listId') listId: string,
   ): Promise<GetUsersTodoListResponseDto> {
-    req.userId = request.jwtPayload.sub;
-    return this.todoService.getUsersTodoList(req);
+    const userId = request.jwtPayload.sub;
+    return this.todoService.getUsersTodoList({
+      userId: userId,
+      listId: listId,
+    });
   }
 
   @Post('item')
