@@ -38,11 +38,9 @@ import { ITodoService } from './todo.interface';
 import { TodoList, TodoItem } from '@/entities';
 import { TODO_SERVICE } from '@/utils/constants';
 import { TodoGuard } from '@/guard';
-import { JwtInterceptor } from '@/interceptor';
 
 @ApiTags('Todo')
-// @UseGuards(TodoGuard)
-@UseInterceptors(JwtInterceptor)
+@UseGuards(TodoGuard)
 @Controller('todo')
 export class TodoController {
   constructor(
@@ -81,7 +79,7 @@ export class TodoController {
     @Request() request: any,
   ): Promise<GetUsersTodoListsResponseDto[]> {
     const req: GetUsersTodoListsRequestDto = {
-      userId: request.jwtPayload.sub,
+      userId: request.user.sub,
     };
     return this.todoService.getUsersTodoLists(req);
   }
@@ -98,7 +96,7 @@ export class TodoController {
     @Request() request: any,
     @Param('listId') listId: string,
   ): Promise<GetUsersTodoListResponseDto> {
-    const userId = request.jwtPayload.sub;
+    const userId = request.user.sub;
     return this.todoService.getUsersTodoList({
       userId: userId,
       listId: listId,
@@ -118,7 +116,7 @@ export class TodoController {
     @Request() request: any,
     @Body() req: CreateTodoItemRequestDto,
   ): Promise<TodoItemDto> {
-    req.userId = request.jwtPayload.sub;
+    req.userId = request.user.sub;
     req.isDone = false;
     return this.todoService.createTodoItem(req);
   }
@@ -136,7 +134,7 @@ export class TodoController {
     @Request() request: any,
     @Body() req: UpdateTodoItemRequestDto,
   ): Promise<TodoItemDto> {
-    req.userId = request.jwtPayload.sub;
+    req.userId = request.user.sub;
     return this.todoService.updateTodoItem(req);
   }
 
@@ -153,7 +151,7 @@ export class TodoController {
     @Request() request: any,
     @Body() req: UpdateTodoListRequestDto,
   ): Promise<Partial<CreateTodoListResponseDto>> {
-    req.userId = request.jwtPayload.sub;
+    req.userId = request.user.sub;
     return this.todoService.updateTodoList(req);
   }
 
@@ -172,7 +170,7 @@ export class TodoController {
   ): Promise<DeleteTodoListResponseDto> {
     return this.todoService.deleteTodoList({
       listId,
-      userId: request.jwtPayload.sub,
+      userId: request.user.sub,
     });
   }
 }

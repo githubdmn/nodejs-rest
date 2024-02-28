@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { IUser } from './user.interface';
 import { USER_SERVICE } from '@/utils/constants';
-import { JwtInterceptor, SerializeExclude } from '@/interceptor';
+import { SerializeExclude } from '@/interceptor';
 import {
   ChangePasswordRequestDto,
   CreateUserRequestDto,
@@ -32,7 +32,6 @@ import {
 
 @ApiTags('User')
 @UseGuards(UserGuard)
-@UseInterceptors(JwtInterceptor)
 @Controller('user')
 export class UserController {
   constructor(@Inject(USER_SERVICE) private userService: IUser) {}
@@ -72,7 +71,7 @@ export class UserController {
     @Request() request: any,
   ): Promise<string> {
     const updated = await this.userService.resetPassword(
-      request.jwtPayload.sub,
+      request.user.sub,
       oldPassword,
       newPassword,
     );
@@ -104,7 +103,7 @@ export class UserController {
   ): Promise<UserLoginResponseDto> {
     const refreshToken = req.headers.refresh_token;
     const data = await this.userService.refreshToken(
-      { userId: req.jwtPayload.sub, email: req.jwtPayload.username },
+      { userId: req.user.sub, email: req.user.username },
       refreshToken,
     );
     return res
@@ -112,7 +111,7 @@ export class UserController {
       .set('refresh_token', data.refreshToken)
       .json({
         id: data.id,
-        email: req.jwtPayload.username,
+        email: req.user.username,
       }) as UserLoginResponseDto;
   }
 }
