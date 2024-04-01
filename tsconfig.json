@@ -12,9 +12,19 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "baseUrl": ".",
+    "baseUrl": "./src/",
+    "lib": ["ES2015"],
     "paths": {
-      "*": ["node_modules/*"]
+      "*": ["node_modules/*"],
+      "@/*": ["*"],
+      "@config/*": ["config/*"],
+      "@controller/*": ["controller/*"],
+      "@dto/*": ["dto/*"],
+      "@middleware/*": ["middleware/*"],
+      "@models/*": ["models/*"],
+      "@routes/*": ["routes/*"],
+      "@services/*": ["services/*"],
+      "@utils/*": ["utils/*"]
     }
   },
   "exclude": ["node_modules"]

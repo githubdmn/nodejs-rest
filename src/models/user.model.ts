@@ -1,5 +1,7 @@
-import { Schema, model } from 'mongoose';
+import { Model, Schema, model } from 'mongoose';
 import { IUser } from './documents';
+// import { comparePasswords, hashPassword } from '@/utils';
+import { comparePasswords, hashPassword } from '../utils';
 
 const userSchema = new Schema<IUser>({
   firstName: {
@@ -38,19 +40,27 @@ const userSchema = new Schema<IUser>({
 });
 
 userSchema.pre<IUser>('save', async function (next) {
-  // TODO
+  try {
+    // if (!this.isModified('password')) return next();
+    this.password = await hashPassword(this.password);
+    next();
+  } catch (error: any) {
+    return next(error);
+  }
 });
+
+userSchema.statics.isEmailTaken = async function (email: string) {
+  const user = await this.findOne({ email });
+  return !!user;
+};
 
 userSchema.methods.comparePassword = async function (
   candidatePassword: string,
 ) {
-  // TODO
+  const user = this as IUser;
+  return comparePasswords(candidatePassword, user.password);
 };
 
-async function hashPassword(password: string, salt: Buffer): Promise<string> {
-  // TODO finish in Utils
-}
-
-const User = model('User', userSchema);
+const User: Model<IUser> = model<IUser>('User', userSchema);
 
 export default User;

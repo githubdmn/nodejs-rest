@@ -1,5 +1,7 @@
 import express from 'express';
 import { logger, connect } from './config';
+// import { userV1 } from '@routes';
+import { userV1 } from './routes';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,6 +17,8 @@ connect()
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
+
+app.use('/v1', userV1);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
