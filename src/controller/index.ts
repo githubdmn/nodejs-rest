@@ -1,3 +1,3 @@
-import { registerUserController } from './user.controller';
+import { homeUserController, registerUserController } from './user.controller';
 
-export { registerUserController };
+export { registerUserController, homeUserController };

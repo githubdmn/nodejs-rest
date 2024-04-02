@@ -9,4 +9,8 @@ const registerUserSchema = z.object({
   lastName: z.string(),
 });
 
-export { registerUserSchema };
+const homeUserSchema = z.object({
+  email: z.string().email(),
+});
+
+export { registerUserSchema, homeUserSchema };

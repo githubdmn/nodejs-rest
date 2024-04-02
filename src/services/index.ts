@@ -1,3 +1,3 @@
-import { registerUser } from './user.service';
+import { getUserByEmail, registerUser } from './user.service';
 
-export { registerUser };
+export { registerUser, getUserByEmail };

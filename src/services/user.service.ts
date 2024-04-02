@@ -23,4 +23,21 @@ const registerUser = async (userBody: UserTypeDTO): Promise<IUser> => {
   }
 };
 
-export { registerUser };
+const getUserByEmail = async (email: string): Promise<IUser | null> => {
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return null;
+    return user;
+  } catch (error: any) {
+    const errorMessage = 'User service: Error getting user';
+    logger.error(`${errorMessage} ${error}`);
+    throw new ApiError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      'Error getting user',
+      false,
+      error,
+    );
+  }
+};
+
+export { registerUser, getUserByEmail };

@@ -1,3 +1,3 @@
-import { registerUserSchema } from './user.validation';
+import { homeUserSchema, registerUserSchema } from './user.validation';
 
-export { registerUserSchema };
+export { registerUserSchema, homeUserSchema };
