@@ -20,18 +20,17 @@ export const registerUserController = async (
       message: 'User registered successfully',
       data: newUser,
     });
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof ApiError) {
-      logger.error('Error registering user:', error);
       res.status(error.statusCode).json({
         success: false,
         message: error.message,
       });
     } else {
-      logger.error('Error registering user:', error);
+      logger.error('Controller error registering user:', error);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         success: false,
-        message: 'Failed to register user',
+        message: error,
       });
     }
   }
