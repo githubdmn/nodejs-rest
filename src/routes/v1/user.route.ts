@@ -1,7 +1,7 @@
 import express from 'express';
 // import { registerUserController } from '@/controller';
 import { homeUserController, registerUserController } from '../../controller';
-import { validateRequestBody } from '../../middleware';
+import { authenticateUser, validateRequestBody } from '../../middleware';
 import { registerUserSchema, homeUserSchema } from '../../validation';
 
 const router = express.Router();
@@ -12,6 +12,10 @@ router
 
 router
   .route('/home')
-  .get(validateRequestBody(homeUserSchema), homeUserController);
+  .get(
+    authenticateUser,
+    validateRequestBody(homeUserSchema),
+    homeUserController,
+  );
 
 export default router;

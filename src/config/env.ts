@@ -24,6 +24,8 @@ const EnvSchema = object({
   MONGO_DB: string(),
   ACCESS_TOKEN_SECRET: string(),
   REFRESH_TOKEN_SECRET: string(),
+  ACCESS_TOKEN_EXPIRATION: string(),
+  REFRESH_TOKEN_EXPIRATION: string(),
 });
 
 const env = {
@@ -36,6 +38,8 @@ const env = {
   MONGO_DB: process.env.MONGO_DB,
   ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
+  ACCESS_TOKEN_EXPIRATION: process.env.ACCESS_TOKEN_EXPIRATION,
+  REFRESH_TOKEN_EXPIRATION: process.env.REFRESH_TOKEN_EXPIRATION,
 };
 
 type ValidatedEnv = (typeof EnvSchema)['_output'];
