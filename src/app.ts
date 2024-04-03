@@ -2,6 +2,7 @@ import express from 'express';
 import { logger, connect } from './config';
 // import { userV1 } from '@routes';
 import { userV1 } from './routes';
+import cors from 'cors';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,6 +14,8 @@ connect()
   .catch(() => {
     logger.error('Failed to connect to MongoDB');
   });
+
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
