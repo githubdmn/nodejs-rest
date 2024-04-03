@@ -1,6 +1,5 @@
-import Document from 'mongoose';
-
-interface IUser extends Document {
+import { Document as MongooseDocument } from 'mongoose';
+interface IUser extends MongooseDocument {
   _id: string;
   firstName: string;
   lastName: string;
