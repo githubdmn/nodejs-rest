@@ -12,7 +12,7 @@ router
 
 router
   .route('/home')
-  .get(
+  .post(
     authenticateUser,
     validateRequestBody(homeUserSchema),
     homeUserController,
