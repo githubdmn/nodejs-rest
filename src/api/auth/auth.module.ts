@@ -1,0 +1,35 @@
+import { Module } from '@nestjs/common';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { AUTH_SERVICE } from '@/utils/constants';
+import { JwtModule } from '@nestjs/jwt';
+import { DatabaseModule } from '@/database/database.module';
+import { env } from '@/conf';
+import { PassportModule } from '@nestjs/passport';
+import { AuthUserController } from './auth.user.controller';
+
+const Services = [
+  {
+    provide: AUTH_SERVICE,
+    useClass: AuthService,
+  },
+];
+
+@Module({
+  controllers: [AuthUserController],
+  providers: [...Services],
+  imports: [
+    PassportModule,
+    DatabaseModule,
+    JwtModule.registerAsync({
+      useFactory: async () => ({
+        secret: env.jwtSecret,
+        signOptions: {
+          expiresIn: '60s',
+        },
+      }),
+    }),
+  ],
+  exports: [],
+})
+export class AuthModule {}
