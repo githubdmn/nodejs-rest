@@ -6,6 +6,7 @@ import mapGetUsersListItemsResponse from './getUsersListWithItems.mapper';
 import mapGetUserListResponse from './getUsersList.mapper';
 import mapDeleteTodoListResponse from './deleteTodoListResponse';
 import mapItem from './createItem.mapper';
+import mapAuthRegisterToAuthEntity from './authRegisterReqToAuthEntity.mapper';
 
 export {
   mapSaveLoginResponse,
@@ -16,4 +17,5 @@ export {
   mapGetUserListResponse,
   mapDeleteTodoListResponse,
   mapItem,
+  mapAuthRegisterToAuthEntity,
 };

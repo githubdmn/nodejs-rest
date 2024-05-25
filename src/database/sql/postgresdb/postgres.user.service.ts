@@ -4,6 +4,8 @@ import {
   CreateUserResponseDto,
   UpdateUserRequestDto,
   UpdateUserResponseDto,
+  UserRegisterRequestDto,
+  UserRegisterResponseDto,
 } from '@/dto';
 import { UserDto } from '@/dto';
 import { UserEntity } from '@/entities';
@@ -14,6 +16,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -23,12 +26,11 @@ export default class PostgresUserService implements IUserDatabase {
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  async save(user: CreateUserRequestDto): Promise<CreateUserResponseDto> {
+  async save(user: UserRegisterRequestDto): Promise<UserRegisterResponseDto> {
     const userPrepared = this.userRepository.create(user);
     try {
-      return (await this.userRepository.save(
-        userPrepared,
-      )) as unknown as CreateUserResponseDto;
+      const savedUser = await this.userRepository.save(userPrepared);
+      return plainToInstance(UserRegisterResponseDto, savedUser);
     } catch (error) {
       throw new HttpException(
         `Failed to save user to database${error}`,
@@ -51,16 +53,17 @@ export default class PostgresUserService implements IUserDatabase {
   }
 
   async findUserByEmail(email: string): Promise<UserDto> {
-    try {
-      return (await this.userRepository.findOne({
-        where: { email: email },
-      })) as unknown as UserDto;
-    } catch (error) {
-      throw new HttpException(
-        `Failed to save user to database${error}`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    throw new Error('Method not implemented.');
+    // try {
+    //   return (await this.userRepository.findOne({
+    //     where: { email: email },
+    //   })) as unknown as UserDto;
+    // } catch (error) {
+    //   throw new HttpException(
+    //     `Failed to save user to database${error}`,
+    //     HttpStatus.INTERNAL_SERVER_ERROR,
+    //   );
+    // }
   }
 
   async updateUser(

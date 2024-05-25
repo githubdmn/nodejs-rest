@@ -1,30 +1,55 @@
-import { Entity, Column, ManyToOne, JoinColumn, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+  BeforeInsert,
+} from 'typeorm';
 import User from './user.entity';
+import { hashString } from '@/utils';
 import Base from './base.entity';
 
-@Entity('auth')
+@Entity()
 export default class Auth extends Base {
-  @Column({ unique: true })
+  @PrimaryGeneratedColumn()
   authId: string;
 
   @Column({ unique: true })
-  refreshToken: string;
+  email: string;
 
   @Column()
-  expiryDate: Date;
+  firstName: string;
+
+  @Column()
+  lastName: string;
+
+  @Column({ nullable: false })
+  passwordHash: string;
 
   @Column({ nullable: true })
-  lastUsedDate: Date;
+  refreshToken: string;
 
-  @Column({ default: false })
-  revoked: boolean;
+  @Column({ nullable: true })
+  refreshTokenExpiration: Date;
 
-  @ManyToOne(() => User, (user) => user.auth)
-  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
-  user: User;
+  @Column()
+  last_login: Date;
+
+  @Column()
+  method: string; // The authentication method used ('password', 'google', 'facebook', etc.).
 
   @BeforeInsert()
-  generateId() {
-    this.authId = super.idGenerator();
+  async generateId() {
+    // this.authId = super.idGenerator();
   }
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.passwordHash = await hashString(this.passwordHash);
+  }
+
+  @OneToOne(() => User, (user: any) => user.auth)
+  @JoinColumn({ name: 'userId' })
+  user: User;
 }

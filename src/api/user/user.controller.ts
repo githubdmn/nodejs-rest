@@ -36,15 +36,15 @@ import {
 export class UserController {
   constructor(@Inject(USER_SERVICE) private userService: IUser) {}
 
-  @Post()
-  @SerializeExclude(CreateUserResponseDto)
-  @ApiOperation({ summary: 'Register a new user' })
-  @ApiCreatedResponse({ type: CreateUserResponseDto })
-  async register(
-    @Body() user: CreateUserRequestDto,
-  ): Promise<CreateUserResponseDto> {
-    return await this.userService.register(user);
-  }
+  // @Post()
+  // @SerializeExclude(CreateUserResponseDto)
+  // @ApiOperation({ summary: 'Register a new user' })
+  // @ApiCreatedResponse({ type: CreateUserResponseDto })
+  // async register(
+  //   @Body() user: CreateUserRequestDto,
+  // ): Promise<CreateUserResponseDto> {
+  //   return await this.userService.register(user);
+  // }
 
   @Post('login')
   @ApiOperation({ summary: 'Login as a user' })

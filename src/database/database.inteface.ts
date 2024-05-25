@@ -20,10 +20,14 @@ import {
   GetUsersTodoListsResponseWithItemsDto,
   TodoItemDto,
   UpdateTodoItemRequestDto,
+  AuthRegisterRequestDto,
+  AuthRegisterResponseDto,
+  UserRegisterRequestDto,
+  UserRegisterResponseDto,
 } from '@/dto';
 
 export interface IUserDatabase {
-  save(user: CreateUserRequestDto): Promise<CreateUserResponseDto>;
+  save(user: UserRegisterRequestDto): Promise<UserRegisterResponseDto>;
 
   findUserByUserId(userId: string): Promise<UserDto>;
 
@@ -66,11 +70,14 @@ export interface ITodoDatabase {
 }
 
 export interface IAuth {
-  saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto>;
 
-  logout(userId: string): Promise<boolean>;
+  save(user: AuthRegisterRequestDto): Promise<AuthRegisterResponseDto>
 
-  findAuthByRefreshToken(
-    refreshToken: string,
-  ): Promise<Partial<AuthResponseDto>>;
+  // saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto>;
+
+  // logout(userId: string): Promise<boolean>;
+
+  // findAuthByRefreshToken(
+  //   refreshToken: string,
+  // ): Promise<Partial<AuthResponseDto>>;
 }

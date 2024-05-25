@@ -8,7 +8,7 @@ import {
 } from '@/dto';
 
 export interface IUser {
-  register(user: CreateUserRequestDto): Promise<CreateUserResponseDto>;
+  // register(user: CreateUserRequestDto): Promise<CreateUserResponseDto>;
   getJwt({
     email,
     password,

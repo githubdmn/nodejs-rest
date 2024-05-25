@@ -2,8 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
+import { AllExceptionsFilter } from '@/exceptions';
+import { SwaggerService } from '@/swagger';
 
 async function bootstrap() {
   dotenv.config();
@@ -20,6 +21,8 @@ async function bootstrap() {
     // })
     .setGlobalPrefix('api');
 
+  app.useGlobalFilters(new AllExceptionsFilter());
+  
   app.enableCors({
     origin: 'http://localhost:4200',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -28,15 +31,8 @@ async function bootstrap() {
     exposedHeaders: 'Content-Type, Accept, access_token, refresh_token',
   });
 
-  const config = new DocumentBuilder()
-    .setTitle('JS assignment')
-    .setDescription('REST API TASK')
-    .setVersion('1.0')
-    .addTag('RESTful API')
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  
+SwaggerService.setup(app);
 
   await app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening on port ${process.env.PORT}`);

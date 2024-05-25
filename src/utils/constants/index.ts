@@ -5,3 +5,4 @@ export const POSTGRES_AUTH = 'POSTGRES_AUTH';
 
 export const USER_SERVICE = 'USER_SERVICE';
 export const TODO_SERVICE = 'TODO_SERVICE';
+export const AUTH_SERVICE = 'AUTH_SERVICE';

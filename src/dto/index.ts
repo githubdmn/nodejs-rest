@@ -1,33 +1,39 @@
-import { CreateUserRequestDto } from './createUser.request.dto';
-import { CreateUserResponseDto } from './createUser.response.dto';
-import { UserLoginRequestDto } from './userLogin.request.dto';
-import { UserLoginResponseDto } from './userLogin.response.dto';
-import { UserDto } from './User.dto';
-import { ChangePasswordRequestDto } from './changePassword.request.dto';
-import { UpdateUserRequestDto } from './UpdateUserRequest.dto';
-import { UpdateUserResponseDto } from './UpdateUserResponse.dto';
-import { SaveLoginRequestDto } from './saveLogin.request.dto';
-import { SaveLoginResponseDto } from './saveLogin.response.dto';
-import { AuthResponseDto } from './auth.response.dto';
-import CreateTodoListRequestDto from './createTodoList.request.dto';
-import CreateTodoListResponseDto from './createTodoList.response.dto';
-import CreateTodoItemRequestDto from './createTodoItem.request.dto';
-import CreateTodoItemResponseDto from './createTodoItem.response.dto';
-import DeleteTodoListRequestDto from './deleteTodoList.request.dto';
-import DeleteTodoListResponseDto from './deleteTodoList.response.dto';
-import UpdateTodoItemRequestDto from './updateTodoItem.request.dto';
-import UpdateTodoItemResponseDto from './updateTodoItem.response.dto';
-import UpdateTodoListRequestDto from './updateTodoList.request.dto';
-import UpdateTodoListResponseDto from './updateTodoList.response.dto';
-import GetUsersTodoListRequestDto from './getUsersTodoList.request.dto';
-import { GetUsersTodoListResponseDto } from './getUsersTodoList.response.dto';
-import GetUsersTodoListsRequestDto from './getUsersTodoLists.request.dto';
-import GetUsersTodoListsResponseDto from './getUsersTodoLists.response.dto';
+import { CreateUserRequestDto } from './old/createUser.request.dto';
+import { CreateUserResponseDto } from './old/createUser.response.dto';
+import { UserLoginRequestDto } from './old/userLogin.request.dto';
+import { UserLoginResponseDto } from './old/userLogin.response.dto';
+import { UserDto } from './old/User.dto';
+import { ChangePasswordRequestDto } from './old/changePassword.request.dto';
+import { UpdateUserRequestDto } from './old/UpdateUserRequest.dto';
+import { UpdateUserResponseDto } from './old/UpdateUserResponse.dto';
+import { SaveLoginRequestDto } from './old/saveLogin.request.dto';
+import { SaveLoginResponseDto } from './old/saveLogin.response.dto';
+import { AuthResponseDto } from './old/auth.response.dto';
+import CreateTodoListRequestDto from './old/createTodoList.request.dto';
+import CreateTodoListResponseDto from './old/createTodoList.response.dto';
+import CreateTodoItemRequestDto from './old/createTodoItem.request.dto';
+import CreateTodoItemResponseDto from './old/createTodoItem.response.dto';
+import DeleteTodoListRequestDto from './old/deleteTodoList.request.dto';
+import DeleteTodoListResponseDto from './old/deleteTodoList.response.dto';
+import UpdateTodoItemRequestDto from './old/updateTodoItem.request.dto';
+import UpdateTodoItemResponseDto from './old/updateTodoItem.response.dto';
+import UpdateTodoListRequestDto from './old/updateTodoList.request.dto';
+import UpdateTodoListResponseDto from './old/updateTodoList.response.dto';
+import GetUsersTodoListRequestDto from './old/getUsersTodoList.request.dto';
+import { GetUsersTodoListResponseDto } from './old/getUsersTodoList.response.dto';
+import GetUsersTodoListsRequestDto from './old/getUsersTodoLists.request.dto';
+import GetUsersTodoListsResponseDto from './old/getUsersTodoLists.response.dto';
 import {
   TodoItemDto,
   TodoListDto,
   GetUsersTodoListsResponseWithItemsDto,
-} from './getUsersTodoListsResponseWithItems.dto';
+} from './old/getUsersTodoListsResponseWithItems.dto';
+import { AuthRegisterRequestDto } from './auth-register-request.dto';
+import { AuthRegisterResponseDto } from './auth-register-response.dto';
+import { UserRegisterRequestDto } from './user-register-request.dto';
+import { UserRegisterResponseDto } from './user-register-response.dto';
+
+
 export {
   CreateUserRequestDto,
   CreateUserResponseDto,
@@ -57,4 +63,8 @@ export {
   TodoItemDto,
   TodoListDto,
   GetUsersTodoListsResponseWithItemsDto,
+  AuthRegisterRequestDto,
+  AuthRegisterResponseDto,
+  UserRegisterRequestDto,
+  UserRegisterResponseDto,
 };
