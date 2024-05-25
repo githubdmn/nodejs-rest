@@ -165,3 +165,46 @@ If you want to run the NestJS application without Docker for development purpose
 
 In case `process.env` does not map variables form `.env` file, use the configuration data form  
 `src/conf/postgresql.connection.ts`
+
+
+# Role-Based Authentication in NestJS
+
+Our application implements role-based authentication. Here's a high-level overview of how it works:
+
+## Roles and Permissions
+
+We've defined several roles within our application, each with its own set of permissions:
+
+- `admin`: Has all permissions.
+- `user`: Has read and write permissions.
+- `guest`: Has read permissions.
+
+## Database Entities
+
+We've created a `Role` entity in our database to store the roles for each user. This entity has the following columns:
+
+- `roleId`: A unique identifier for each role.
+- `name`: The name of the role.
+- `permissions`: The permissions associated with the role.
+
+We've also updated our `User` entity to include a `roleId` column, which references the `Role` entity.
+
+## Roles Guard
+
+We've created a custom `RolesGuard` that checks if the user has the necessary role to perform a certain action. This guard is used with the `@UseGuards()` decorator in our controllers.
+
+## Authentication Strategy
+
+We've updated our authentication strategy to include the user's role in the JWT or session. This allows us to check the user's role in the `RolesGuard`.
+
+## Usage
+
+To restrict a route to certain roles, use the `@UseGuards()` decorator with the `RolesGuard` and provide the required roles. For example:
+
+```typescript
+@Get('admin')
+@UseGuards(RolesGuard)
+@Roles('admin')
+async adminRoute() {
+  // ...
+}
