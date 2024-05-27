@@ -12,11 +12,11 @@ export default class Credentials extends Base {
   @Column()
   passwordHash: string;
 
-  @OneToOne(() => User, (user) => user.credentials)
+  @OneToOne(() => User, (user) => user.auth)
   @JoinColumn({ name: 'userId' })
   user?: User;
 
-  @OneToOne(() => Admin, (admin) => admin.credentials)
+  @OneToOne(() => Admin, (admin) => admin.auth)
   @JoinColumn({ name: 'adminId' })
   admin?: Admin;
 

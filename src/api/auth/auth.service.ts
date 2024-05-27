@@ -10,8 +10,6 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { IAuth, IUserDatabase } from '@/database/database.inteface';
 import {
-  AuthRegisterRequestDto,
-  AuthRegisterResponseDto,
   CreateUserRequestDto,
   CreateUserResponseDto,
   SaveLoginRequestDto,
@@ -19,6 +17,8 @@ import {
   UserDto,
   UserLoginRequestDto,
   UserLoginResponseDto,
+  UserRegisterRequestDto,
+  UserRegisterResponseDto,
 } from '@/dto';
 import { POSTGRES_AUTH, POSTGRES_USER } from '@/utils/constants';
 import { env } from '@/conf';
@@ -39,17 +39,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async registerUser(userRequest: AuthRegisterRequestDto): Promise<any> {
-    const auth = await this.authDatabase.save(userRequest);
-    const user = await this.userDatabase.save(auth);
-    if (auth && user) {
-      return { auth, user };
-    } else {
-      throw new HttpException(
-        'Failed to save user to database',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+  async registerUser(
+    userRequest: UserRegisterRequestDto,
+  ): Promise<UserRegisterResponseDto> {
+    return await this.authDatabase.saveUser(userRequest);
   }
 
   async registerAdmin(

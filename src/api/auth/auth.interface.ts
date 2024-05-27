@@ -1,16 +1,19 @@
 import {
-	AuthRegisterRequestDto,
   CreateUserRequestDto,
   CreateUserResponseDto,
   SaveLoginRequestDto,
   UserDto,
   UserLoginRequestDto,
   UserLoginResponseDto,
+  UserRegisterRequestDto,
+  UserRegisterResponseDto,
 } from '@/dto';
 import { UserRequestDto, UserResponseDto } from './dto/auth-register.dto';
 
 export interface IAuthService {
-  register(userRequest: UserRequestDto): Promise<any>;
+   registerUser(
+    userRequest: UserRegisterRequestDto,
+  ): Promise<UserRegisterResponseDto>;
   login(): any;
   getJwt(userLogin: UserLoginRequestDto): Promise<UserLoginResponseDto>;
   changePassword(

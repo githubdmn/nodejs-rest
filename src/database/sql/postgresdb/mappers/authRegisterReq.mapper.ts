@@ -1,16 +1,16 @@
 import { UserRegisterRequestDto } from "@/dto";
-import { AuthEntity, UserEntity } from "@/entities";
+import { CredentialsEntity, UserEntity } from "@/entities";
 
 export default function mapUserRegisterToEntities(
   userDto: UserRegisterRequestDto,
-): [AuthEntity, UserEntity] {
-  const authEntity = new AuthEntity();
-  authEntity.email = userDto.email;
-  authEntity.passwordHash = userDto.password;
+): [CredentialsEntity, UserEntity] {
+  const credentialsEntity = new CredentialsEntity();
+  credentialsEntity.passwordHash = userDto.password;
 
   const userEntity = new UserEntity();
   userEntity.firstName = userDto.firstName;
   userEntity.lastName = userDto.lastName;
+  userEntity.email = userDto.email;
 
-  return [authEntity, userEntity];
+  return [credentialsEntity, userEntity];
 }

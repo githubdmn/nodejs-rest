@@ -10,11 +10,11 @@ async function bootstrap() {
   dotenv.config();
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app
-    .useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-      }),
-    )
+    //   .useGlobalPipes(
+    //     new ValidationPipe({
+    //       whitelist: true,
+    //     }),
+    //  )
     // .enableVersioning({
     //   type: VersioningType.URI,
     //   defaultVersion: [],
@@ -22,7 +22,7 @@ async function bootstrap() {
     .setGlobalPrefix('api');
 
   app.useGlobalFilters(new AllExceptionsFilter());
-  
+
   app.enableCors({
     origin: 'http://localhost:4200',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -31,8 +31,7 @@ async function bootstrap() {
     exposedHeaders: 'Content-Type, Accept, access_token, refresh_token',
   });
 
-  
-SwaggerService.setup(app);
+  SwaggerService.setup(app);
 
   await app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening on port ${process.env.PORT}`);

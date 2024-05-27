@@ -21,10 +21,10 @@ export default class User extends Base {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   firstName: string;
 
-  @Column()
+  @Column({ nullable: true })
   lastName: string;
 
   @CreateDateColumn()
@@ -37,11 +37,9 @@ export default class User extends Base {
   todoLists: TodoList[];
 
   @OneToOne(() => Credentials, (credentials) => credentials.user)
-  @JoinColumn({ name: 'userId' })
   credentials: Credentials;
 
   @OneToOne(() => Auth, (auth) => auth.user)
-  @JoinColumn({ name: 'userId' })
   auth: Auth;
 
   @BeforeInsert()

@@ -20,8 +20,6 @@ import {
   GetUsersTodoListsResponseWithItemsDto,
   TodoItemDto,
   UpdateTodoItemRequestDto,
-  AuthRegisterRequestDto,
-  AuthRegisterResponseDto,
   UserRegisterRequestDto,
   UserRegisterResponseDto,
 } from '@/dto';
@@ -70,8 +68,7 @@ export interface ITodoDatabase {
 }
 
 export interface IAuth {
-
-  save(user: AuthRegisterRequestDto): Promise<AuthRegisterResponseDto>
+  saveUser(user: UserRegisterRequestDto): Promise<UserRegisterResponseDto>;
 
   // saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto>;
 

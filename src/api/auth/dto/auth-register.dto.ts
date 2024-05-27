@@ -6,7 +6,6 @@ export class CreateUserRequestDto {
   readonly password: string;
 }
 
-
 export class CreateAdminRequestDto {
   readonly name: string;
   readonly email: string;
@@ -17,8 +16,6 @@ export class CreateAdminRequestDto {
 export type UserRequestDto =
 	| CreateUserRequestDto
 	| CreateAdminRequestDto; 
-
-
 
 export class CreateUserResponseDto {
   userId: string;

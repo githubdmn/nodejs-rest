@@ -1,10 +1,4 @@
-import {
-  Entity,
-  Column,
-  JoinColumn,
-  BeforeInsert,
-  OneToOne,
-} from 'typeorm';
+import { Entity, Column, JoinColumn, BeforeInsert, OneToOne } from 'typeorm';
 import User from './user.entity';
 import Base from './base.entity';
 import Admin from './admin.entity';
@@ -23,7 +17,7 @@ export default class Auth extends Base {
   @Column({ nullable: true })
   last_login: Date;
 
-  @Column()
+  @Column({ nullable: true })
   method: string; // The authentication method used ('password', 'google', 'facebook', etc.).
 
   @BeforeInsert()
@@ -32,10 +26,10 @@ export default class Auth extends Base {
   }
 
   @OneToOne(() => User, (user) => user.auth)
-  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
+  @JoinColumn({ name: 'userId' })
   user?: User;
 
   @OneToOne(() => Admin, (admin) => admin.auth)
-  @JoinColumn({ name: 'adminId', referencedColumnName: 'adminId' })
+  @JoinColumn({ name: 'adminId' })
   admin?: Admin;
 }

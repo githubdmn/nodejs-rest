@@ -27,16 +27,17 @@ export default class PostgresUserService implements IUserDatabase {
   ) {}
 
   async save(user: UserRegisterRequestDto): Promise<UserRegisterResponseDto> {
-    const userPrepared = this.userRepository.create(user);
-    try {
-      const savedUser = await this.userRepository.save(userPrepared);
-      return plainToInstance(UserRegisterResponseDto, savedUser);
-    } catch (error) {
-      throw new HttpException(
-        `Failed to save user to database${error}`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    throw new Error('Method not implemented.');
+    // const userPrepared = this.userRepository.create(user);
+    // try {
+    //   const savedUser = await this.userRepository.save(userPrepared);
+    //   return plainToInstance(UserRegisterResponseDto, savedUser);
+    // } catch (error) {
+    //   throw new HttpException(
+    //     `Failed to save user to database${error}`,
+    //     HttpStatus.INTERNAL_SERVER_ERROR,
+    //   );
+    // }
   }
 
   async findUserByUserId(userId: string): Promise<UserDto> {
