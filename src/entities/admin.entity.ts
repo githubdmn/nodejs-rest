@@ -16,10 +16,7 @@ export default class Admin extends Base {
   adminId: string;
 
   @Column()
-  firstName: string;
-
-  @Column()
-  lastName: string;
+  name: string;
 
   @Column({ unique: true })
   email: string;
