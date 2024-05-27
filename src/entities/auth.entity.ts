@@ -2,30 +2,18 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   JoinColumn,
   BeforeInsert,
+  ManyToOne,
 } from 'typeorm';
 import User from './user.entity';
-import { hashString } from '@/utils';
 import Base from './base.entity';
+import Admin from './admin.entity';
 
 @Entity()
 export default class Auth extends Base {
   @PrimaryGeneratedColumn()
   authId: string;
-
-  @Column({ unique: true })
-  email: string;
-
-  @Column()
-  firstName: string;
-
-  @Column()
-  lastName: string;
-
-  @Column({ nullable: false })
-  passwordHash: string;
 
   @Column({ nullable: true })
   refreshToken: string;
@@ -33,7 +21,7 @@ export default class Auth extends Base {
   @Column({ nullable: true })
   refreshTokenExpiration: Date;
 
-  @Column()
+  @Column({ nullable: true })
   last_login: Date;
 
   @Column()
@@ -41,15 +29,14 @@ export default class Auth extends Base {
 
   @BeforeInsert()
   async generateId() {
-    // this.authId = super.idGenerator();
+    this.authId = super.idGenerator();
   }
 
-  @BeforeInsert()
-  async hashPassword() {
-    this.passwordHash = await hashString(this.passwordHash);
-  }
+  @ManyToOne(() => User, (user) => user.auth)
+  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
+  user?: User;
 
-  @OneToOne(() => User, (user: any) => user.auth)
-  @JoinColumn({ name: 'userId' })
-  user: User;
+  @ManyToOne(() => Admin, (admin) => admin.auth)
+  @JoinColumn({ name: 'adminId', referencedColumnName: 'adminId' })
+  admin?: Admin;
 }
