@@ -1,7 +1,6 @@
 import { hashString } from '@/utils';
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
@@ -34,8 +33,8 @@ export default class Admin extends Base {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToOne(() => Auth, (auth) => auth.user)
-  auth: Auth[];
+  @OneToOne(() => Auth, (auth) => auth.admin)
+  auth: Auth;
 
   @BeforeInsert()
   async hashPassword() {

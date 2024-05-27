@@ -1,10 +1,9 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   JoinColumn,
   BeforeInsert,
-  ManyToOne,
+  OneToOne,
 } from 'typeorm';
 import User from './user.entity';
 import Base from './base.entity';
@@ -12,7 +11,7 @@ import Admin from './admin.entity';
 
 @Entity()
 export default class Auth extends Base {
-  @PrimaryGeneratedColumn()
+  @Column({ unique: true })
   authId: string;
 
   @Column({ nullable: true })
@@ -32,11 +31,11 @@ export default class Auth extends Base {
     this.authId = super.idGenerator();
   }
 
-  @ManyToOne(() => User, (user) => user.auth)
+  @OneToOne(() => User, (user) => user.auth)
   @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
   user?: User;
 
-  @ManyToOne(() => Admin, (admin) => admin.auth)
+  @OneToOne(() => Admin, (admin) => admin.auth)
   @JoinColumn({ name: 'adminId', referencedColumnName: 'adminId' })
   admin?: Admin;
 }
