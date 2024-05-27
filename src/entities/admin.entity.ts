@@ -13,9 +13,6 @@ import Base from './base.entity';
 
 @Entity()
 export default class Admin extends Base {
-  @PrimaryGeneratedColumn()
-  id: number;
-
   @Column({ unique: true })
   adminId: string;
 
