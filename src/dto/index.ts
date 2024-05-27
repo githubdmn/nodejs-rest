@@ -28,10 +28,12 @@ import {
   TodoListDto,
   GetUsersTodoListsResponseWithItemsDto,
 } from './old/getUsersTodoListsResponseWithItems.dto';
-import { AuthRegisterRequestDto } from './auth-register-request.dto';
-import { AuthRegisterResponseDto } from './auth-register-response.dto';
-import { UserRegisterRequestDto } from './user-register-request.dto';
-import { UserRegisterResponseDto } from './user-register-response.dto';
+
+
+// import { AuthRegisterRequestDto } from './auth-register-request.dto';
+// import { AuthRegisterResponseDto } from './auth-register-response.dto';
+import { UserRegisterRequestDto } from './register/user-register-request.dto';
+import { UserRegisterResponseDto } from './register/user-register-response.dto';
 
 
 export {
@@ -63,8 +65,8 @@ export {
   TodoItemDto,
   TodoListDto,
   GetUsersTodoListsResponseWithItemsDto,
-  AuthRegisterRequestDto,
-  AuthRegisterResponseDto,
+  // AuthRegisterRequestDto,
+  // AuthRegisterResponseDto,
   UserRegisterRequestDto,
   UserRegisterResponseDto,
 };

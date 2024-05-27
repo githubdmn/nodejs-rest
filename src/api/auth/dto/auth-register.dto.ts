@@ -21,14 +21,15 @@ export type UserRequestDto =
 
 
 export class CreateUserResponseDto {
-  id: string;
-  name: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
   email: string;
   createdAt: Date;
 }
 
 export class CreateAdminResponseDto {
-  id: string;
+  adminId: string;
   name: string;
   email: string;
   role: string;
