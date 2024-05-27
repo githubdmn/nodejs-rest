@@ -11,18 +11,15 @@ import {
 import TodoList from './todoList.entity';
 import Base from './base.entity';
 import Auth from './auth.entity';
-import { hashString } from '@/utils';
+import Credentials from './credentials.entity';
 
 @Entity()
 export default class User extends Base {
   @Column({ unique: true })
-  userId: string; 
+  userId: string;
 
   @Column({ unique: true })
   email: string;
-
-  @Column({ nullable: false })
-  passwordHash: string;
 
   @Column()
   firstName: string;
@@ -39,14 +36,13 @@ export default class User extends Base {
   @OneToMany(() => TodoList, (todoList) => todoList.user)
   todoLists: TodoList[];
 
+  @OneToOne(() => Credentials, (credentials) => credentials.user)
+  @JoinColumn({ name: 'userId' })
+  credentials: Credentials;
+
   @OneToOne(() => Auth, (auth) => auth.user)
   @JoinColumn({ name: 'userId' })
   auth: Auth;
-
-  @BeforeInsert()
-  async hashPassword() {
-    this.passwordHash = await hashString(this.passwordHash);
-  }
 
   @BeforeInsert()
   async generateId() {
