@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { IAuth } from '@/database/database.inteface';
@@ -23,6 +23,8 @@ import {
 
 @Injectable()
 export default class PostgresAuthDatabase implements IAuth {
+  private readonly logger = new Logger(PostgresAuthDatabase.name);
+
   constructor(
     @InjectRepository(AuthEntity)
     private authRepository: Repository<AuthEntity>,
@@ -48,17 +50,21 @@ export default class PostgresAuthDatabase implements IAuth {
           const savedUser = await transactionalEntityManager.save(userPrepared);
           authPrepared.user = savedUser;
           credentialsPrepared.user = savedUser;
-
           const savedCredentials =
             await transactionalEntityManager.save(credentialsPrepared);
           const savedAuth = await transactionalEntityManager.save(authPrepared);
-
+          this.logger.log(
+            `User successfully saved ${savedUser.email} ${savedUser.userId}`,
+          );
           return mapRegisterResultToUserResponse(savedUser);
         },
       );
     } catch (error: any) {
+      this.logger.error(
+        `DB service: Failed to save user ${user.email} to database. Error: ${error.message}`,
+      );
       throw new HttpException(
-        `DB service: Failed to save user to database. Error: ${error.message}`,
+        `DB service: Failed to save user to database.`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -85,13 +91,18 @@ export default class PostgresAuthDatabase implements IAuth {
 
           authPrepared.admin = savedAdmin;
           const savedAuth = await transactionalEntityManager.save(authPrepared);
-
+          this.logger.log(
+            `User successfully saved ${savedAdmin.email} ${savedAdmin.adminId}`,
+          );
           return mapRegisterResultToAdminResponse(savedAdmin);
         },
       );
     } catch (error: any) {
+      this.logger.error(
+        `DB service: Failed to save admin ${admin.email} to database. Error: ${error.message}`,
+      );
       throw new HttpException(
-        `DB service: Failed to save user to database. Error: ${error.name} ${error.message}`,
+        `DB service: Failed to save user to database.`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
