@@ -1,5 +1,13 @@
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { IAuth } from '@/database/database.inteface';
-import { UserRegisterRequestDto, UserRegisterResponseDto } from '@/dto';
+import {
+  AdminRegisterRequestDto,
+  AdminRegisterResponseDto,
+  UserRegisterRequestDto,
+  UserRegisterResponseDto,
+} from '@/dto';
 import {
   AdminEntity,
   AuthEntity,
@@ -7,14 +15,8 @@ import {
   UserEntity,
 } from '@/entities';
 import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import {
+  mapAdminRegisterToEntities,
+  mapRegisterResultToAdminResponse,
   mapRegisterResultToUserResponse,
   mapUserRegisterToEntities,
 } from './mappers';
@@ -48,7 +50,7 @@ export default class PostgresAuthDatabase implements IAuth {
           authPrepared.user = savedUser;
           const savedCredentials =
             await transactionalEntityManager.save(credentialsPrepared);
-          const savedauth = await transactionalEntityManager.save(authPrepared);
+          const savedAuth = await transactionalEntityManager.save(authPrepared);
 
           return mapRegisterResultToUserResponse(savedUser);
         },
@@ -61,29 +63,37 @@ export default class PostgresAuthDatabase implements IAuth {
     }
   }
 
-  // async saveAdmin(
-  //   user: AdminRegisterRequestDto,
-  // ): Promise<AdminRegisterResponseDto> {
-  //   throw new Error('Method not implemented.');
-  //   const [authEntity, userEntity] = mapAdminRegisterToEntities(admin);
-  //   const authPrepared = this.authRepository.create(authEntity);
-  //   const adminPrepared = this.userRepositoy.create(adminEntity);
-  //   try {
-  //     return await this.authRepository.manager.transaction(
-  //       async (transactionalEntityManager) => {
-  //         const savedAuth = await transactionalEntityManager.save(authPrepared);
-  //         const savedAdmin =
-  //           await transactionalEntityManager.save(adminPrepared);
-  //         return mapRegisterResultToAdminResponse(savedAuth, savedAdmin);
-  //       },
-  //     );
-  //   } catch (error: any) {
-  //     throw new HttpException(
-  //       `DB service: Failed to save user to database. Error: ${error.message}`,
-  //       HttpStatus.INTERNAL_SERVER_ERROR,
-  //     );
-  //   }
-  // }
+  async saveAdmin(
+    admin: AdminRegisterRequestDto,
+  ): Promise<AdminRegisterResponseDto> {
+    const [credentialsEntity, adminEntity] = mapAdminRegisterToEntities(admin);
+    const adminPrepared = this.adminRepository.create(adminEntity);
+
+    const credentialsPrepared =
+      this.credentialsRepository.create(credentialsEntity);
+    const authPrepared = this.authRepository.create({ admin: adminPrepared });
+    try {
+      return await this.adminRepository.manager.transaction(
+        async (transactionalEntityManager) => {
+          const savedAdmin =
+            await transactionalEntityManager.save(adminPrepared);
+
+          const savedCredentials =
+            await transactionalEntityManager.save(credentialsPrepared);
+
+          authPrepared.admin = savedAdmin;
+          const savedAuth = await transactionalEntityManager.save(authPrepared);
+
+          return mapRegisterResultToAdminResponse(savedAdmin);
+        },
+      );
+    } catch (error: any) {
+      throw new HttpException(
+        `DB service: Failed to save user to database. Error: ${error.message}`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
 
 // async saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto> {

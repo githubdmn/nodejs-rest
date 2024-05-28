@@ -1,8 +1,7 @@
-import { AuthResponseDto, UserRegisterResponseDto } from '@/dto';
-import { AuthEntity, UserEntity } from '@/entities';
-import { create } from 'domain';
+import { AdminRegisterResponseDto, UserRegisterResponseDto } from '@/dto';
+import { AdminEntity, UserEntity } from '@/entities';
 
-export default function mapRegisterResultToUserResponse(
+export function mapRegisterResultToUserResponse(
   savedUser: UserEntity,
 ): UserRegisterResponseDto {
   return {
@@ -11,5 +10,16 @@ export default function mapRegisterResultToUserResponse(
     lastName: savedUser.lastName,
     email: savedUser.email,
     createdAt: savedUser.createdAt,
+  } as unknown as UserRegisterResponseDto;
+}
+
+export function mapRegisterResultToAdminResponse(
+  savedAdmin: AdminEntity,
+): AdminRegisterResponseDto {
+  return {
+    userId: savedAdmin.id,
+    name: savedAdmin.name,
+    email: savedAdmin.email,
+    createdAt: savedAdmin.createdAt,
   } as unknown as UserRegisterResponseDto;
 }

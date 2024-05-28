@@ -29,9 +29,8 @@ export default class Admin extends Base {
   updatedAt: Date;
 
   @OneToOne(() => Credentials, (credentials) => credentials.admin)
-  @JoinColumn({ name: 'adminId' })
   credentials: Credentials;
-  
+
   @OneToOne(() => Auth, (auth) => auth.admin)
   auth: Auth;
 

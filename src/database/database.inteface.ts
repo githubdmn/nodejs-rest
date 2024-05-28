@@ -22,6 +22,8 @@ import {
   UpdateTodoItemRequestDto,
   UserRegisterRequestDto,
   UserRegisterResponseDto,
+  AdminRegisterRequestDto,
+  AdminRegisterResponseDto,
 } from '@/dto';
 
 export interface IUserDatabase {
@@ -69,6 +71,8 @@ export interface ITodoDatabase {
 
 export interface IAuth {
   saveUser(user: UserRegisterRequestDto): Promise<UserRegisterResponseDto>;
+
+  saveAdmin(user: AdminRegisterRequestDto): Promise<AdminRegisterResponseDto>;
 
   // saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto>;
 

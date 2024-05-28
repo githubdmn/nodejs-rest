@@ -1,7 +1,7 @@
-import { UserRegisterRequestDto } from "@/dto";
-import { CredentialsEntity, UserEntity } from "@/entities";
+import { AdminRegisterRequestDto, UserRegisterRequestDto } from '@/dto';
+import { AdminEntity, CredentialsEntity, UserEntity } from '@/entities';
 
-export default function mapUserRegisterToEntities(
+export function mapUserRegisterToEntities(
   userDto: UserRegisterRequestDto,
 ): [CredentialsEntity, UserEntity] {
   const credentialsEntity = new CredentialsEntity();
@@ -13,4 +13,17 @@ export default function mapUserRegisterToEntities(
   userEntity.email = userDto.email;
 
   return [credentialsEntity, userEntity];
+}
+
+export function mapAdminRegisterToEntities(
+  adminDto: AdminRegisterRequestDto,
+): [CredentialsEntity, AdminEntity] {
+  const credentialsEntity = new CredentialsEntity();
+  credentialsEntity.passwordHash = adminDto.password;
+
+  const adminEntity = new AdminEntity();
+  adminEntity.name = adminDto.firstName;
+  adminEntity.email = adminDto.email;
+
+  return [credentialsEntity, adminEntity];
 }
