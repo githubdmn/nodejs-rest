@@ -1,3 +1,4 @@
+import { LoginRequestDto, LoginResponseDto } from './auth-login.dto';
 import {
   UserRegistrationRequestDto,
   UserRegistrationResponseDto,
@@ -14,4 +15,6 @@ export {
   CreateAdminResponseDto,
   CreateUserRequestDto,
   CreateUserResponseDto,
+  LoginRequestDto,
+  LoginResponseDto,
 };

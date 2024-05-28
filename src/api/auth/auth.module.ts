@@ -7,12 +7,14 @@ import { env } from '@/conf';
 import { PassportModule } from '@nestjs/passport';
 import { AuthUserController } from './auth.controller.user';
 import { AuthAdminController } from './auth.controller.admin';
+import { LocalStrategy } from './local.strategy';
 
 const Services = [
   {
     provide: AUTH_SERVICE,
     useClass: AuthService,
   },
+  LocalStrategy,
 ];
 
 @Module({

@@ -12,6 +12,7 @@ import { IAuth, IUserDatabase } from '@/database/database.inteface';
 import {
   AdminRegisterRequestDto,
   AdminRegisterResponseDto,
+  CredentialsDto,
   UserDto,
   UserLoginRequestDto,
   UserLoginResponseDto,
@@ -44,6 +45,14 @@ export class AuthService {
     return await this.authDatabase.saveAdmin(user);
   }
 
+  async userExists(email: string): Promise<boolean> {
+    return await this.authDatabase.userExists(email);
+  }
+
+  async validateUser(credentials: CredentialsDto): Promise<boolean> {
+    return await this.authDatabase.checkCredentials(credentials);
+  }
+
   async login() {
     throw new Error('Method not implemented.');
   }
@@ -51,12 +60,12 @@ export class AuthService {
   private async getAuthenticatedUser(
     email: string,
     password: string,
-  ): Promise<UserDto> {
+  ): Promise<any> {
     const user = await this.userDatabase.findUserByEmail(email);
     if (user == null)
       throw new NotFoundException(`User with email ${email} is not found`);
     else {
-      const check = await checkHashedValue(user.password, password);
+      const check = await checkHashedValue('asdasd', password);
       if (check == null) throw new BadRequestException('Invalid password');
     }
     return user;

@@ -21,10 +21,16 @@ import {
   UserLoginRequestDto,
   UserLoginResponseDto,
 } from '@/dto';
-import { UserRegistrationRequestDto, UserRegistrationResponseDto } from './dto';
-import { AuthGuard } from '@/guard';
+import {
+  LoginRequestDto,
+  LoginResponseDto,
+  UserRegistrationRequestDto,
+  UserRegistrationResponseDto,
+} from './dto';
+import { AuthGuard as CustomAuthGuard } from '@/guard';
+import { AuthGuard } from '@nestjs/passport';
 
-// @UseGuards(AuthGuard)
+@UseGuards(CustomAuthGuard)
 export abstract class AuthController {
   constructor(@Inject(AUTH_SERVICE) protected authService: IAuthService) {}
 
@@ -33,11 +39,11 @@ export abstract class AuthController {
   ): Promise<UserRegistrationResponseDto>;
 
   @Post('login')
+  @UseGuards(AuthGuard('local'))
   async login(
-    @Body() userLogin: UserLoginRequestDto,
+    @Body() userLogin: LoginRequestDto,
     @Response() response: any,
-  ): Promise<UserLoginResponseDto> {
-    throw new Error('Method not implemented.');
+  ): Promise<LoginResponseDto> {
     const user = await this.authService.login();
     if (!user) return response.json({ error: 'invalid credentials' });
     return response

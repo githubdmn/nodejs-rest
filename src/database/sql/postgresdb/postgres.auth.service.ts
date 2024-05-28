@@ -5,6 +5,7 @@ import { IAuth } from '@/database/database.inteface';
 import {
   AdminRegisterRequestDto,
   AdminRegisterResponseDto,
+  CredentialsDto,
   UserRegisterRequestDto,
   UserRegisterResponseDto,
 } from '@/dto';
@@ -20,6 +21,7 @@ import {
   mapRegisterResultToUserResponse,
   mapUserRegisterToEntities,
 } from './mappers';
+import { hashString } from '@/utils';
 
 @Injectable()
 export default class PostgresAuthDatabase implements IAuth {
@@ -107,8 +109,43 @@ export default class PostgresAuthDatabase implements IAuth {
       );
     }
   }
-}
 
+  async userExists(email: string): Promise<boolean> {
+    const user = await this.userRepositoy.findOneByOrFail({ email: email });
+    if (user) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async checkCredentials({
+    email,
+    password,
+  }: CredentialsDto): Promise<boolean> {
+    const user = await this.userRepositoy.findOneBy({ email: email });
+    const credentials = await this.credentialsRepository.findOne({
+      where: {
+        user: { userId: user?.userId },
+      },
+    });
+
+    console.log('user', user);
+    console.log('credentials', credentials);
+
+    const hashedPassword = await hashString(password);
+    console.log('hashedPassword', hashedPassword);
+    if (
+      user !== null &&
+      user.email === email &&
+      credentials?.passwordHash === hashedPassword
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
 // async saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto> {
 //   const loginPrepared = this.loginRepository.create(login);
 //   try {

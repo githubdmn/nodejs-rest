@@ -6,7 +6,14 @@ import {
   PostgresUserService,
 } from './sql/postgresdb';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AdminEntity, AuthEntity, CredentialsEntity, TodoItem, TodoList, UserEntity } from '@/entities';
+import {
+  AdminEntity,
+  AuthEntity,
+  CredentialsEntity,
+  TodoItem,
+  TodoList,
+  UserEntity,
+} from '@/entities';
 
 const TypeOrmLocal = TypeOrmModule.forFeature([
   UserEntity,
@@ -14,7 +21,7 @@ const TypeOrmLocal = TypeOrmModule.forFeature([
   TodoList,
   AuthEntity,
   CredentialsEntity,
-  AdminEntity
+  AdminEntity,
 ]);
 const PostgresServices = [
   {
@@ -30,6 +37,13 @@ const PostgresServices = [
     useClass: PostgresAuthService,
   },
 ];
+
+@Module({
+  imports: [TypeOrmLocal],
+  providers: [...PostgresServices],
+  exports: [...PostgresServices],
+})
+export class DatabaseModule {}
 
 // TODO: implement mongodb service
 // const MongooseModuleLocal = MongooseModule.forFeature([
@@ -52,10 +66,3 @@ const PostgresServices = [
 //   env.dbUse === 'postgres'
 //     ? { Imports: TypeOrmLocal, Services: PostgresServices }
 //     : { Imports: MongooseModuleLocal, Services: MongoServices };
-
-@Module({
-  imports: [TypeOrmLocal],
-  providers: [...PostgresServices],
-  exports: [...PostgresServices],
-})
-export class DatabaseModule {}

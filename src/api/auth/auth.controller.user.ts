@@ -1,13 +1,13 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseFilters } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { CreateUserRequestDto, CreateUserResponseDto } from './dto';
-import { AuthGuard } from '@nestjs/passport';
 import { UserRegisterRequestDto } from '@/dto';
+import { GeneralFilter, UserExistsException } from '@/exceptions';
 
 @Controller('auth/user')
 export class AuthUserController extends AuthController {
-  //@UseGuards(AuthGuard('local'))
   @Post()
+  @UseFilters(GeneralFilter)
   async register(
     @Body() userRequest: CreateUserRequestDto,
   ): Promise<CreateUserResponseDto> {
@@ -17,7 +17,11 @@ export class AuthUserController extends AuthController {
       firstName: userRequest.firstName,
       lastName: userRequest.lastName,
     };
+    const userExists = await this.authService.userExists(user.email);
 
+    if (userExists) {
+      throw new UserExistsException(`User with the email ${user.email}`);
+    }
     const registeredUser = await this.authService.registerUser(user);
 
     return {

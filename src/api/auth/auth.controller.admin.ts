@@ -1,12 +1,12 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseFilters } from '@nestjs/common';
 import { AuthController } from './auth.controller';
-import { AuthGuard } from '@nestjs/passport';
 import { CreateAdminRequestDto, CreateAdminResponseDto } from './dto';
-import { AdminRegisterRequestDto, UserRegisterRequestDto } from '@/dto';
+import { AdminRegisterRequestDto } from '@/dto';
+import { GeneralFilter, UserExistsException } from '@/exceptions';
 
 @Controller('auth/admin')
 export class AuthAdminController extends AuthController {
-  //@UseGuards(AuthGuard('local'))
+  @UseFilters(GeneralFilter)
   @Post()
   async register(
     @Body() userRequest: CreateAdminRequestDto,
@@ -16,6 +16,12 @@ export class AuthAdminController extends AuthController {
       password: userRequest.password,
       name: userRequest.name,
     };
+
+    const userExists = await this.authService.userExists(admin.email);
+
+    if (userExists) {
+      throw new UserExistsException(`Admin with the email ${admin.email}`);
+    }
 
     const registeredAdmin = await this.authService.registerAdmin(admin);
 

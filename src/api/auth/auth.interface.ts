@@ -1,6 +1,7 @@
 import {
   AdminRegisterRequestDto,
   AdminRegisterResponseDto,
+  CredentialsDto,
   UserDto,
   UserLoginRequestDto,
   UserLoginResponseDto,
@@ -15,6 +16,8 @@ export interface IAuthService {
   registerAdmin(
     user: AdminRegisterRequestDto,
   ): Promise<AdminRegisterResponseDto>;
+  userExists(email: string): Promise<boolean>;
+  validateUser(credentials: CredentialsDto): Promise<boolean>;
   login(): any;
   getJwt(userLogin: UserLoginRequestDto): Promise<UserLoginResponseDto>;
   changePassword(

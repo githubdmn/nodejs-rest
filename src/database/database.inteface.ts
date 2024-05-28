@@ -24,11 +24,10 @@ import {
   UserRegisterResponseDto,
   AdminRegisterRequestDto,
   AdminRegisterResponseDto,
+  CredentialsDto,
 } from '@/dto';
 
 export interface IUserDatabase {
-  save(user: UserRegisterRequestDto): Promise<UserRegisterResponseDto>;
-
   findUserByUserId(userId: string): Promise<UserDto>;
 
   findUserByEmail(email: string): Promise<UserDto>;
@@ -73,6 +72,10 @@ export interface IAuth {
   saveUser(user: UserRegisterRequestDto): Promise<UserRegisterResponseDto>;
 
   saveAdmin(user: AdminRegisterRequestDto): Promise<AdminRegisterResponseDto>;
+
+  userExists(email: string): Promise<boolean>;
+
+  checkCredentials(credentials: CredentialsDto): Promise<boolean>;
 
   // saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto>;
 
