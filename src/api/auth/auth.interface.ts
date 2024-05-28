@@ -8,10 +8,9 @@ import {
   UserRegisterRequestDto,
   UserRegisterResponseDto,
 } from '@/dto';
-import { UserRequestDto, UserResponseDto } from './dto/auth-register.dto';
 
 export interface IAuthService {
-   registerUser(
+  registerUser(
     userRequest: UserRegisterRequestDto,
   ): Promise<UserRegisterResponseDto>;
   login(): any;

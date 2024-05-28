@@ -1,4 +1,17 @@
-import { UserRequestDto, UserResponseDto } from "./auth-register.dto";
+import {
+  UserRegistrationRequestDto,
+  UserRegistrationResponseDto,
+  CreateAdminRequestDto,
+  CreateAdminResponseDto,
+  CreateUserRequestDto,
+  CreateUserResponseDto,
+} from './auth-register.dto';
 
-
-export { UserRequestDto, UserResponseDto };
+export {
+  UserRegistrationRequestDto,
+  UserRegistrationResponseDto,
+  CreateAdminRequestDto,
+  CreateAdminResponseDto,
+  CreateUserRequestDto,
+  CreateUserResponseDto,
+};

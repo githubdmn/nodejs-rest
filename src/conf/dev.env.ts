@@ -1,5 +1,7 @@
 import * as dotenv from 'dotenv';
 
+dotenv.config();
+
 const requiredEnv = [
   'DB_HOST',
   'PORT',
@@ -14,6 +16,8 @@ const requiredEnv = [
   'JWT_ACCESS',
   'JWT_REFRESH',
   'JWT_SECRET',
+  'ACCESS_TOKEN_EXPIRATION',
+  'REFRESH_TOKEN_EXPIRATION',
 ];
 
 for (const envName of requiredEnv) {
@@ -21,9 +25,6 @@ for (const envName of requiredEnv) {
     throw new Error(`Environment variable ${envName} is not defined`);
   }
 }
-
-const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
-dotenv.config({ path: envFile });
 
 export default {
   environment: process.env.NODE_ENV,
@@ -38,7 +39,13 @@ export default {
   pgSchema: process.env.POSTGRES_SCHEMA,
   pgSync: process.env.POSTGRES_SYNC,
   pgLogging: process.env.POSTGRES_LOGGING,
-  jwtAccess: process.env.JWT_ACCESS,
+  jwtAccess: process.env.JWT_ACCESS || '',
   jwtRefresh: process.env.JWT_REFRESH,
   jwtSecret: process.env.JWT_SECRET,
+  accessTokenExpiration: parseInt(
+    process.env.ACCESS_TOKEN_EXPIRATION || '3600',
+  ),
+  refreshTokenExpiration: parseInt(
+    process.env.REFRESH_TOKEN_EXPIRATION || '86400',
+  ),
 };

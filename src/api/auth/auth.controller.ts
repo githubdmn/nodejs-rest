@@ -21,14 +21,16 @@ import {
   UserLoginRequestDto,
   UserLoginResponseDto,
 } from '@/dto';
-import { UserRequestDto, UserResponseDto } from './dto';
+import { UserRegistrationRequestDto, UserRegistrationResponseDto } from './dto';
 import { AuthGuard } from '@/guard';
 
 // @UseGuards(AuthGuard)
 export abstract class AuthController {
   constructor(@Inject(AUTH_SERVICE) protected authService: IAuthService) {}
 
-  abstract register(user: UserRequestDto): Promise<UserResponseDto>;
+  abstract register(
+    user: UserRegistrationRequestDto,
+  ): Promise<UserRegistrationResponseDto>;
 
   @Post('login')
   async login(

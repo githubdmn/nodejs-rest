@@ -1,9 +1,6 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthController } from './auth.controller';
-import {
-  CreateUserRequestDto,
-  CreateUserResponseDto,
-} from './dto/auth-register.dto';
+import { CreateUserRequestDto, CreateUserResponseDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UserRegisterRequestDto } from '@/dto';
 
@@ -14,7 +11,6 @@ export class AuthUserController extends AuthController {
   async register(
     @Body() userRequest: CreateUserRequestDto,
   ): Promise<CreateUserResponseDto> {
-
     const user: UserRegisterRequestDto = {
       email: userRequest.email,
       password: userRequest.password,
@@ -22,14 +18,14 @@ export class AuthUserController extends AuthController {
       lastName: userRequest.lastName,
     };
 
-    const userResponse = await this.authService.registerUser(user);
+    const registeredUser = await this.authService.registerUser(user);
 
     return {
-      userId: userResponse.userId,
-      email: userResponse.email,
-      firstName: userResponse.firstName,
-      lastName: userResponse.lastName,
-      createdAt: userResponse.createdAt,
-    };
+      userId: registeredUser.userId,
+      email: registeredUser.email,
+      firstName: registeredUser.firstName,
+      lastName: registeredUser.lastName,
+      createdAt: registeredUser.createdAt,
+    } as CreateUserResponseDto;
   }
 }
