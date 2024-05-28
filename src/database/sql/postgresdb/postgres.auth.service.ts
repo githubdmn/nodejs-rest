@@ -46,8 +46,9 @@ export default class PostgresAuthDatabase implements IAuth {
       return await this.authRepository.manager.transaction(
         async (transactionalEntityManager) => {
           const savedUser = await transactionalEntityManager.save(userPrepared);
-
           authPrepared.user = savedUser;
+          credentialsPrepared.user = savedUser;
+
           const savedCredentials =
             await transactionalEntityManager.save(credentialsPrepared);
           const savedAuth = await transactionalEntityManager.save(authPrepared);
@@ -77,7 +78,8 @@ export default class PostgresAuthDatabase implements IAuth {
         async (transactionalEntityManager) => {
           const savedAdmin =
             await transactionalEntityManager.save(adminPrepared);
-
+          authPrepared.admin = savedAdmin;
+          credentialsPrepared.admin = savedAdmin;
           const savedCredentials =
             await transactionalEntityManager.save(credentialsPrepared);
 
@@ -89,7 +91,7 @@ export default class PostgresAuthDatabase implements IAuth {
       );
     } catch (error: any) {
       throw new HttpException(
-        `DB service: Failed to save user to database. Error: ${error.message}`,
+        `DB service: Failed to save user to database. Error: ${error.name} ${error.message}`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

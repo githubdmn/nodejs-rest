@@ -5,21 +5,21 @@ export function mapRegisterResultToUserResponse(
   savedUser: UserEntity,
 ): UserRegisterResponseDto {
   return {
-    userId: savedUser.id,
+    userId: savedUser.userId,
     firstName: savedUser.firstName,
     lastName: savedUser.lastName,
     email: savedUser.email,
     createdAt: savedUser.createdAt,
-  } as unknown as UserRegisterResponseDto;
+  } as UserRegisterResponseDto;
 }
 
 export function mapRegisterResultToAdminResponse(
   savedAdmin: AdminEntity,
 ): AdminRegisterResponseDto {
   return {
-    userId: savedAdmin.id,
+    adminId: savedAdmin.adminId,
     name: savedAdmin.name,
     email: savedAdmin.email,
     createdAt: savedAdmin.createdAt,
-  } as unknown as UserRegisterResponseDto;
+  } as AdminRegisterResponseDto;
 }

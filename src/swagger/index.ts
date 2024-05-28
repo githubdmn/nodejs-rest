@@ -1,3 +1,3 @@
-import { SwaggerService } from "./swagger.service";
+import { SwaggerService } from './swagger.service';
 
-export { SwaggerService }
+export { SwaggerService };

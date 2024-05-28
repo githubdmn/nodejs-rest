@@ -1,4 +1,4 @@
-export const components = {
+export default {
   schemas: {
     CreateUserRequest: {
       type: 'object',

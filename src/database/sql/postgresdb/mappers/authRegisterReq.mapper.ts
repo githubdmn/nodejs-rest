@@ -22,7 +22,7 @@ export function mapAdminRegisterToEntities(
   credentialsEntity.passwordHash = adminDto.password;
 
   const adminEntity = new AdminEntity();
-  adminEntity.name = adminDto.firstName;
+  adminEntity.name = adminDto.name;
   adminEntity.email = adminDto.email;
 
   return [credentialsEntity, adminEntity];

@@ -26,10 +26,10 @@ export default class Auth extends Base {
   }
 
   @OneToOne(() => User, (user) => user.auth)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
   user?: User;
 
   @OneToOne(() => Admin, (admin) => admin.auth)
-  @JoinColumn({ name: 'adminId' })
+  @JoinColumn({ name: 'adminId', referencedColumnName: 'adminId' })
   admin?: Admin;
 }

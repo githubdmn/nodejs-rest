@@ -36,10 +36,6 @@ export class CreateAdminRequestDto {
   @IsNotEmpty()
   @MinLength(8)
   readonly password: string;
-
-  @IsNotEmpty()
-  @IsString()
-  readonly role: string;
 }
 
 export class CreateUserResponseDto {
@@ -76,10 +72,6 @@ export class CreateAdminResponseDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
-
-  @IsNotEmpty()
-  @IsString()
-  role: string;
 
   @IsNotEmpty()
   @IsDate()

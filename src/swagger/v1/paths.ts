@@ -1,5 +1,5 @@
-export const paths = {
-  '/auth/register': {
+export default {
+  '/auth/user/register': {
     post: {
       tags: ['Auth'],
       summary: 'User registration - Create a new user',

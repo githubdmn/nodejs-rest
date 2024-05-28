@@ -2,10 +2,7 @@ import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class AdminRegisterRequestDto {
   @IsNotEmpty()
-  firstName: string;
-
-  @IsNotEmpty()
-  lastName: string;
+  name: string;
 
   @IsEmail()
   email: string;

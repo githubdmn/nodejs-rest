@@ -1,7 +1,6 @@
 export class AdminRegisterResponseDto {
-  userId: string;
-  firstName: string;
-  lastName: string;
+  adminId: string;
+  name: string;
   email: string;
   createdAt: Date;
 }

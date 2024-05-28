@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { AUTH_SERVICE } from '@/utils/constants';
 import { JwtModule } from '@nestjs/jwt';
 import { DatabaseModule } from '@/database/database.module';
 import { env } from '@/conf';
 import { PassportModule } from '@nestjs/passport';
-import { AuthUserController } from './auth.user.controller';
+import { AuthUserController } from './auth.controller.user';
+import { AuthAdminController } from './auth.controller.admin';
 
 const Services = [
   {
@@ -16,7 +16,7 @@ const Services = [
 ];
 
 @Module({
-  controllers: [AuthUserController],
+  controllers: [AuthUserController, AuthAdminController],
   providers: [...Services],
   imports: [
     PassportModule,

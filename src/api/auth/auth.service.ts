@@ -10,10 +10,8 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { IAuth, IUserDatabase } from '@/database/database.inteface';
 import {
-  CreateUserRequestDto,
-  CreateUserResponseDto,
-  SaveLoginRequestDto,
-  UpdateUserResponseDto,
+  AdminRegisterRequestDto,
+  AdminRegisterResponseDto,
   UserDto,
   UserLoginRequestDto,
   UserLoginResponseDto,
@@ -21,12 +19,7 @@ import {
   UserRegisterResponseDto,
 } from '@/dto';
 import { POSTGRES_AUTH, POSTGRES_USER } from '@/utils/constants';
-import { env } from '@/conf';
 import { checkHashedValue, hashString } from '@/utils';
-import {
-  CreateAdminRequestDto,
-  CreateAdminResponseDto,
-} from './dto/auth-register.dto';
 
 const DB_USER = POSTGRES_USER;
 const DB_AUTH = POSTGRES_AUTH;
@@ -46,10 +39,9 @@ export class AuthService {
   }
 
   async registerAdmin(
-    user: CreateAdminRequestDto,
-  ): Promise<CreateAdminResponseDto> {
-    return {} as CreateAdminResponseDto;
-    // return await this.userDatabase.save(user);
+    user: AdminRegisterRequestDto,
+  ): Promise<AdminRegisterResponseDto> {
+    return await this.authDatabase.saveAdmin(user);
   }
 
   async login() {
