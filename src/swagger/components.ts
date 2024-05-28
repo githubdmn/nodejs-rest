@@ -1,34 +1,47 @@
 export const components = {
   schemas: {
-    CreateUserRequestDto: {
+    CreateUserRequest: {
       type: 'object',
       properties: {
-        name: {
+        firstName: {
+          type: 'string',
+        },
+        lastName: {
           type: 'string',
         },
         email: {
           type: 'string',
+          format: 'email',
         },
         password: {
           type: 'string',
+          minLength: 8,
         },
       },
-      required: ['name', 'email', 'password'],
+      required: ['firstName', 'lastName', 'email', 'password'],
     },
-    CreateUserResponseDto: {
+    CreateUserResponse: {
       type: 'object',
       properties: {
-        id: {
+        userId: {
           type: 'string',
         },
-        name: {
+        firstName: {
+          type: 'string',
+        },
+        lastName: {
           type: 'string',
         },
         email: {
           type: 'string',
+          format: 'email',
+        },
+        createdAt: {
+          type: 'string',
+          format: 'date-time',
         },
       },
+      required: ['userId', 'firstName', 'lastName', 'email', 'createdAt'],
     },
-    // ... Define other DTOs similarly ...
   },
 };
