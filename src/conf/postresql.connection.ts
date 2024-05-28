@@ -2,7 +2,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import env from './dev.env';
 
 const dbSettingEnv = {
-  type: env.pgType,
+  type: 'postgres',
   schema: env.pgSchema,
   database: env.pgdb,
   host: env.host,
