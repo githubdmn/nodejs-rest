@@ -77,6 +77,10 @@ export interface IAuth {
 
   checkCredentials(credentials: CredentialsDto): Promise<boolean>;
 
+  getUserIdByEmail(email: string): Promise<string>;
+
+  getAdminIdByEmail(email: string): Promise<string>;
+
   // saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto>;
 
   // logout(userId: string): Promise<boolean>;

@@ -1,8 +1,9 @@
-import { Body, Controller, Post, UseFilters } from '@nestjs/common';
+import { Body, Controller, Post, UseFilters, UseGuards, Response } from '@nestjs/common';
 import { AuthController } from './auth.controller';
-import { CreateAdminRequestDto, CreateAdminResponseDto } from './dto';
+import { CreateAdminRequestDto, CreateAdminResponseDto, LoginResponseDto } from './dto';
 import { AdminRegisterRequestDto } from '@/dto';
 import { GeneralFilter, UserExistsException } from '@/exceptions';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth/admin')
 export class AuthAdminController extends AuthController {
@@ -31,5 +32,19 @@ export class AuthAdminController extends AuthController {
       name: registeredAdmin.name,
       createdAt: registeredAdmin.createdAt,
     } as CreateAdminResponseDto;
+  }
+
+  @Post('login')
+  @UseGuards(AuthGuard('local'))
+  async login(
+    @Body() email: string,
+    @Response() response: any,
+  ): Promise<LoginResponseDto> {
+    const { accessToken, refreshToken, id } =
+      await this.authService.loginUser(email);
+    return response
+      .set('access_token', accessToken)
+      .set('refresh_token', refreshToken)
+      .json({ id: id, email: email });
   }
 }

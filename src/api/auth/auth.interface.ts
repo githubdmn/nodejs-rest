@@ -18,7 +18,7 @@ export interface IAuthService {
   ): Promise<AdminRegisterResponseDto>;
   userExists(email: string): Promise<boolean>;
   validateUser(credentials: CredentialsDto): Promise<boolean>;
-  login(): any;
+  loginUser(email: string): any;
   getJwt(userLogin: UserLoginRequestDto): Promise<UserLoginResponseDto>;
   changePassword(
     userId: string,

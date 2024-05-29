@@ -40,7 +40,7 @@ export default {
   pgSync: process.env.POSTGRES_SYNC,
   pgLogging: process.env.POSTGRES_LOGGING,
   jwtAccess: process.env.JWT_ACCESS || '',
-  jwtRefresh: process.env.JWT_REFRESH,
+  jwtRefresh: process.env.JWT_REFRESH || '',
   jwtSecret: process.env.JWT_SECRET,
   accessTokenExpiration: parseInt(
     process.env.ACCESS_TOKEN_EXPIRATION || '3600',

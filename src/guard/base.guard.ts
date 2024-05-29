@@ -14,7 +14,7 @@ export abstract class BaseGuard implements CanActivate {
     const { method, url } = context.getArgs()[0];
     const isMethodAllowed = this.allowedMethods.includes(method);
     const isUrlAllowed = this.allowedUrls.includes(url);
-    if (isMethodAllowed && isUrlAllowed) return true;
+    if (isMethodAllowed && isUrlAllowed) return true;    
     const request = context.switchToHttp().getRequest();
     const authHeader = request.headers['authorization'];
     if (!authHeader || !authHeader.startsWith('Bearer ')) {

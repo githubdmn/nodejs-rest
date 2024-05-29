@@ -27,10 +27,9 @@ import {
   UserRegistrationRequestDto,
   UserRegistrationResponseDto,
 } from './dto';
-import { AuthGuard as CustomAuthGuard } from '@/guard';
-import { AuthGuard } from '@nestjs/passport';
+import { AuthGuard } from '@/guard';
 
-@UseGuards(CustomAuthGuard)
+@UseGuards(AuthGuard)
 export abstract class AuthController {
   constructor(@Inject(AUTH_SERVICE) protected authService: IAuthService) {}
 
@@ -38,19 +37,7 @@ export abstract class AuthController {
     user: UserRegistrationRequestDto,
   ): Promise<UserRegistrationResponseDto>;
 
-  @Post('login')
-  @UseGuards(AuthGuard('local'))
-  async login(
-    @Body() userLogin: LoginRequestDto,
-    @Response() response: any,
-  ): Promise<LoginResponseDto> {
-    const user = await this.authService.login();
-    if (!user) return response.json({ error: 'invalid credentials' });
-    return response
-      .set('access_token', user.accessToken)
-      .set('refresh_token', user.refreshToken)
-      .json({ id: user.id, email: userLogin.email });
-  }
+  abstract login(email: string, response: any): any;
 
   @Post('change-password')
   async changePassword(

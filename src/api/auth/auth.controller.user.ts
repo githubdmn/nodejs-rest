@@ -1,8 +1,9 @@
-import { Body, Controller, Post, UseFilters } from '@nestjs/common';
+import { Body, Controller, Post, UseFilters, UseGuards, Response } from '@nestjs/common';
 import { AuthController } from './auth.controller';
-import { CreateUserRequestDto, CreateUserResponseDto } from './dto';
+import { CreateUserRequestDto, CreateUserResponseDto, LoginRequestDto, LoginResponseDto } from './dto';
 import { UserRegisterRequestDto } from '@/dto';
 import { GeneralFilter, UserExistsException } from '@/exceptions';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth/user')
 export class AuthUserController extends AuthController {
@@ -17,11 +18,12 @@ export class AuthUserController extends AuthController {
       firstName: userRequest.firstName,
       lastName: userRequest.lastName,
     };
-    const userExists = await this.authService.userExists(user.email);
 
+    const userExists = await this.authService.userExists(user.email);
     if (userExists) {
       throw new UserExistsException(`User with the email ${user.email}`);
     }
+
     const registeredUser = await this.authService.registerUser(user);
 
     return {
@@ -31,5 +33,19 @@ export class AuthUserController extends AuthController {
       lastName: registeredUser.lastName,
       createdAt: registeredUser.createdAt,
     } as CreateUserResponseDto;
+  }
+
+  @Post('login')
+  @UseGuards(AuthGuard('local'))
+  async login(
+    @Body() email: string,
+    @Response() response: any,
+  ): Promise<LoginResponseDto> {
+    const { accessToken, refreshToken, id } =
+      await this.authService.loginUser(email);
+    return response
+      .set('access_token', accessToken)
+      .set('refresh_token', refreshToken)
+      .json({ id: id, email: email });
   }
 }

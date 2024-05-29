@@ -21,7 +21,7 @@ import {
   mapRegisterResultToUserResponse,
   mapUserRegisterToEntities,
 } from './mappers';
-import { hashString } from '@/utils';
+import { checkHashedValue } from '@/utils';
 
 @Injectable()
 export default class PostgresAuthDatabase implements IAuth {
@@ -111,12 +111,10 @@ export default class PostgresAuthDatabase implements IAuth {
   }
 
   async userExists(email: string): Promise<boolean> {
-    const user = await this.userRepositoy.findOneByOrFail({ email: email });
-    if (user) {
-      return true;
-    } else {
-      return false;
-    }
+    const user = await this.userRepositoy.findOneBy({ email: email });
+    const admin = await this.adminRepository.findOneBy({ email: email });
+
+    return Boolean(user || admin);
   }
 
   async checkCredentials({
@@ -124,26 +122,49 @@ export default class PostgresAuthDatabase implements IAuth {
     password,
   }: CredentialsDto): Promise<boolean> {
     const user = await this.userRepositoy.findOneBy({ email: email });
-    const credentials = await this.credentialsRepository.findOne({
-      where: {
-        user: { userId: user?.userId },
-      },
-    });
+    const admin = await this.adminRepository.findOneBy({ email: email });
+    let credentials;
 
-    console.log('user', user);
-    console.log('credentials', credentials);
+    if (user) {
+      credentials = await this.credentialsRepository.findOne({
+        where: {
+          user: { userId: user.userId },
+        },
+      });
+    } else if (admin) {
+      credentials = await this.credentialsRepository.findOne({
+        where: {
+          admin: { adminId: admin.adminId },
+        },
+      });
+    } else {
+      return false;
+    }    
 
-    const hashedPassword = await hashString(password);
-    console.log('hashedPassword', hashedPassword);
-    if (
-      user !== null &&
-      user.email === email &&
-      credentials?.passwordHash === hashedPassword
-    ) {
+    if (!credentials?.passwordHash) {
+      return false;
+    }
+
+    const passwordCheck = await checkHashedValue(
+      credentials?.passwordHash,
+      password,
+    );
+
+    if (passwordCheck) {
       return true;
     } else {
       return false;
     }
+  }
+
+  async getUserIdByEmail(email: string): Promise<string> {
+    const user = await this.userRepositoy.findOneBy({ email: email });
+    return user ? user?.userId : '';
+  }
+
+  async getAdminIdByEmail(email: string): Promise<string> {
+    const admin = await this.adminRepository.findOneBy({ email: email });
+    return admin ? admin?.adminId : '';
   }
 }
 // async saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto> {

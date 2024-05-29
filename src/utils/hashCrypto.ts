@@ -17,17 +17,3 @@ export async function checkHashedValue(existingStr: string, givenStr: string) {
   else return false;
 }
 
-// export async function hashString(s: string) {
-//   const salt = randomBytes(8).toString('hex');
-//   const hash = (await scryptPromise(s, salt, passwordLength)) as Buffer;
-//   return { salt, hash: hash.toString('hex') };
-// }
-
-// export async function checkHashedValue(
-//   salt: string,
-//   storedHash: string,
-//   givenStr: string,
-// ) {
-//   const hash = (await scryptPromise(givenStr, salt, passwordLength)) as Buffer;
-//   return hash.toString('hex') === storedHash;
-// }
