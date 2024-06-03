@@ -166,6 +166,12 @@ export default class PostgresAuthDatabase implements IAuth {
     const admin = await this.adminRepository.findOneBy({ email: email });
     return admin ? admin?.adminId : '';
   }
+
+  async saveUserRefreshToken(refreshToken: string, userId: string): Promise<void> {
+    const [auth] = await this.authRepository.findOneBy({ userId: userId });
+    auth.refreshToken = refreshToken;
+    await this.authRepository.save(auth);
+  }
 }
 // async saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto> {
 //   const loginPrepared = this.loginRepository.create(login);

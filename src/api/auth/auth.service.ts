@@ -46,12 +46,15 @@ export class AuthService {
   }
 
   async loginUser(email: string) {
-    const id = await this.authDatabase.getUserIdByEmail(email);
-    const { accessToken, refreshToken } = await this.generateLoginTokens(id, email);
+    const userId = await this.authDatabase.getUserIdByEmail(email);
+    const { accessToken, refreshToken } = await this.generateLoginTokens(
+      userId,
+      email,
+    );
     // save refresh token to DB
     // const currentDate = new Date();
     // currentDate.setDate(currentDate.getDate() + 1);
-    return { accessToken, refreshToken, id };
+    return { accessToken, refreshToken, userId };
   }
 
   
