@@ -26,7 +26,7 @@ export interface IAuthService {
     newPassword: string,
   ): Promise<string>;
   logout(refreshToken: string): Promise<string>;
-  refreshToken(
+  refreshAccessToken(
     user: Partial<UserDto>,
     refreshToken: string,
   ): Promise<UserLoginResponseDto>;

@@ -1,6 +1,18 @@
-import { Body, Controller, Post, UseFilters, UseGuards, Response } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseFilters,
+  UseGuards,
+  Response,
+} from '@nestjs/common';
 import { AuthController } from './auth.controller';
-import { CreateUserRequestDto, CreateUserResponseDto, LoginRequestDto, LoginResponseDto } from './dto';
+import {
+  CreateUserRequestDto,
+  CreateUserResponseDto,
+  LoginRequestDto,
+  LoginResponseDto,
+} from './dto';
 import { UserRegisterRequestDto } from '@/dto';
 import { GeneralFilter, UserExistsException } from '@/exceptions';
 import { AuthGuard } from '@nestjs/passport';
@@ -41,11 +53,11 @@ export class AuthUserController extends AuthController {
     @Body() email: string,
     @Response() response: any,
   ): Promise<LoginResponseDto> {
-    const { accessToken, refreshToken, id } =
+    const { accessToken, refreshToken } =
       await this.authService.loginUser(email);
     return response
       .set('access_token', accessToken)
       .set('refresh_token', refreshToken)
-      .json({ id: id, email: email });
+      .json({ message: 'Login successful' });
   }
 }

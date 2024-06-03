@@ -22,6 +22,7 @@ import {
   mapUserRegisterToEntities,
 } from './mappers';
 import { checkHashedValue } from '@/utils';
+import { env } from '@/conf';
 
 @Injectable()
 export default class PostgresAuthDatabase implements IAuth {
@@ -139,7 +140,7 @@ export default class PostgresAuthDatabase implements IAuth {
       });
     } else {
       return false;
-    }    
+    }
 
     if (!credentials?.passwordHash) {
       return false;
@@ -158,87 +159,44 @@ export default class PostgresAuthDatabase implements IAuth {
   }
 
   async getUserIdByEmail(email: string): Promise<string> {
-    const user = await this.userRepositoy.findOneBy({ email: email });
-    return user ? user?.userId : '';
+    const user = await this.userRepositoy.findOneBy({ email });
+    return user ? user.userId : '';
   }
 
   async getAdminIdByEmail(email: string): Promise<string> {
-    const admin = await this.adminRepository.findOneBy({ email: email });
-    return admin ? admin?.adminId : '';
+    const admin = await this.adminRepository.findOneBy({ email });
+    return admin ? admin.adminId : '';
   }
 
-  async saveUserRefreshToken(refreshToken: string, userId: string): Promise<void> {
-    const [auth] = await this.authRepository.findOneBy({ userId: userId });
-    auth.refreshToken = refreshToken;
-    await this.authRepository.save(auth);
+  async saveUserRefreshToken(
+    refreshToken: string,
+    userId: string,
+  ): Promise<void> {
+    try {
+      const auth = await this.authRepository.findOne({
+        where: { user: { userId: userId } },
+      });
+      if (auth) {
+        const milliseconds = env.refreshTokenExpiration * 1000;
+        const date = new Date();
+        date.setTime(date.getTime() + milliseconds);
+        auth.last_login = date;
+        auth.refreshToken = refreshToken;
+        auth.method = 'Custom';
+        await this.authRepository.save(auth);
+      }
+    } catch (error: any) {
+      this.logger.error(
+        `DB service: Failed to save refresh token. Error: ${error.message}`,
+      );
+      console.error(error);
+    }
+  }
+
+  async deleteRefreshToken(refreshToken: string): Promise<void> {
+    const auth = await this.authRepository.findBy({
+      refreshToken: refreshToken,
+    });
+    await this.authRepository.remove(auth);
   }
 }
-// async saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto> {
-//   const loginPrepared = this.loginRepository.create(login);
-//   try {
-//     return (await this.loginRepository.save(
-//       loginPrepared,
-//     )) as unknown as SaveLoginResponseDto;
-//   } catch (error) {
-//     throw new HttpException(
-//       `Failed to save login to database${error}`,
-//       HttpStatus.INTERNAL_SERVER_ERROR,
-//     );
-//   }
-// }
-
-// async findAuthByRefreshToken(refreshToken: string): Promise<AuthEntity> {
-//   try {
-//     return await this.loginRepository.findOne({
-//       where: { refreshToken: refreshToken },
-//     });
-//   } catch (error) {
-//     throw new HttpException(
-//       `Failed to find auth by refresh token${error}`,
-//       HttpStatus.INTERNAL_SERVER_ERROR,
-//     );
-//   }
-// }
-
-// async revokeLogin(
-//   revokeLogin: RevokeLoginRequestDto,
-// ): Promise<RevokeLoginResponseDto> {
-//   try {
-//     const login = await this.loginRepository.findOne({
-//       where: { refreshToken: revokeLogin.refreshToken },
-//     });
-//     if (!login)
-//       throw new BadRequestException(
-//         `Login with refresh token ${revokeLogin.refreshToken} not found`,
-//       );
-//     login.revoked = true;
-//     const revoked = await this.loginRepository.save(login);
-//     return { ...revoked } as RevokeLoginResponseDto;
-//   } catch (error: any) {
-//     throw new BadRequestException(`Failed to revoke login: ${error.message}`);
-//   }
-// }
-
-// async logout(userId: string): Promise<boolean> {
-//   try {
-//     const logins = await this.loginRepository.find({
-//       where: { userId: userId },
-//     });
-
-//     if (!logins || logins.length === 0) {
-//       throw new Error(`No logins found for user ID ${userId}`);
-//     }
-
-//     for (const login of logins) {
-//       login.revoked = true;
-//       await this.loginRepository.save(login);
-//     }
-
-//     return true;
-//   } catch (error) {
-//     throw new HttpException(
-//       `Failed to logout user: ${error.message}`,
-//       HttpStatus.INTERNAL_SERVER_ERROR,
-//     );
-//   }
-// }

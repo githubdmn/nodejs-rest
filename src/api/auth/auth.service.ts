@@ -51,20 +51,14 @@ export class AuthService {
       userId,
       email,
     );
-    // save refresh token to DB
-    // const currentDate = new Date();
-    // currentDate.setDate(currentDate.getDate() + 1);
-    return { accessToken, refreshToken, userId };
+    this.authDatabase.saveUserRefreshToken(refreshToken, userId);
+    return { accessToken, refreshToken };
   }
 
-  
-  // const saveLogin: SaveLoginRequestDto = {
-    //   refreshToken: refreshToken,
-    //   expiryDate: currentDate,
-    //   revoked: false,
-    //   userId: user.userId.toString(),
-    // };
-
+  async logout(refreshToken: string): Promise<string> {
+    await this.authDatabase.deleteRefreshToken(refreshToken);
+    return 'Logout successful';
+  }
 
   private async generateLoginTokens(id: string, email: string) {
     const accessToken = await this.generateToken(
@@ -81,56 +75,9 @@ export class AuthService {
     );
 
     return { accessToken, refreshToken };
-    
   }
 
-  // async getJwt({
-  //   email,
-  // }: UserLoginRequestDto): Promise<UserLoginResponseDto> {
-  //   const user = await this.getAuthenticatedUser(email, password);
-  //   if (user) {
-  //     const accessToken = await this.generateToken(user, '1h', env.jwtAccess);
-  //     const refreshToken = await this.generateToken(user, '1d', env.jwtRefresh);
-  //     const currentDate = new Date(new Date().getDate() + 1);
-  //     const saveLogin: SaveLoginRequestDto = {
-  //       refreshToken: refreshToken,
-  //       expiryDate: currentDate,
-  //       revoked: false,
-  //       userId: user.userId.toString(),
-  //     };
-  //     // const saved = this.authDatabase.saveLogin(saveLogin);
-  //     return {
-  //       accessToken: accessToken,
-  //       refreshToken: refreshToken,
-  //       id: Number(user.userId),
-  //     } as UserLoginResponseDto;
-  //   } else
-  //     return {
-  //       accessToken: '',
-  //       refreshToken: '',
-  //       id: 0,
-  //     } as UserLoginResponseDto;
-  // }
-
-  async changePassword(
-    userId: string,
-    oldPassword: string,
-    newPassword: string,
-  ): Promise<string> {
-    throw new Error('Method not implemented.');
-    // const user = await this.getAuthenticatedUserById(userId, oldPassword);
-    const newPasswordHash = await hashString(newPassword);
-    // await this.userDatabase.update({ password: newPasswordHash });
-    return 'Password successfully changed';
-  }
-
-  async logout(refreshToken: string): Promise<string> {
-    throw new Error('Method not implemented.');
-    // await this.authDatabase.logout(refreshToken);
-    return 'Logout successfully';
-  }
-
-  async refreshToken(
+  async refreshAccessToken(
     user: Partial<UserDto>,
     refreshToken: string,
   ): Promise<UserLoginResponseDto> {
@@ -150,6 +97,18 @@ export class AuthService {
     //     HttpStatus.INTERNAL_SERVER_ERROR,
     //   );
     // }
+  }
+
+  async changePassword(
+    userId: string,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<string> {
+    throw new Error('Method not implemented.');
+    // const user = await this.getAuthenticatedUserById(userId, oldPassword);
+    const newPasswordHash = await hashString(newPassword);
+    // await this.userDatabase.update({ password: newPasswordHash });
+    return 'Password successfully changed';
   }
 
   private async generateToken(

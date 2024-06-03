@@ -81,11 +81,7 @@ export interface IAuth {
 
   getAdminIdByEmail(email: string): Promise<string>;
 
-  // saveLogin(login: SaveLoginRequestDto): Promise<SaveLoginResponseDto>;
+  saveUserRefreshToken(refreshToken: string, userId: string): Promise<void>;
 
-  // logout(userId: string): Promise<boolean>;
-
-  // findAuthByRefreshToken(
-  //   refreshToken: string,
-  // ): Promise<Partial<AuthResponseDto>>;
+  deleteRefreshToken(refreshToken: string): Promise<void>;
 }
