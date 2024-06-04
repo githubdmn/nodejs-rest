@@ -84,4 +84,11 @@ export interface IAuth {
   saveUserRefreshToken(refreshToken: string, userId: string): Promise<void>;
 
   deleteRefreshToken(refreshToken: string): Promise<void>;
+
+  changePassword(
+    isAdmin: boolean,
+    userId: string,
+    password: string,
+    newPassword: string,
+  ): Promise<boolean>;
 }

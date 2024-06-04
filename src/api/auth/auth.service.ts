@@ -1,17 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { IAuth, IUserDatabase } from '@/database/database.inteface';
+import { IAuth } from '@/database/database.inteface';
 import {
   AdminRegisterRequestDto,
   AdminRegisterResponseDto,
   CredentialsDto,
-  UserDto,
-  UserLoginResponseDto,
   UserRegisterRequestDto,
   UserRegisterResponseDto,
 } from '@/dto';
 import { POSTGRES_AUTH, POSTGRES_USER } from '@/utils/constants';
-import { hashString } from '@/utils';
 import { env } from '@/conf';
 
 const DB_USER = POSTGRES_USER;
@@ -20,7 +17,6 @@ const DB_AUTH = POSTGRES_AUTH;
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(DB_USER) private userDatabase: IUserDatabase,
     @Inject(DB_AUTH) private authDatabase: IAuth,
     private jwtService: JwtService,
   ) {}
@@ -78,37 +74,32 @@ export class AuthService {
   }
 
   async refreshAccessToken(
-    user: Partial<UserDto>,
+    accessToken: string,
     refreshToken: string,
-  ): Promise<UserLoginResponseDto> {
+  ): Promise<any> {
     throw new Error('Method not implemented.');
-    // try {
-    //   if (!user.userId) throw new Error('User ID is not assigned');
-    //   const auth = await this.authDatabase.findAuthByRefreshToken(refreshToken);
-    //   const accessToken = await this.generateToken(user, '1h', env.jwtAccess);
-    //   return {
-    //     accessToken,
-    //     refreshToken,
-    //     id: user.userId,
-    //   };
-    // } catch (error) {
-    //   throw new HttpException(
-    //     `Auth error: ${error}`,
-    //     HttpStatus.INTERNAL_SERVER_ERROR,
-    //   );
-    // }
+
+    // get access and refresh token form controller
+    // check if refresh token is not expired
+    // generate new access token
+    // respond with new access token and refresh token
+
+    const freshAccessToken = '';
+    return { freshAccessToken, refreshToken };
   }
 
   async changePassword(
+    isAdmin: boolean,
     userId: string,
-    oldPassword: string,
+    password: string,
     newPassword: string,
-  ): Promise<string> {
-    throw new Error('Method not implemented.');
-    // const user = await this.getAuthenticatedUserById(userId, oldPassword);
-    const newPasswordHash = await hashString(newPassword);
-    // await this.userDatabase.update({ password: newPasswordHash });
-    return 'Password successfully changed';
+  ): Promise<boolean> {
+    return this.authDatabase.changePassword(
+      isAdmin,
+      userId,
+      password,
+      newPassword,
+    );
   }
 
   private async generateToken(

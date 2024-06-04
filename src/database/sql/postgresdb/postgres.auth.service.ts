@@ -21,7 +21,7 @@ import {
   mapRegisterResultToUserResponse,
   mapUserRegisterToEntities,
 } from './mappers';
-import { checkHashedValue } from '@/utils';
+import { checkHashedValue, hashString } from '@/utils';
 import { env } from '@/conf';
 
 @Injectable()
@@ -198,5 +198,39 @@ export default class PostgresAuthDatabase implements IAuth {
       refreshToken: refreshToken,
     });
     await this.authRepository.remove(auth);
+  }
+
+  async changePassword(
+    isAdmin: boolean,
+    userId: string,
+    password: string,
+    newPassword: string,
+  ): Promise<boolean> {
+    const findObject = isAdmin
+      ? { admin: { adminId: userId } }
+      : { user: { userId: userId } };
+
+    const credentials = await this.credentialsRepository.findOne({
+      where: findObject,
+    });
+
+    if (!credentials) {
+      return false;
+    }
+
+    const passwordCheck = await checkHashedValue(
+      credentials.passwordHash,
+      password,
+    );
+
+    if (!passwordCheck) {
+      return false;
+    }
+
+    credentials.passwordHash = await hashString(newPassword);
+
+    const saveCredentials = await this.credentialsRepository.save(credentials);
+
+    return Boolean(saveCredentials);
   }
 }

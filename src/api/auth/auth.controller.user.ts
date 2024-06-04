@@ -5,12 +5,13 @@ import {
   UseFilters,
   UseGuards,
   Response,
+  Request,
 } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import {
+  ChangePasswordRequestDto,
   CreateUserRequestDto,
   CreateUserResponseDto,
-  LoginRequestDto,
   LoginResponseDto,
 } from './dto';
 import { UserRegisterRequestDto } from '@/dto';
@@ -59,5 +60,21 @@ export class AuthUserController extends AuthController {
       .set('access_token', accessToken)
       .set('refresh_token', refreshToken)
       .json({ message: 'Login successful' });
+  }
+
+  @Post('change-password')
+  async changePassword(
+    @Body() { password, newPassword }: ChangePasswordRequestDto,
+    @Request() request: any,
+  ): Promise<string> {
+    const updated = await this.authService.changePassword(
+      false,
+      request.user.sub,
+      password,
+      newPassword,
+    );
+    return updated
+      ? 'Password successfully changed'
+      : "Password couldn't be changed";
   }
 }

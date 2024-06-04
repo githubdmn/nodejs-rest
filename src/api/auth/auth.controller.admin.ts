@@ -1,6 +1,19 @@
-import { Body, Controller, Post, UseFilters, UseGuards, Response } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseFilters,
+  UseGuards,
+  Response,
+  Request,
+} from '@nestjs/common';
 import { AuthController } from './auth.controller';
-import { CreateAdminRequestDto, CreateAdminResponseDto, LoginResponseDto } from './dto';
+import {
+  ChangePasswordRequestDto,
+  CreateAdminRequestDto,
+  CreateAdminResponseDto,
+  LoginResponseDto,
+} from './dto';
 import { AdminRegisterRequestDto } from '@/dto';
 import { GeneralFilter, UserExistsException } from '@/exceptions';
 import { AuthGuard } from '@nestjs/passport';
@@ -46,5 +59,21 @@ export class AuthAdminController extends AuthController {
       .set('access_token', accessToken)
       .set('refresh_token', refreshToken)
       .json({ id: id, email: email });
+  }
+
+  @Post('change-password')
+  async changePassword(
+    @Body() { password, newPassword }: ChangePasswordRequestDto,
+    @Request() request: any,
+  ): Promise<string> {
+    const updated = await this.authService.changePassword(
+      true,
+      request.user.sub,
+      password,
+      newPassword,
+    );
+    return updated
+      ? 'Password successfully changed'
+      : "Password couldn't be changed";
   }
 }

@@ -1,31 +1,20 @@
 import {
   Body,
-  Controller,
   Post,
   Inject,
   UseGuards,
   Request,
   Response,
-  UseInterceptors,
   Get,
   Headers,
 } from '@nestjs/common';
 import { IAuthService } from './auth.interface';
 import { AUTH_SERVICE } from '@/utils/constants';
-import { SerializeExclude } from '@/interceptor';
+import { UserLoginResponseDto } from '@/dto';
 import {
-  ChangePasswordRequestDto,
-  CreateUserRequestDto,
-  CreateUserResponseDto,
-  UserDto,
-  UserLoginRequestDto,
-  UserLoginResponseDto,
-} from '@/dto';
-import {
-  LoginRequestDto,
-  LoginResponseDto,
   UserRegistrationRequestDto,
   UserRegistrationResponseDto,
+  ChangePasswordRequestDto,
 } from './dto';
 import { AuthGuard } from '@/guard';
 
@@ -39,18 +28,10 @@ export abstract class AuthController {
 
   abstract login(email: string, response: any): any;
 
-  @Post('change-password')
-  async changePassword(
-    @Body() { oldPassword, newPassword }: ChangePasswordRequestDto,
-    @Request() request: any,
-  ): Promise<string> {
-    const updated = await this.authService.changePassword(
-      request.user.sub,
-      oldPassword,
-      newPassword,
-    );
-    return 'Password successfully changed';
-  }
+  abstract changePassword(
+    { password, newPassword }: ChangePasswordRequestDto,
+    request: any,
+  ): Promise<string>;
 
   @Get('logout')
   async logout(
@@ -68,18 +49,18 @@ export abstract class AuthController {
   async refreshAccessToken(
     @Request() req: any,
     @Response() res: any,
-  ): Promise<UserLoginResponseDto> {
-    const refreshToken = req.headers.refresh_token;
-    const data = await this.authService.refreshToken(
-      { userId: req.user.sub, email: req.user.username },
-      refreshToken,
-    );
-    return res
-      .set('access_token', data.accessToken)
-      .set('refresh_token', data.refreshToken)
-      .json({
-        id: data.id,
-        email: req.user.username,
-      }) as UserLoginResponseDto;
+  ): Promise<any> {
+    // const refreshToken = req.headers.refresh_token;
+    // const data = await this.authService.refreshToken(
+    //   { userId: req.user.sub, email: req.user.username },
+    //   refreshToken,
+    // );
+    // return res
+    //   .set('access_token', data.accessToken)
+    //   .set('refresh_token', data.refreshToken)
+    //   .json({
+    //     id: data.id,
+    //     email: req.user.username,
+    //   }) as UserLoginResponseDto;
   }
 }
