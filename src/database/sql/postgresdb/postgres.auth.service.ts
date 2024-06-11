@@ -122,25 +122,16 @@ export default class PostgresAuthDatabase implements IAuth {
     email,
     password,
   }: CredentialsDto): Promise<boolean> {
-    const user = await this.userRepositoy.findOneBy({ email: email });
     const admin = await this.adminRepository.findOneBy({ email: email });
-    let credentials;
+    const user = await this.userRepositoy.findOneBy({ email: email });
 
-    if (user) {
-      credentials = await this.credentialsRepository.findOne({
-        where: {
-          user: { userId: user.userId },
-        },
-      });
-    } else if (admin) {
-      credentials = await this.credentialsRepository.findOne({
-        where: {
-          admin: { adminId: admin.adminId },
-        },
-      });
-    } else {
-      return false;
-    }
+    const findObject = admin
+      ? { admin: { adminId: admin.adminId } }
+      : { user: { userId: user?.userId } };
+
+    const credentials = await this.credentialsRepository.findOne({
+      where: findObject,
+    });
 
     if (!credentials?.passwordHash) {
       return false;
@@ -159,7 +150,7 @@ export default class PostgresAuthDatabase implements IAuth {
   }
 
   async getUserIdByEmail(email: string): Promise<string> {
-    const user = await this.userRepositoy.findOneBy({ email });
+    const user = await this.userRepositoy.findOneBy({ email: email });
     return user ? user.userId : '';
   }
 
@@ -168,23 +159,47 @@ export default class PostgresAuthDatabase implements IAuth {
     return admin ? admin.adminId : '';
   }
 
-  async saveUserRefreshToken(
+  async saveRefreshToken(
+    isAdmin: boolean,
     refreshToken: string,
     userId: string,
-  ): Promise<void> {
+  ): Promise<any> {
     try {
-      const auth = await this.authRepository.findOne({
-        where: { user: { userId: userId } },
-      });
-      if (auth) {
-        const milliseconds = env.refreshTokenExpiration * 1000;
-        const date = new Date();
-        date.setTime(date.getTime() + milliseconds);
-        auth.last_login = date;
-        auth.refreshToken = refreshToken;
-        auth.method = 'Custom';
-        await this.authRepository.save(auth);
+      const user = isAdmin
+        ? await this.adminRepository.findOneBy({ adminId: userId })
+        : await this.userRepositoy.findOneBy({ userId });
+
+      if (!user) {
+        throw new Error('User not found');
       }
+      console.log('user', user);
+
+      const checkAuth = await this.authRepository.exists({
+        where: {
+          refreshToken,
+        },
+      });
+
+      console.log('checkAuth', checkAuth);
+
+      if (checkAuth) {
+        throw new Error('User already has a refresh token');
+      }
+
+      const authPrepared = isAdmin
+        ? await this.authRepository.create({ admin: user })
+        : await this.authRepository.create({ user });
+
+      console.log('saveRefreshToken', refreshToken, authPrepared);
+
+      const milliseconds = env.refreshTokenExpiration * 1000;
+      const date = new Date();
+      date.setTime(date.getTime() + milliseconds);
+      authPrepared.last_login = date;
+      authPrepared.refreshToken = refreshToken;
+      authPrepared.method = 'Custom';
+
+      return await this.authRepository.save(authPrepared);
     } catch (error: any) {
       this.logger.error(
         `DB service: Failed to save refresh token. Error: ${error.message}`,
@@ -193,11 +208,19 @@ export default class PostgresAuthDatabase implements IAuth {
     }
   }
 
-  async deleteRefreshToken(refreshToken: string): Promise<void> {
+  async deleteRefreshToken(refreshToken: string): Promise<any> {
     const auth = await this.authRepository.findBy({
       refreshToken: refreshToken,
     });
-    await this.authRepository.remove(auth);
+    const [authRemoved] = await this.authRepository.softRemove(auth);
+    return authRemoved;
+  }
+
+  async checkRefreshToken(refreshToken: string): Promise<boolean> {
+    const [auth] = await this.authRepository.findBy({
+      refreshToken,
+    });
+    return Boolean(auth);
   }
 
   async changePassword(
