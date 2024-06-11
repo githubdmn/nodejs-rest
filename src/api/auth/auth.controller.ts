@@ -10,11 +10,12 @@ import {
 } from '@nestjs/common';
 import { IAuthService } from './auth.interface';
 import { AUTH_SERVICE } from '@/utils/constants';
-import { UserLoginResponseDto } from '@/dto';
 import {
   UserRegistrationRequestDto,
   UserRegistrationResponseDto,
   ChangePasswordRequestDto,
+  LoginResponseDto,
+  LoginRequestDto,
 } from './dto';
 import { AuthGuard } from '@/guard';
 
@@ -26,18 +27,44 @@ export abstract class AuthController {
     user: UserRegistrationRequestDto,
   ): Promise<UserRegistrationResponseDto>;
 
-  abstract login(email: string, response: any): any;
+  @Post('login')
+  async login(
+    @Body() login: LoginRequestDto,
+    @Response() response: any,
+  ): Promise<LoginResponseDto> {
+    const isAdmin: boolean = login.userType === 'admin' ? true : false;
+    const { accessToken, refreshToken } = await this.authService.loginUser(
+      isAdmin,
+      login.email,
+    );
+    return response
+      .set('access_token', accessToken)
+      .set('refresh_token', refreshToken)
+      .json({ message: 'Login successful' });
+  }
 
-  abstract changePassword(
-    { password, newPassword }: ChangePasswordRequestDto,
-    request: any,
-  ): Promise<string>;
+  @Post('change-password')
+  async changePassword(
+    @Body() { userType, password, newPassword }: ChangePasswordRequestDto,
+    @Request() request: any,
+  ): Promise<string> {
+    const isAdmin: boolean = userType === 'admin' ? true : false;
+    const updated = await this.authService.changePassword(
+      isAdmin,
+      request.user.sub,
+      password,
+      newPassword,
+    );
+    return updated
+      ? 'Password successfully changed'
+      : "Password couldn't be changed";
+  }
 
   @Get('logout')
   async logout(
     @Headers('refresh_token') refreshToken: string,
     @Response() res: any,
-  ): Promise<UserLoginResponseDto> {
+  ): Promise<string> {
     await this.authService.logout(refreshToken);
     return res
       .set('access_token', '')
@@ -50,17 +77,20 @@ export abstract class AuthController {
     @Request() req: any,
     @Response() res: any,
   ): Promise<any> {
-    // const refreshToken = req.headers.refresh_token;
-    // const data = await this.authService.refreshToken(
-    //   { userId: req.user.sub, email: req.user.username },
-    //   refreshToken,
-    // );
-    // return res
-    //   .set('access_token', data.accessToken)
-    //   .set('refresh_token', data.refreshToken)
-    //   .json({
-    //     id: data.id,
-    //     email: req.user.username,
-    //   }) as UserLoginResponseDto;
+    const refreshToken = req.headers.refresh_token;
+
+    const data = await this.authService.refreshAccessToken(
+      req.user.sub,
+      req.user.username,
+      refreshToken,
+    );
+
+    return res
+      .set('access_token', data.accessToken)
+      .set('refresh_token', data.refreshToken)
+      .json({
+        id: req.user.sub,
+        email: req.user.username,
+      });
   }
 }

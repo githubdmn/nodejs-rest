@@ -81,9 +81,15 @@ export interface IAuth {
 
   getAdminIdByEmail(email: string): Promise<string>;
 
-  saveUserRefreshToken(refreshToken: string, userId: string): Promise<void>;
+  saveRefreshToken(
+    isAdmin: boolean,
+    refreshToken: string,
+    userId: string,
+  ): Promise<void>;
 
-  deleteRefreshToken(refreshToken: string): Promise<void>;
+  deleteRefreshToken(refreshToken: string): Promise<any>;
+
+  checkRefreshToken(refreshToken: string): Promise<boolean>;
 
   changePassword(
     isAdmin: boolean,

@@ -10,6 +10,7 @@ import {
 } from '@/dto';
 import { POSTGRES_AUTH, POSTGRES_USER } from '@/utils/constants';
 import { env } from '@/conf';
+import { RefreshTokenResponseDto } from './dto';
 
 const DB_USER = POSTGRES_USER;
 const DB_AUTH = POSTGRES_AUTH;
@@ -41,13 +42,19 @@ export class AuthService {
     return await this.authDatabase.checkCredentials(credentials);
   }
 
-  async loginUser(email: string) {
-    const userId = await this.authDatabase.getUserIdByEmail(email);
+  async loginUser(
+    isAdmin: boolean,
+    email: string,
+  ): Promise<RefreshTokenResponseDto> {
+    const userId = isAdmin
+      ? await this.authDatabase.getAdminIdByEmail(email)
+      : await this.authDatabase.getUserIdByEmail(email);
+
     const { accessToken, refreshToken } = await this.generateLoginTokens(
       userId,
       email,
     );
-    this.authDatabase.saveUserRefreshToken(refreshToken, userId);
+    await this.authDatabase.saveRefreshToken(isAdmin, refreshToken, userId);
     return { accessToken, refreshToken };
   }
 
@@ -74,18 +81,24 @@ export class AuthService {
   }
 
   async refreshAccessToken(
-    accessToken: string,
+    id: string,
+    email: string,
     refreshToken: string,
-  ): Promise<any> {
-    throw new Error('Method not implemented.');
+  ): Promise<RefreshTokenResponseDto> {
+    const valid = await this.authDatabase.checkRefreshToken(refreshToken);
 
-    // get access and refresh token form controller
-    // check if refresh token is not expired
-    // generate new access token
-    // respond with new access token and refresh token
+    if (!valid) {
+      throw new Error('Invalid refresh token');
+    }
 
-    const freshAccessToken = '';
-    return { freshAccessToken, refreshToken };
+    const accessToken = await this.generateToken(
+      id,
+      email,
+      env.accessTokenExpiration,
+      env.jwtAccess,
+    );
+
+    return { accessToken, refreshToken };
   }
 
   async changePassword(

@@ -8,6 +8,7 @@ import {
   UserRegisterRequestDto,
   UserRegisterResponseDto,
 } from '@/dto';
+import { RefreshTokenResponseDto } from './dto';
 
 export interface IAuthService {
   registerUser(
@@ -18,12 +19,13 @@ export interface IAuthService {
   ): Promise<AdminRegisterResponseDto>;
   userExists(email: string): Promise<boolean>;
   validateUser(credentials: CredentialsDto): Promise<boolean>;
-  loginUser(email: string): any;
+  loginUser(isAdmin: boolean, email: string): Promise<RefreshTokenResponseDto>;
   logout(refreshToken: string): Promise<string>;
   refreshAccessToken(
-    user: Partial<UserDto>,
+    id: string,
+    email: string,
     refreshToken: string,
-  ): Promise<UserLoginResponseDto>;
+  ): Promise<RefreshTokenResponseDto>;
   changePassword(
     isAdmin: boolean,
     userId: string,
