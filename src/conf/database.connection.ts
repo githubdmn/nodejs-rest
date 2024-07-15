@@ -1,5 +1,5 @@
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import {env} from './index';
+import env from './dev.env';
 
 const { type, schema, database, host, port, username, password, synchronize, logging } = env.db;
 
