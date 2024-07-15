@@ -29,10 +29,10 @@ import {
   GetUsersTodoListsResponseWithItemsDto,
 } from './old/getUsersTodoListsResponseWithItems.dto';
 
-import { AdminRegisterRequestDto } from './register/admin-register-request.dto';
-import { AdminRegisterResponseDto } from './register/admin-register-response.dto';
-import { UserRegisterRequestDto } from './register/user-register-request.dto';
-import { UserRegisterResponseDto } from './register/user-register-response.dto';
+import { AdminRegisterRequestDto } from './old/register/admin-register-request.dto';
+import { AdminRegisterResponseDto } from './old/register/admin-register-response.dto';
+import { UserRegisterRequestDto } from './old/register/user-register-request.dto';
+import { UserRegisterResponseDto } from './old/register/user-register-response.dto';
 import { CredentialsDto } from './Credentials.dto';
 
 export {
