@@ -1,28 +1,15 @@
 import { Module } from '@nestjs/common';
-import { POSTGRES_USER, POSTGRES_AUTH, POSTGRES_TODO } from '@/utils/constants';
+import { POSTGRES_USER, POSTGRES_AUTH, POSTGRES_TODO, SQLITE_USER_AUTH } from '@/utils/constants';
 import {
   PostgresAuthService,
   PostgresTodoService,
   PostgresUserService,
 } from './sql/postgresdb';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import {
-  AdminEntity,
-  AuthEntity,
-  CredentialsEntity,
-  TodoItem,
-  TodoList,
-  UserEntity,
-} from '@/entities';
+import { Entities } from '@/entities';
+import { UserAuth } from './sql/sqlite';
 
-const TypeOrmLocal = TypeOrmModule.forFeature([
-  UserEntity,
-  TodoItem,
-  TodoList,
-  AuthEntity,
-  CredentialsEntity,
-  AdminEntity,
-]);
+const TypeOrmLocal = TypeOrmModule.forFeature([...Entities]);
 const PostgresServices = [
   {
     provide: POSTGRES_USER,
@@ -37,32 +24,16 @@ const PostgresServices = [
     useClass: PostgresAuthService,
   },
 ];
+const SqliteServices = [
+  {
+    provide: SQLITE_USER_AUTH,
+    useClass: UserAuth,
+  },
+];
 
 @Module({
   imports: [TypeOrmLocal],
-  providers: [...PostgresServices],
-  exports: [...PostgresServices],
+  providers: [...PostgresServices, ...SqliteServices],
+  exports: [...PostgresServices, ...SqliteServices],
 })
-export class DatabaseModule {}
-
-// TODO: implement mongodb service
-// const MongooseModuleLocal = MongooseModule.forFeature([
-//   { name: 'User', schema: {} },
-// ]);
-
-// // TODO: implement mongodb service
-// const MongoServices = [
-//   {
-//     provide: 'MONGO_USER',
-//     useClass: PostgresUserService, // NOT IMPLEMENTED
-//   },
-//   {
-//     provide: 'Mongo_Todo',
-//     useClass: MongoTodoService, // NOT IMPLEMENTED
-//   },
-// ];
-
-// const SetDB =
-//   env.dbUse === 'postgres'
-//     ? { Imports: TypeOrmLocal, Services: PostgresServices }
-//     : { Imports: MongooseModuleLocal, Services: MongoServices };
+export class DatabaseModule { }

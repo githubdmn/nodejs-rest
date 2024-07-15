@@ -1,6 +1,6 @@
 import { UpdateUserRequestDto, UpdateUserResponseDto, UserDto } from "@/dto";
 
-export interface IUserDatabase {
+export interface IUser {
   findUserByUserId(userId: string): Promise<UserDto>;
 
   findUserByEmail(email: string): Promise<UserDto>;

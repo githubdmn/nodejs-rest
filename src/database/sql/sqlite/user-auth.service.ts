@@ -15,18 +15,19 @@ import {
   CredentialsEntity,
   UserEntity,
 } from '@/entities';
-import {
-  mapAdminRegisterToEntities,
-  mapRegisterResultToAdminResponse,
-  mapRegisterResultToUserResponse,
-  mapUserRegisterToEntities,
-} from './mappers';
+// import {
+//   mapAdminRegisterToEntities,
+//   mapRegisterResultToAdminResponse,
+//   mapRegisterResultToUserResponse,
+//   mapUserRegisterToEntities,
+// } from './mappers';
 import { checkHashedValue, hashString } from '@/utils';
 import { env } from '@/conf';
+import { IUserAuth } from '@/database/interfaces/user-auth-db.interface';
 
 @Injectable()
-export default class PostgresAuthDatabase implements IAuth {
-  private readonly logger = new Logger(PostgresAuthDatabase.name);
+export default class UserAuth implements IUserAuth {
+  private readonly logger = new Logger(UserAuth.name);
 
   constructor(
     @InjectRepository(AuthEntity)
@@ -38,222 +39,222 @@ export default class PostgresAuthDatabase implements IAuth {
     private credentialsRepository: Repository<CredentialsEntity>,
   ) {}
 
-  async saveUser(
-    user: UserRegisterRequestDto,
-  ): Promise<UserRegisterResponseDto> {
-    const [credentialsEntity, userEntity] = mapUserRegisterToEntities(user);
-    const userPrepared = this.userRepositoy.create(userEntity);
-    const credentialsPrepared =
-      this.credentialsRepository.create(credentialsEntity);
-    const authPrepared = this.authRepository.create({ user: userPrepared });
+  // async saveUser(
+  //   user: UserRegisterRequestDto,
+  // ): Promise<UserRegisterResponseDto> {
+  //   const [credentialsEntity, userEntity] = mapUserRegisterToEntities(user);
+  //   const userPrepared = this.userRepositoy.create(userEntity);
+  //   const credentialsPrepared =
+  //     this.credentialsRepository.create(credentialsEntity);
+  //   const authPrepared = this.authRepository.create({ user: userPrepared });
 
-    try {
-      return await this.authRepository.manager.transaction(
-        async (transactionalEntityManager) => {
-          const savedUser = await transactionalEntityManager.save(userPrepared);
-          authPrepared.user = savedUser;
-          credentialsPrepared.user = savedUser;
-          const savedCredentials =
-            await transactionalEntityManager.save(credentialsPrepared);
-          const savedAuth = await transactionalEntityManager.save(authPrepared);
-          this.logger.log(
-            `User successfully saved ${savedUser.email} ${savedUser.userId}`,
-          );
-          return mapRegisterResultToUserResponse(savedUser);
-        },
-      );
-    } catch (error: any) {
-      this.logger.error(
-        `DB service: Failed to save user ${user.email} to database. Error: ${error.message}`,
-      );
-      throw new HttpException(
-        `DB service: Failed to save user to database.`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
+  //   try {
+  //     return await this.authRepository.manager.transaction(
+  //       async (transactionalEntityManager) => {
+  //         const savedUser = await transactionalEntityManager.save(userPrepared);
+  //         authPrepared.user = savedUser;
+  //         credentialsPrepared.user = savedUser;
+  //         const savedCredentials =
+  //           await transactionalEntityManager.save(credentialsPrepared);
+  //         const savedAuth = await transactionalEntityManager.save(authPrepared);
+  //         this.logger.log(
+  //           `User successfully saved ${savedUser.email} ${savedUser.userId}`,
+  //         );
+  //         return mapRegisterResultToUserResponse(savedUser);
+  //       },
+  //     );
+  //   } catch (error: any) {
+  //     this.logger.error(
+  //       `DB service: Failed to save user ${user.email} to database. Error: ${error.message}`,
+  //     );
+  //     throw new HttpException(
+  //       `DB service: Failed to save user to database.`,
+  //       HttpStatus.INTERNAL_SERVER_ERROR,
+  //     );
+  //   }
+  // }
 
-  async saveAdmin(
-    admin: AdminRegisterRequestDto,
-  ): Promise<AdminRegisterResponseDto> {
-    const [credentialsEntity, adminEntity] = mapAdminRegisterToEntities(admin);
-    const adminPrepared = this.adminRepository.create(adminEntity);
+  // async saveAdmin(
+  //   admin: AdminRegisterRequestDto,
+  // ): Promise<AdminRegisterResponseDto> {
+  //   const [credentialsEntity, adminEntity] = mapAdminRegisterToEntities(admin);
+  //   const adminPrepared = this.adminRepository.create(adminEntity);
 
-    const credentialsPrepared =
-      this.credentialsRepository.create(credentialsEntity);
-    const authPrepared = this.authRepository.create({ admin: adminPrepared });
-    try {
-      return await this.adminRepository.manager.transaction(
-        async (transactionalEntityManager) => {
-          const savedAdmin =
-            await transactionalEntityManager.save(adminPrepared);
-          authPrepared.admin = savedAdmin;
-          credentialsPrepared.admin = savedAdmin;
-          const savedCredentials =
-            await transactionalEntityManager.save(credentialsPrepared);
+  //   const credentialsPrepared =
+  //     this.credentialsRepository.create(credentialsEntity);
+  //   const authPrepared = this.authRepository.create({ admin: adminPrepared });
+  //   try {
+  //     return await this.adminRepository.manager.transaction(
+  //       async (transactionalEntityManager) => {
+  //         const savedAdmin =
+  //           await transactionalEntityManager.save(adminPrepared);
+  //         authPrepared.admin = savedAdmin;
+  //         credentialsPrepared.admin = savedAdmin;
+  //         const savedCredentials =
+  //           await transactionalEntityManager.save(credentialsPrepared);
 
-          authPrepared.admin = savedAdmin;
-          const savedAuth = await transactionalEntityManager.save(authPrepared);
-          this.logger.log(
-            `User successfully saved ${savedAdmin.email} ${savedAdmin.adminId}`,
-          );
-          return mapRegisterResultToAdminResponse(savedAdmin);
-        },
-      );
-    } catch (error: any) {
-      this.logger.error(
-        `DB service: Failed to save admin ${admin.email} to database. Error: ${error.message}`,
-      );
-      throw new HttpException(
-        `DB service: Failed to save user to database.`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
+  //         authPrepared.admin = savedAdmin;
+  //         const savedAuth = await transactionalEntityManager.save(authPrepared);
+  //         this.logger.log(
+  //           `User successfully saved ${savedAdmin.email} ${savedAdmin.adminId}`,
+  //         );
+  //         return mapRegisterResultToAdminResponse(savedAdmin);
+  //       },
+  //     );
+  //   } catch (error: any) {
+  //     this.logger.error(
+  //       `DB service: Failed to save admin ${admin.email} to database. Error: ${error.message}`,
+  //     );
+  //     throw new HttpException(
+  //       `DB service: Failed to save user to database.`,
+  //       HttpStatus.INTERNAL_SERVER_ERROR,
+  //     );
+  //   }
+  // }
 
-  async userExists(email: string): Promise<boolean> {
-    const user = await this.userRepositoy.findOneBy({ email: email });
-    const admin = await this.adminRepository.findOneBy({ email: email });
+  // async userExists(email: string): Promise<boolean> {
+  //   const user = await this.userRepositoy.findOneBy({ email: email });
+  //   const admin = await this.adminRepository.findOneBy({ email: email });
 
-    return Boolean(user || admin);
-  }
+  //   return Boolean(user || admin);
+  // }
 
-  async checkCredentials({
-    email,
-    password,
-  }: CredentialsDto): Promise<boolean> {
-    const admin = await this.adminRepository.findOneBy({ email: email });
-    const user = await this.userRepositoy.findOneBy({ email: email });
+  // async checkCredentials({
+  //   email,
+  //   password,
+  // }: CredentialsDto): Promise<boolean> {
+  //   const admin = await this.adminRepository.findOneBy({ email: email });
+  //   const user = await this.userRepositoy.findOneBy({ email: email });
 
-    const findObject = admin
-      ? { admin: { adminId: admin.adminId } }
-      : { user: { userId: user?.userId } };
+  //   const findObject = admin
+  //     ? { admin: { adminId: admin.adminId } }
+  //     : { user: { userId: user?.userId } };
 
-    const credentials = await this.credentialsRepository.findOne({
-      where: findObject,
-    });
+  //   const credentials = await this.credentialsRepository.findOne({
+  //     where: findObject,
+  //   });
 
-    if (!credentials?.passwordHash) {
-      return false;
-    }
+  //   if (!credentials?.passwordHash) {
+  //     return false;
+  //   }
 
-    const passwordCheck = await checkHashedValue(
-      credentials?.passwordHash,
-      password,
-    );
+  //   const passwordCheck = await checkHashedValue(
+  //     credentials?.passwordHash,
+  //     password,
+  //   );
 
-    if (passwordCheck) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  //   if (passwordCheck) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
-  async getUserIdByEmail(email: string): Promise<string> {
-    const user = await this.userRepositoy.findOneBy({ email: email });
-    return user ? user.userId : '';
-  }
+  // async getUserIdByEmail(email: string): Promise<string> {
+  //   const user = await this.userRepositoy.findOneBy({ email: email });
+  //   return user ? user.userId : '';
+  // }
 
-  async getAdminIdByEmail(email: string): Promise<string> {
-    const admin = await this.adminRepository.findOneBy({ email });
-    return admin ? admin.adminId : '';
-  }
+  // async getAdminIdByEmail(email: string): Promise<string> {
+  //   const admin = await this.adminRepository.findOneBy({ email });
+  //   return admin ? admin.adminId : '';
+  // }
 
-  async saveRefreshToken(
-    isAdmin: boolean,
-    refreshToken: string,
-    userId: string,
-  ): Promise<any> {
-    try {
-      const user = isAdmin
-        ? await this.adminRepository.findOneBy({ adminId: userId })
-        : await this.userRepositoy.findOneBy({ userId });
+  // async saveRefreshToken(
+  //   isAdmin: boolean,
+  //   refreshToken: string,
+  //   userId: string,
+  // ): Promise<any> {
+  //   try {
+  //     const user = isAdmin
+  //       ? await this.adminRepository.findOneBy({ adminId: userId })
+  //       : await this.userRepositoy.findOneBy({ userId });
 
-      if (!user) {
-        throw new Error('User not found');
-      }
-      console.log('user', user);
+  //     if (!user) {
+  //       throw new Error('User not found');
+  //     }
+  //     console.log('user', user);
 
-      const checkAuth = await this.authRepository.exists({
-        where: {
-          refreshToken,
-        },
-      });
+  //     const checkAuth = await this.authRepository.exists({
+  //       where: {
+  //         refreshToken,
+  //       },
+  //     });
 
-      console.log('checkAuth', checkAuth);
+  //     console.log('checkAuth', checkAuth);
 
-      if (checkAuth) {
-        throw new Error('User already has a refresh token');
-      }
+  //     if (checkAuth) {
+  //       throw new Error('User already has a refresh token');
+  //     }
 
-      const authPrepared = isAdmin
-        ? await this.authRepository.create({ admin: user })
-        : await this.authRepository.create({ user });
+  //     const authPrepared = isAdmin
+  //       ? await this.authRepository.create({ admin: user })
+  //       : await this.authRepository.create({ user });
 
-      console.log('saveRefreshToken', refreshToken, authPrepared);
+  //     console.log('saveRefreshToken', refreshToken, authPrepared);
 
-      const milliseconds = env.refreshTokenExpiration * 1000;
-      const date = new Date();
-      date.setTime(date.getTime() + milliseconds);
-      authPrepared.last_login = date;
-      authPrepared.refreshToken = refreshToken;
-      authPrepared.method = 'Custom';
+  //     const milliseconds = env.refreshTokenExpiration * 1000;
+  //     const date = new Date();
+  //     date.setTime(date.getTime() + milliseconds);
+  //     authPrepared.last_login = date;
+  //     authPrepared.refreshToken = refreshToken;
+  //     authPrepared.method = 'Custom';
 
-      return await this.authRepository.save(authPrepared);
-    } catch (error: any) {
-      this.logger.error(
-        `DB service: Failed to save refresh token. Error: ${error.message}`,
-      );
-      console.error(error);
-    }
-  }
+  //     return await this.authRepository.save(authPrepared);
+  //   } catch (error: any) {
+  //     this.logger.error(
+  //       `DB service: Failed to save refresh token. Error: ${error.message}`,
+  //     );
+  //     console.error(error);
+  //   }
+  // }
 
-  async deleteRefreshToken(refreshToken: string): Promise<any> {
-    const auth = await this.authRepository.findBy({
-      refreshToken: refreshToken,
-    });
-    const [authRemoved] = await this.authRepository.softRemove(auth);
-    return authRemoved;
-  }
+  // async deleteRefreshToken(refreshToken: string): Promise<any> {
+  //   const auth = await this.authRepository.findBy({
+  //     refreshToken: refreshToken,
+  //   });
+  //   const [authRemoved] = await this.authRepository.softRemove(auth);
+  //   return authRemoved;
+  // }
 
-  async checkRefreshToken(refreshToken: string): Promise<boolean> {
-    const [auth] = await this.authRepository.findBy({
-      refreshToken,
-    });
-    return Boolean(auth);
-  }
+  // async checkRefreshToken(refreshToken: string): Promise<boolean> {
+  //   const [auth] = await this.authRepository.findBy({
+  //     refreshToken,
+  //   });
+  //   return Boolean(auth);
+  // }
 
-  async changePassword(
-    isAdmin: boolean,
-    userId: string,
-    password: string,
-    newPassword: string,
-  ): Promise<boolean> {
-    const findObject = isAdmin
-      ? { admin: { adminId: userId } }
-      : { user: { userId: userId } };
+  // async changePassword(
+  //   isAdmin: boolean,
+  //   userId: string,
+  //   password: string,
+  //   newPassword: string,
+  // ): Promise<boolean> {
+  //   const findObject = isAdmin
+  //     ? { admin: { adminId: userId } }
+  //     : { user: { userId: userId } };
 
-    const credentials = await this.credentialsRepository.findOne({
-      where: findObject,
-    });
+  //   const credentials = await this.credentialsRepository.findOne({
+  //     where: findObject,
+  //   });
 
-    if (!credentials) {
-      return false;
-    }
+  //   if (!credentials) {
+  //     return false;
+  //   }
 
-    const passwordCheck = await checkHashedValue(
-      credentials.passwordHash,
-      password,
-    );
+  //   const passwordCheck = await checkHashedValue(
+  //     credentials.passwordHash,
+  //     password,
+  //   );
 
-    if (!passwordCheck) {
-      return false;
-    }
+  //   if (!passwordCheck) {
+  //     return false;
+  //   }
 
-    credentials.passwordHash = await hashString(newPassword);
+  //   credentials.passwordHash = await hashString(newPassword);
 
-    const saveCredentials = await this.credentialsRepository.save(credentials);
+  //   const saveCredentials = await this.credentialsRepository.save(credentials);
 
-    return Boolean(saveCredentials);
-  }
+  //   return Boolean(saveCredentials);
+  // }
 }

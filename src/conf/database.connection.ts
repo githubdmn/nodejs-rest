@@ -18,7 +18,7 @@ const SqlSettingEnv = {
 
 const sqliteSettingEnv = {
   type: 'sqlite',
-  database: 'db/rakoc',
+  database: 'db/tech-assignment.sqlite',
   synchronize: true,
   entities: ['dist/src/entities/*.entity.{ts,js}'],
 } as TypeOrmModuleOptions;

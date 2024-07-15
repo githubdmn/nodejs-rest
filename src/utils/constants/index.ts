@@ -3,6 +3,12 @@ export const POSTGRES_USER = 'POSTGRES_USER';
 export const POSTGRES_TODO = 'POSTGRES_TODO';
 export const POSTGRES_AUTH = 'POSTGRES_AUTH';
 
+export const SQLITE_SERVICE = 'SQLITE_SERVICE';
+export const SQLITE_USER = 'SQLITE_USER';
+export const SQLITE_TODO = 'SQLITE_TODO';
+export const SQLITE_USER_AUTH = 'SQLITE_USER_AUTH';
+
 export const USER_SERVICE = 'USER_SERVICE';
 export const TODO_SERVICE = 'TODO_SERVICE';
 export const AUTH_SERVICE = 'AUTH_SERVICE';
+export const FIREBASE_SERVICE = 'FIREBASE_SERVICE';

@@ -1,6 +1,6 @@
 import { CreateTodoItemRequestDto, CreateTodoListRequestDto, CreateTodoListResponseDto, DeleteTodoListRequestDto, DeleteTodoListResponseDto, GetUsersTodoListRequestDto, GetUsersTodoListResponseDto, GetUsersTodoListsRequestDto, GetUsersTodoListsResponseDto, GetUsersTodoListsResponseWithItemsDto, TodoItemDto, UpdateTodoItemRequestDto, UpdateTodoListRequestDto } from "@/dto";
 
-export interface ITodoDatabase {
+export interface ITodo {
   createTodoList(
     createTodoListDto: CreateTodoListRequestDto,
   ): Promise<Partial<CreateTodoListResponseDto>>;

@@ -5,4 +5,20 @@ import TodoList from './todoList.entity';
 import TodoItem from './todoItem.entity';
 import CredentialsEntity from './credentials.entity';
 
-export { UserEntity, TodoItem, TodoList, AuthEntity, AdminEntity, CredentialsEntity };
+export {
+  UserEntity,
+  TodoItem,
+  TodoList,
+  AuthEntity,
+  AdminEntity,
+  CredentialsEntity,
+};
+
+export const Entities = [
+  UserEntity,
+  TodoItem,
+  TodoList,
+  AuthEntity,
+  AdminEntity,
+  CredentialsEntity,
+];
