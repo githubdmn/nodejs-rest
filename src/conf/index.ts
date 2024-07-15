@@ -1,4 +1,7 @@
+import databaseConnection from './database.connection';
 import env from './dev.env';
-import TypeORMConfig from './postresql.connection';
+import { firebaseApp, firebaseConfig } from './firebase';
+import { serviceAccount } from './service-account';
 
-export { env, TypeORMConfig };
+
+export { env, databaseConnection, firebaseApp, firebaseConfig, serviceAccount };
