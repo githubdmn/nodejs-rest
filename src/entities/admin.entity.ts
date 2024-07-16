@@ -1,32 +1,17 @@
 import {
   Entity,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
   BeforeInsert,
   OneToOne,
-  JoinColumn,
 } from 'typeorm';
 import Auth from './auth.entity';
-import Base from './base.entity';
 import Credentials from './credentials.entity';
+import User from './user.entity';
 
 @Entity()
-export default class Admin extends Base {
+export default class Admin extends User {
   @Column({ unique: true })
   adminId: string;
-
-  @Column()
-  name: string;
-
-  @Column({ unique: true })
-  email: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   @OneToOne(() => Credentials, (credentials) => credentials.admin)
   credentials: Credentials;

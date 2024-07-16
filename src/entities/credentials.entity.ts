@@ -1,6 +1,6 @@
 import { Entity, Column, OneToOne, JoinColumn, BeforeInsert } from 'typeorm';
 import Base from './base.entity';
-import User from './user.entity';
+import EndUser from './user.entity';
 import Admin from './admin.entity';
 import { hashString } from '@/utils';
 
@@ -12,9 +12,9 @@ export default class Credentials extends Base {
   @Column()
   passwordHash: string;
 
-  @OneToOne(() => User, (user) => user.credentials)
-  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
-  user?: User;
+  @OneToOne(() => EndUser, (enduser) => enduser)
+  @JoinColumn({ name: 'enduserId', referencedColumnName: 'enduserId' })
+  enduser?: EndUser;
 
   @OneToOne(() => Admin, (admin) => admin.credentials)
   @JoinColumn({ name: 'adminId', referencedColumnName: 'adminId' })

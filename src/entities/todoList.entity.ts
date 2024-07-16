@@ -8,10 +8,11 @@ import {
 } from 'typeorm';
 import User from './user.entity';
 import TodoItem from './todoItem.entity';
-import BaseEntity from './base.entity';
+import Base from './base.entity';
+import EndUser from './enduser.entity';
 
 @Entity('todo_lists')
-export default class TodoList extends BaseEntity {
+export default class TodoList extends Base {
   @Column({ unique: true })
   listId: string;
 
@@ -23,8 +24,8 @@ export default class TodoList extends BaseEntity {
     this.listId = super.idGenerator();
   }
 
-  @ManyToOne(() => User, (user) => user.todoLists)
-  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
+  @ManyToOne(() => EndUser, (enduser) => enduser.todoLists)
+  @JoinColumn({ name: 'enduserId', referencedColumnName: 'enduserId' })
   user: User;
 
   @OneToMany(() => TodoItem, (todoItem) => todoItem.todoList, {

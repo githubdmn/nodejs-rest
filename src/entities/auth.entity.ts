@@ -1,7 +1,7 @@
 import { Entity, Column, JoinColumn, BeforeInsert, OneToOne } from 'typeorm';
-import User from './user.entity';
 import Base from './base.entity';
 import Admin from './admin.entity';
+import EndUser from './enduser.entity';
 
 @Entity()
 export default class Auth extends Base {
@@ -25,9 +25,9 @@ export default class Auth extends Base {
     this.authId = super.idGenerator();
   }
 
-  @OneToOne(() => User, (user) => user.auth)
+  @OneToOne(() => EndUser, (enduser) => enduser.auth)
   @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
-  user?: User;
+  enduser?: EndUser;
 
   @OneToOne(() => Admin, (admin) => admin.auth)
   @JoinColumn({ name: 'adminId', referencedColumnName: 'adminId' })

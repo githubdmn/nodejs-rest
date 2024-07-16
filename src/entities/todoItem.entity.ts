@@ -1,9 +1,9 @@
 import { Entity, Column, ManyToOne, BeforeInsert, JoinColumn } from 'typeorm';
 import TodoList from './todoList.entity';
-import BaseEntity from './base.entity';
+import Base from './base.entity';
 
 @Entity('todo_items')
-export default class TodoItem extends BaseEntity {
+export default class TodoItem extends Base {
   @Column({ unique: true })
   itemId: string;
 
