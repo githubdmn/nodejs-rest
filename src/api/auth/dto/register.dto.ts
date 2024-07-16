@@ -6,15 +6,7 @@ import {
   IsDate,
 } from 'class-validator';
 
-export class CreateUserRequestDto {
-  @IsNotEmpty()
-  @IsString()
-  readonly firstName: string;
-
-  @IsNotEmpty()
-  @IsString()
-  readonly lastName: string;
-
+export class RegistrationRequestBaseDto {
   @IsNotEmpty()
   @IsEmail()
   readonly email: string;
@@ -24,18 +16,30 @@ export class CreateUserRequestDto {
   readonly password: string;
 }
 
-export class CreateAdminRequestDto {
+export class CreateUserRequestDto extends RegistrationRequestBaseDto {
+  @IsNotEmpty()
+  @IsString()
+  readonly firstName: string;
+
+  @IsNotEmpty()
+  @IsString()
+  readonly lastName: string;
+}
+
+export class CreateAdminRequestDto extends RegistrationRequestBaseDto {
   @IsNotEmpty()
   @IsString()
   readonly name: string;
+}
 
+export class RegistrationResponseBaseDto {
   @IsNotEmpty()
   @IsEmail()
-  readonly email: string;
+  email: string;
 
   @IsNotEmpty()
-  @MinLength(8)
-  readonly password: string;
+  @IsDate()
+  createdAt: Date;
 }
 
 export class CreateUserResponseDto {
@@ -50,14 +54,6 @@ export class CreateUserResponseDto {
   @IsNotEmpty()
   @IsString()
   lastName: string;
-
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
-  @IsDate()
-  createdAt: Date;
 }
 
 export class CreateAdminResponseDto {
@@ -68,19 +64,5 @@ export class CreateAdminResponseDto {
   @IsNotEmpty()
   @IsString()
   name: string;
-
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
-  @IsDate()
-  createdAt: Date;
 }
-export type UserRegistrationRequestDto =
-  | CreateUserRequestDto
-  | CreateAdminRequestDto;
 
-export type UserRegistrationResponseDto =
-  | CreateUserResponseDto
-  | CreateAdminResponseDto;

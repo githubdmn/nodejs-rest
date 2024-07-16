@@ -1,4 +1,4 @@
-import UserAuth from "./user-auth.service";
+import UserAuthSqlite from "./user-auth.service";
 
 
-export { UserAuth };
+export { UserAuthSqlite };

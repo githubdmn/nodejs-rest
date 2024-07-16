@@ -12,18 +12,12 @@ export class AuthAdminController extends AuthController {
     @Body() userRequest: CreateAdminRequestDto,
   ): Promise<CreateAdminResponseDto> {
     const admin: AdminRegisterRequestDto = {
+      name: userRequest.name,
       email: userRequest.email,
       password: userRequest.password,
-      name: userRequest.name,
     };
 
-    const userExists = await this.authService.userExists(admin.email);
-
-    if (userExists) {
-      throw new UserExistsException(`Admin with the email ${admin.email}`);
-    }
-
-    const registeredAdmin = await this.authService.registerAdmin(admin);
+    const registeredAdmin = await this.userDB.register(admin);
 
     return {
       adminId: registeredAdmin.adminId,

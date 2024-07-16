@@ -159,6 +159,11 @@ export default class PostgresAuthDatabase implements IAuth {
     return admin ? admin.adminId : '';
   }
 
+  async isLoggedIn(email: string): Promise<boolean> {
+
+    return false;
+  }
+
   async saveRefreshToken(
     isAdmin: boolean,
     refreshToken: string,

@@ -36,7 +36,7 @@ import {
 } from '@/dto';
 import { ITodoService } from './todo.interface';
 import { TodoList, TodoItem } from '@/entities';
-import { TODO_SERVICE } from '@/utils/constants';
+import { AUTH_ADMIN_SERVICE } from '@/utils/constants';
 import { TodoGuard } from '@/guard';
 
 @ApiTags('Todo')
@@ -44,7 +44,7 @@ import { TodoGuard } from '@/guard';
 @Controller('todo')
 export class TodoController {
   constructor(
-    @Inject(TODO_SERVICE) private readonly todoService: ITodoService,
+    @Inject(AUTH_ADMIN_SERVICE) private readonly todoService: ITodoService,
   ) {}
 
   @Post()

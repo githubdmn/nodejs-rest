@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { POSTGRES_USER, POSTGRES_AUTH, POSTGRES_TODO, SQLITE_USER_AUTH } from '@/utils/constants';
+import { POSTGRES_USER, POSTGRES_AUTH, POSTGRES_TODO, SQLITE_AUTH_USER } from '@/utils/constants';
 import {
   PostgresAuthService,
   PostgresTodoService,
@@ -7,7 +7,7 @@ import {
 } from './sql/postgresdb';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Entities } from '@/entities';
-import { UserAuth } from './sql/sqlite';
+import { UserAuthSqlite } from './sql/sqlite';
 
 const TypeOrmLocal = TypeOrmModule.forFeature([...Entities]);
 const PostgresServices = [
@@ -26,8 +26,8 @@ const PostgresServices = [
 ];
 const SqliteServices = [
   {
-    provide: SQLITE_USER_AUTH,
-    useClass: UserAuth,
+    provide: SQLITE_AUTH_USER,
+    useClass: UserAuthSqlite,
   },
 ];
 

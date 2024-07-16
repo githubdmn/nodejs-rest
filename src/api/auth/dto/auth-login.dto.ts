@@ -7,10 +7,6 @@ import {
 } from 'class-validator';
 
 export class LoginRequestDto {
-  @IsNotEmpty()
-  @IsString()
-  @IsIn(['user', 'admin'])
-  readonly userType: string;
 
   @IsNotEmpty()
   @IsEmail()
@@ -27,11 +23,6 @@ export class LoginResponseDto {
 }
 
 export class ChangePasswordRequestDto {
-  @IsNotEmpty()
-  @IsString()
-  @IsIn(['user', 'admin'])
-  readonly userType: string;
-
   @IsNotEmpty()
   @IsString()
   readonly password: string;

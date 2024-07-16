@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { USER_SERVICE } from '@/utils/constants';
+import { AUTH_USER_SERVICE } from '@/utils/constants';
 import { JwtModule } from '@nestjs/jwt';
 import { DatabaseModule } from '@/database/database.module';
 import { env } from '@/conf';
 
 const Services = [
   {
-    provide: USER_SERVICE,
+    provide: AUTH_USER_SERVICE,
     useClass: UserService,
   },
 ];

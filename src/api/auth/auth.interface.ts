@@ -19,7 +19,7 @@ export interface IAuthService {
   ): Promise<AdminRegisterResponseDto>;
   userExists(email: string): Promise<boolean>;
   validateUser(credentials: CredentialsDto): Promise<boolean>;
-  loginUser(isAdmin: boolean, email: string): Promise<RefreshTokenResponseDto>;
+  login(isAdmin: boolean, email: string): Promise<RefreshTokenResponseDto>;
   logout(refreshToken: string): Promise<string>;
   refreshAccessToken(
     id: string,

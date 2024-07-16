@@ -11,7 +11,7 @@ import {
   Headers,
 } from '@nestjs/common';
 import { IUser } from './user.interface';
-import { USER_SERVICE } from '@/utils/constants';
+import { AUTH_USER_SERVICE } from '@/utils/constants';
 import { SerializeExclude } from '@/interceptor';
 import {
   ChangePasswordRequestDto,
@@ -34,7 +34,7 @@ import {
 @UseGuards(UserGuard)
 @Controller('user')
 export class UserController {
-  constructor(@Inject(USER_SERVICE) private userService: IUser) {}
+  constructor(@Inject(AUTH_USER_SERVICE) private userService: IUser) {}
 
   // @Post()
   // @SerializeExclude(CreateUserResponseDto)

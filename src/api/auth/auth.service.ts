@@ -42,10 +42,13 @@ export class AuthService {
     return await this.authDatabase.checkCredentials(credentials);
   }
 
-  async loginUser(
+  async login(
     isAdmin: boolean,
     email: string,
   ): Promise<RefreshTokenResponseDto> {
+
+    // check if user is logged in
+
     const userId = isAdmin
       ? await this.authDatabase.getAdminIdByEmail(email)
       : await this.authDatabase.getUserIdByEmail(email);

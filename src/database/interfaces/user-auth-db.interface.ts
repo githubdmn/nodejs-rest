@@ -1,7 +1,7 @@
 import { UserRegisterRequestDto, UserRegisterResponseDto, AdminRegisterRequestDto, AdminRegisterResponseDto, CredentialsDto } from "@/dto";
 
-export interface IUserAuth {
-  // registerUser(user: UserRegisterRequestDto): Promise<UserRegisterResponseDto>;
+export interface IUserDBAuth {
+  register(user: any): Promise<any>;
 
   // saveAdmin(user: AdminRegisterRequestDto): Promise<AdminRegisterResponseDto>;
 

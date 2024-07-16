@@ -18,12 +18,7 @@ export class AuthUserController extends AuthController {
       lastName: userRequest.lastName,
     };
 
-    const userExists = await this.authService.userExists(user.email);
-    if (userExists) {
-      throw new UserExistsException(`User with the email ${user.email}`);
-    }
-
-    const registeredUser = await this.authService.registerUser(user);
+    const registeredUser = await this.userDB.register(user);
 
     return {
       userId: registeredUser.userId,
