@@ -1,9 +1,9 @@
-import { UpdateUserRequestDto, UpdateUserResponseDto, UserDto } from "@/dto";
+import { UpdateUserRequestDto, UpdateUserResponseDto } from "@/dto";
 
 export interface IUserDB {
-  findUserByUserId(userId: string): Promise<UserDto>;
+  findUserByUserId(userId: string): Promise<any>;
 
-  findUserByEmail(email: string): Promise<UserDto>;
+  findUserByEmail(email: string): Promise<any>;
 
   updateUser(
     userId: string,

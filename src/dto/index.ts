@@ -2,7 +2,7 @@ import { CreateUserRequestDto } from './old/createUser.request.dto';
 import { CreateUserResponseDto } from './old/createUser.response.dto';
 import { UserLoginRequestDto } from './old/userLogin.request.dto';
 import { UserLoginResponseDto } from './old/userLogin.response.dto';
-import { UserDto } from './User.dto';
+import { EndUserDto } from './User.dto';
 import { ChangePasswordRequestDto } from './old/changePassword.request.dto';
 import { UpdateUserRequestDto } from './old/UpdateUserRequest.dto';
 import { UpdateUserResponseDto } from './old/UpdateUserResponse.dto';
@@ -29,10 +29,10 @@ import {
   GetUsersTodoListsResponseWithItemsDto,
 } from './old/getUsersTodoListsResponseWithItems.dto';
 
-import { AdminRegisterRequestDto } from './old/register/admin-register-request.dto';
-import { AdminRegisterResponseDto } from './old/register/admin-register-response.dto';
-import { UserRegisterRequestDto } from './old/register/user-register-request.dto';
-import { UserRegisterResponseDto } from './old/register/user-register-response.dto';
+import { AdminRegisterRequestDto } from './register/admin-register-request.dto';
+import { AdminRegisterResponseDto } from './register/admin-register-response.dto';
+import { EndUserRegisterRequestDto } from './register/user-register-request.dto';
+import { EndUserRegisterResponseDto } from './register/user-register-response.dto';
 import { CredentialsDto } from './Credentials.dto';
 
 export {
@@ -40,7 +40,7 @@ export {
   CreateUserResponseDto,
   UserLoginRequestDto,
   UserLoginResponseDto,
-  UserDto,
+  EndUserDto,
   CredentialsDto,
   ChangePasswordRequestDto,
   UpdateUserRequestDto,
@@ -67,6 +67,6 @@ export {
   GetUsersTodoListsResponseWithItemsDto,
   AdminRegisterRequestDto,
   AdminRegisterResponseDto,
-  UserRegisterRequestDto,
-  UserRegisterResponseDto,
+  EndUserRegisterRequestDto,
+  EndUserRegisterResponseDto,
 };

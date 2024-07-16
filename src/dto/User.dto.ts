@@ -1,6 +1,5 @@
-export class UserDto {
-  userId: string;
+export type EndUserDto = {
+  enduserId: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  name: string;
 }

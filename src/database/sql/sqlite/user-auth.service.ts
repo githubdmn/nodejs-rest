@@ -1,29 +1,14 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { IAuth } from '@/database/database.inteface';
+import { EndUserRegisterRequestDto, EndUserRegisterResponseDto } from '@/dto';
 import {
-  AdminRegisterRequestDto,
-  AdminRegisterResponseDto,
-  CredentialsDto,
-  UserRegisterRequestDto,
-  UserRegisterResponseDto,
-} from '@/dto';
-import {
-  AdminEntity,
   AuthEntity,
   CredentialsEntity,
-  UserEntity,
+  EndUserEntity,
 } from '@/entities';
-// import {
-//   mapAdminRegisterToEntities,
-//   mapRegisterResultToAdminResponse,
-//   mapRegisterResultToUserResponse,
-//   mapUserRegisterToEntities,
-// } from './mappers';
-import { checkHashedValue, hashString } from '@/utils';
-import { env } from '@/conf';
 import { IUserDBAuth } from '@/database/interfaces/user-auth-db.interface';
+import { mapUserRegisterToEntities, mapRegisterResultToUserResponse } from './mappers';
 
 @Injectable()
 export default class UserAuthSqlite implements IUserDBAuth {
@@ -32,33 +17,32 @@ export default class UserAuthSqlite implements IUserDBAuth {
   constructor(
     @InjectRepository(AuthEntity)
     private authRepository: Repository<AuthEntity>,
-    @InjectRepository(UserEntity) private userRepositoy: Repository<UserEntity>,
-    @InjectRepository(AdminEntity)
-    private adminRepository: Repository<AdminEntity>,
+    @InjectRepository(EndUserEntity)
+    private userRepositoy: Repository<EndUserEntity>,
     @InjectRepository(CredentialsEntity)
     private credentialsRepository: Repository<CredentialsEntity>,
-  ) { }
+  ) {}
 
   async register(
-    user: UserRegisterRequestDto,
-  ): Promise<UserRegisterResponseDto> {
+    user: EndUserRegisterRequestDto,
+  ): Promise<EndUserRegisterResponseDto> {
     const [credentialsEntity, userEntity] = mapUserRegisterToEntities(user);
     const userPrepared = this.userRepositoy.create(userEntity);
     const credentialsPrepared =
       this.credentialsRepository.create(credentialsEntity);
-    const authPrepared = this.authRepository.create({ user: userPrepared });
+    const authPrepared = this.authRepository.create({ enduser: userPrepared });
 
     try {
       return await this.authRepository.manager.transaction(
         async (transactionalEntityManager) => {
           const savedUser = await transactionalEntityManager.save(userPrepared);
-          authPrepared.user = savedUser;
-          credentialsPrepared.user = savedUser;
+          authPrepared.enduser = savedUser;
+          credentialsPrepared.enduser = savedUser;
           const savedCredentials =
             await transactionalEntityManager.save(credentialsPrepared);
           const savedAuth = await transactionalEntityManager.save(authPrepared);
           this.logger.log(
-            `User successfully saved ${savedUser.email} ${savedUser.userId}`,
+            `User successfully saved ${savedUser.email} ${savedUser.enduserId}`,
           );
           return mapRegisterResultToUserResponse(savedUser);
         },

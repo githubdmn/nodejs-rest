@@ -1,24 +1,22 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AUTH_SERVICE } from '@/utils/constants';
+import { AUTH_USER_SERVICE } from '@/utils/constants';
 import { JwtModule } from '@nestjs/jwt';
 import { DatabaseModule } from '@/database/database.module';
 import { env } from '@/conf';
 import { PassportModule } from '@nestjs/passport';
-import { AuthUserController } from './auth.controller.user';
-import { AuthAdminController } from './auth.controller.admin';
-import { LocalStrategy } from './local.strategy';
+import { AuthUserController } from './user/auth-user.controller';
+import { AuthUserService } from './user';
 
 const Services = [
   {
-    provide: AUTH_SERVICE,
-    useClass: AuthService,
+    provide: AUTH_USER_SERVICE,
+    useClass: AuthUserService
   },
-  LocalStrategy,
+ 
 ];
 
 @Module({
-  controllers: [AuthUserController, AuthAdminController],
+  controllers: [AuthUserController],
   providers: [...Services],
   imports: [
     PassportModule,

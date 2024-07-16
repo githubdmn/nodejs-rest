@@ -12,8 +12,8 @@ The `Auth` entity represents authentication details for a user or admin. It has 
 ### Credentials
 The `Credentials` entity represents the credentials for a user or admin. It has fields for `credentialsId`, `passwordHash`, and relationships with `User` and `Admin` entities. The `passwordHash` is hashed before insertion.
 
-### User
-The `User` entity represents a user in the application. It has fields for `userId`, `email`, `firstName`, `lastName`, `createdAt`, `updatedAt`, and relationships with `TodoList`, `Credentials`, and `Auth` entities.
+### EndUser
+The `EndUser` entity represents a user in the application. It has fields for `enduserId`, `email`, `name`, `createdAt`, `updatedAt`, and relationships with `TodoList`, `Credentials`, and `Auth` entities.
 
 ### TodoList
 The `TodoList` entity represents a todo list in the application. It has fields for `listId`, `title`, and relationships with `User` and `TodoItem` entities.

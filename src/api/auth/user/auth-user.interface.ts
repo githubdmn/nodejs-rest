@@ -1,19 +1,8 @@
-import {
-  AdminRegisterRequestDto,
-  AdminRegisterResponseDto,
-  CredentialsDto,
-  UserDto,
-  UserLoginRequestDto,
-  UserLoginResponseDto,
-  UserRegisterRequestDto,
-  UserRegisterResponseDto,
-} from '@/dto';
-import { RefreshTokenResponseDto } from './dto';
 
 export interface IUserAuth {
   register(
-    userRequest: UserRegisterRequestDto,
-  ): Promise<UserRegisterResponseDto>;
+    userRequest: any,
+  ): Promise<any>;
   // validateUser(credentials: CredentialsDto): Promise<boolean>;
   // login(email: string): Promise<RefreshTokenResponseDto>;
   // logout(refreshToken: string): Promise<string>;
