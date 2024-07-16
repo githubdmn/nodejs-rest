@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseFilters } from '@nestjs/common';
 import { AuthController } from '../auth.controller';
 import { RegisterEndUserRequestDto } from '../dto';
-import { EndUserRegisterRequestDto } from '@/dto';
+import { EndUserRegisterRequestDto } from '@/common/dto';
 import { GeneralFilter, UserExistsException } from '@/exceptions';
 
 @Controller('auth/user')

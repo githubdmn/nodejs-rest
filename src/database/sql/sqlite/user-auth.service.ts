@@ -1,12 +1,12 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { EndUserRegisterRequestDto, EndUserRegisterResponseDto } from '@/dto';
+import { EndUserRegisterRequestDto, EndUserRegisterResponseDto } from '@/common/dto';
 import {
   AuthEntity,
   CredentialsEntity,
   EndUserEntity,
-} from '@/entities';
+} from '@/common/entities';
 import { IUserDBAuth } from '@/database/interfaces/user-auth-db.interface';
 import { mapUserRegisterToEntities, mapRegisterResultToUserResponse } from './mappers';
 

@@ -1,4 +1,4 @@
-import { CreateTodoItemRequestDto, CreateTodoListRequestDto, CreateTodoListResponseDto, DeleteTodoListRequestDto, DeleteTodoListResponseDto, GetUsersTodoListRequestDto, GetUsersTodoListResponseDto, GetUsersTodoListsRequestDto, GetUsersTodoListsResponseDto, GetUsersTodoListsResponseWithItemsDto, TodoItemDto, UpdateTodoItemRequestDto, UpdateTodoListRequestDto } from "@/dto";
+import { CreateTodoItemRequestDto, CreateTodoListRequestDto, CreateTodoListResponseDto, DeleteTodoListRequestDto, DeleteTodoListResponseDto, GetUsersTodoListRequestDto, GetUsersTodoListResponseDto, GetUsersTodoListsRequestDto, GetUsersTodoListsResponseDto, GetUsersTodoListsResponseWithItemsDto, TodoItemDto, UpdateTodoItemRequestDto, UpdateTodoListRequestDto } from "@/common/dto";
 
 export interface ITodo {
   createTodoList(

@@ -1,4 +1,4 @@
-import { UpdateUserRequestDto, UpdateUserResponseDto } from "@/dto";
+import { UpdateUserRequestDto, UpdateUserResponseDto } from "@/common/dto";
 
 export interface IUserDB {
   findUserByUserId(userId: string): Promise<any>;

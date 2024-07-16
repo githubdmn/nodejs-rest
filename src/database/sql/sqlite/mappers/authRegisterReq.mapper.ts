@@ -1,5 +1,5 @@
-import { AdminRegisterRequestDto, EndUserRegisterRequestDto } from '@/dto';
-import { AdminEntity, CredentialsEntity, EndUserEntity } from '@/entities';
+import { AdminRegisterRequestDto, EndUserRegisterRequestDto } from '@/common/dto';
+import { AdminEntity, CredentialsEntity, EndUserEntity } from '@/common/entities';
 
 export function mapUserRegisterToEntities(
   userDto: EndUserRegisterRequestDto,

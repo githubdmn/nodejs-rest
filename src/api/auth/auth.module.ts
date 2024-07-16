@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AUTH_USER_SERVICE } from '@/utils/constants';
+import { AUTH_USER_SERVICE } from '@/common/constants';
 import { JwtModule } from '@nestjs/jwt';
 import { DatabaseModule } from '@/database/database.module';
 import { env } from '@/conf';

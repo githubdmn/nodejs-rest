@@ -8,7 +8,7 @@ import {
   Get,
   Headers,
 } from '@nestjs/common';
-import { SQLITE_AUTH_USER } from '@/utils/constants';
+import { SQLITE_AUTH_USER } from '@/common/constants';
 import { AuthGuard } from '@/guard';
 import { IUserDBAuth } from '@/database/interfaces';
 

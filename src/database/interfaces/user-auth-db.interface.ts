@@ -1,4 +1,4 @@
-import { AdminRegisterRequestDto, AdminRegisterResponseDto, CredentialsDto } from "@/dto";
+import { AdminRegisterRequestDto, AdminRegisterResponseDto, CredentialsDto } from "@/common/dto";
 
 export interface IUserDBAuth {
   register(user: any): Promise<any>;

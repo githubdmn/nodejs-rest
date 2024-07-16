@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { SQLITE_AUTH_USER } from '@/utils/constants';
+import { SQLITE_AUTH_USER } from '@/common/constants';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Entities } from '@/entities';
+import { Entities } from '@/common/entities';
 import { UserAuthSqlite } from './sql/sqlite';
 
 const TypeOrmLocal = TypeOrmModule.forFeature([...Entities]);

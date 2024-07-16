@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { firebaseConfig } from '@/conf';
 import { initializeApp } from 'firebase/app';
 import { IUserAuth } from './auth-user.interface';
-import { SQLITE_AUTH_USER } from '@/utils/constants';
+import { SQLITE_AUTH_USER } from '@/common/constants';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { IUserDBAuth } from '@/database/interfaces';
 

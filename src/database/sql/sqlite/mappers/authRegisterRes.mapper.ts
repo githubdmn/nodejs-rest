@@ -1,7 +1,7 @@
 import {
   EndUserRegisterResponseDto,
-} from '@/dto';
-import { EndUserEntity } from '@/entities';
+} from '@/common/dto';
+import { EndUserEntity } from '@/common/entities';
 
 export function mapRegisterResultToUserResponse(
   savedUser: EndUserEntity,
