@@ -1,4 +1,9 @@
-import { mapUserRegisterToEntities } from './authRegisterReq.mapper';
-import { mapRegisterResultToUserResponse } from './authRegisterRes.mapper';
+import { mapUserRegisterToEndUserEntity } from './registerEnduserReq.mapper';
+import { mapUserRegisterToEntities } from './registerReq.mapper';
+import { mapRegisterResultToUserResponse } from './registerRes.mapper';
 
-export { mapUserRegisterToEntities, mapRegisterResultToUserResponse };
+export {
+  mapUserRegisterToEntities,
+  mapRegisterResultToUserResponse,
+  mapUserRegisterToEndUserEntity,
+};

@@ -1,25 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { firebaseConfig } from '@/conf';
 import { initializeApp } from 'firebase/app';
-import { IUserAuth } from './auth-user.interface';
+import { IUserAuth } from '../auth-user.interface';
 import { SQLITE_AUTH_USER } from '@/common/constants';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { IUserDBAuth } from '@/database/interfaces';
 
 
 @Injectable()
-export class FirebaseAuthService  implements IUserAuth {
+export class FirebaseAuthUserService implements IUserAuth {
   private app: any;
 
-  constructor(
-   @Inject(SQLITE_AUTH_USER) private userdb: IUserDBAuth,
-  ) {
-    
+  constructor(@Inject(SQLITE_AUTH_USER) private userdb: IUserDBAuth) {
     this.app = initializeApp(firebaseConfig);
   }
 
-
-  async register(guestData: any): Promise<{
+  async register(userRequest: any): Promise<{
     user: any;
     accessToken: string;
     refreshToken: string;
@@ -27,12 +23,14 @@ export class FirebaseAuthService  implements IUserAuth {
     try {
       const created = await createUserWithEmailAndPassword(
         getAuth(this.app),
-        guestData.email,
-        guestData.password,
+        userRequest.email,
+        userRequest.password,
       );
       const { uid } = created.user;
-      const savedUser = await this.userdb.register({ ...guestData, uid });
 
+      const userData = { ...userRequest, method: 'Firebase', uid };
+      const savedUser = await this.userdb.register3rdParty(userData);
+      
       const refreshToken = created.user.refreshToken;
       const accessToken = await created.user.getIdToken();
 
@@ -40,10 +38,8 @@ export class FirebaseAuthService  implements IUserAuth {
         user: {
           email: savedUser.email,
           name: savedUser.name,
-          phone: savedUser.phone,
           createdAt: savedUser.createdAt,
-          updatedAt: savedUser.updatedAt,
-          guestId: savedUser.guestId,
+          enduserId: savedUser.enduserId,
         },
         accessToken,
         refreshToken,

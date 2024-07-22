@@ -1,14 +1,21 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { EndUserRegisterRequestDto, EndUserRegisterResponseDto } from '@/common/dto';
+import {
+  EndUserRegisterRequestDto,
+  EndUserRegisterResponseDto,
+} from '@/common/dto';
 import {
   AuthEntity,
   CredentialsEntity,
   EndUserEntity,
 } from '@/common/entities';
 import { IUserDBAuth } from '@/database/interfaces/user-auth-db.interface';
-import { mapUserRegisterToEntities, mapRegisterResultToUserResponse } from './mappers';
+import {
+  mapUserRegisterToEntities,
+  mapRegisterResultToUserResponse,
+  mapUserRegisterToEndUserEntity,
+} from './mappers';
 
 @Injectable()
 export default class UserAuthSqlite implements IUserDBAuth {
@@ -50,6 +57,38 @@ export default class UserAuthSqlite implements IUserDBAuth {
     } catch (error: any) {
       this.logger.error(
         `DB service: Failed to save user ${user.email} to database. Error: ${error.message}`,
+      );
+      throw new HttpException(
+        `DB service: Failed to save user to database.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  register3rdParty(enduser: any): Promise<any> {
+    const enduserEntity = mapUserRegisterToEndUserEntity(enduser);
+    try {      
+      const userPrepared = this.userRepositoy.create(enduserEntity);
+      const authPrepared = this.authRepository.create({
+        enduser: userPrepared,
+      });
+
+      return this.authRepository.manager.transaction(
+        async (transactionalEntityManager) => {
+          const savedUser = await transactionalEntityManager.save(userPrepared);
+          authPrepared.enduser = savedUser;
+          authPrepared.authId = enduser.authId;
+          authPrepared.method = enduser.method;
+          const savedAuth = await transactionalEntityManager.save(authPrepared);
+          this.logger.log(
+            `User successfully saved ${savedUser.email} ${savedUser.enduserId}`,
+          );
+          return mapRegisterResultToUserResponse(savedUser);
+        },
+      );
+    } catch (error: any) {
+      this.logger.error(
+        `DB service: Failed to save user ${enduser.email} to database. Error: ${error.message}`,
       );
       throw new HttpException(
         `DB service: Failed to save user to database.`,

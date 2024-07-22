@@ -1,23 +1,46 @@
 import {
   Body,
-  Post,
+  Controller,
+  HttpStatus,
   Inject,
-  UseGuards,
-  Request,
+  Post,
   Response,
-  Get,
-  Headers,
+  UseFilters,
+  UseGuards,
 } from '@nestjs/common';
-import { SQLITE_AUTH_USER } from '@/common/constants';
+import { AUTH_FIREBASE_SERVICE } from '@/common/constants';
 import { AuthGuard } from '@/guard';
-import { IUserDBAuth } from '@/database/interfaces';
+import { IUserAuth } from './auth-user.interface';
+import { EndUserRegisterRequestDto } from '@/common/dto';
+import { GeneralFilter } from '@/exceptions';
+import { RegisterEndUserRequestDto } from './dto';
 
 @UseGuards(AuthGuard)
-export abstract class AuthController {
+@Controller('auth')
+export class AuthController {
   constructor(
-    @Inject(SQLITE_AUTH_USER) protected userDB: IUserDBAuth,
+    @Inject(AUTH_FIREBASE_SERVICE) protected authService: IUserAuth,
   ) {}
 
-  abstract register(user: any): Promise<any>;
+  @Post('register')
+  @UseFilters(GeneralFilter)
+  async register(
+    @Body() userRequest: RegisterEndUserRequestDto,
+    @Response() response: any,
+  ): Promise<any> {
+    const userData: Partial<EndUserRegisterRequestDto> = {
+      email: userRequest.email,
+      password: userRequest.password,
+      name: userRequest.firstName + ' ' + userRequest.lastName,
+    };
 
+    const { accessToken, refreshToken, user } =
+      await this.authService.register(userData);
+
+    response
+      .setHeader('access-token', accessToken)
+      .setHeader('refresh-token', refreshToken)
+      .status(HttpStatus.OK)
+      .send(user);
+  }
 }

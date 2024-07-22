@@ -1,6 +1,6 @@
 import { Entity, Column, OneToOne, JoinColumn, BeforeInsert } from 'typeorm';
 import Base from './base.entity';
-import EndUser from './user.entity';
+import EndUser from './enduser.entity';
 import Admin from './admin.entity';
 import { hashString } from '@/utils';
 

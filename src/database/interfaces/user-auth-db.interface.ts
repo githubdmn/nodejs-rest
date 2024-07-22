@@ -2,6 +2,7 @@ import { AdminRegisterRequestDto, AdminRegisterResponseDto, CredentialsDto } fro
 
 export interface IUserDBAuth {
   register(user: any): Promise<any>;
+  register3rdParty(user: any): Promise<any>;
 
   // saveAdmin(user: AdminRegisterRequestDto): Promise<AdminRegisterResponseDto>;
 

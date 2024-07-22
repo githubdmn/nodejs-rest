@@ -6,7 +6,6 @@ import {
   BeforeInsert,
   JoinColumn,
 } from 'typeorm';
-import User from './user.entity';
 import TodoItem from './todoItem.entity';
 import Base from './base.entity';
 import EndUser from './enduser.entity';
@@ -26,7 +25,7 @@ export default class TodoList extends Base {
 
   @ManyToOne(() => EndUser, (enduser) => enduser.todoLists)
   @JoinColumn({ name: 'enduserId', referencedColumnName: 'enduserId' })
-  user: User;
+  enduser: EndUser;
 
   @OneToMany(() => TodoItem, (todoItem) => todoItem.todoList, {
     cascade: ['remove'],

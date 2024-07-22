@@ -15,7 +15,7 @@ export default class EndUser extends User {
   @Column({ unique: true })
   enduserId: string;
 
-  @OneToMany(() => TodoList, (todoList) => todoList.user)
+  @OneToMany(() => TodoList, (todoList) => todoList.enduser)
   todoLists: TodoList[];
 
   @OneToOne(() => Credentials, (credentials) => credentials.enduser)
@@ -26,6 +26,8 @@ export default class EndUser extends User {
 
   @BeforeInsert()
   async generateId() {
-    this.enduserId = super.idGenerator();
+    if (!Boolean(this.enduserId)) {
+      this.enduserId = super.idGenerator();
+    }
   }
 }

@@ -6,7 +6,6 @@ import {
 } from 'typeorm';
 import Base from './base.entity';
 
-@Entity()
 export default abstract class User extends Base {
   @Column({ unique: true })
   email: string;

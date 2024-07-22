@@ -21,6 +21,8 @@ export default class Admin extends User {
 
   @BeforeInsert()
   async generateId() {
-    this.adminId = super.idGenerator();
+    if (!Boolean(this.adminId)) {
+      this.adminId = super.idGenerator();
+    }
   }
 }

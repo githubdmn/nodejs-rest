@@ -1,7 +1,7 @@
 
 import { SQLITE_AUTH_USER } from '@/common/constants';
 import { Injectable, Inject } from '@nestjs/common';
-import { IUserAuth } from './auth-user.interface';
+import { IUserAuth } from '../auth-user.interface';
 import { IUserDBAuth } from '@/database/interfaces';
 
 @Injectable()

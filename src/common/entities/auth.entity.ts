@@ -22,11 +22,13 @@ export default class Auth extends Base {
 
   @BeforeInsert()
   async generateId() {
-    this.authId = super.idGenerator();
+    if (!Boolean(this.authId)) {
+      this.authId = super.idGenerator();
+    }
   }
 
   @OneToOne(() => EndUser, (enduser) => enduser.auth)
-  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
+  @JoinColumn({ name: 'enduserId', referencedColumnName: 'enduserId' })
   enduser?: EndUser;
 
   @OneToOne(() => Admin, (admin) => admin.auth)

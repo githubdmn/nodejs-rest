@@ -1,22 +1,25 @@
 import { Module } from '@nestjs/common';
-import { AUTH_USER_SERVICE } from '@/common/constants';
+import { AUTH_FIREBASE_SERVICE, AUTH_USER_SERVICE } from '@/common/constants';
 import { JwtModule } from '@nestjs/jwt';
 import { DatabaseModule } from '@/database/database.module';
 import { env } from '@/conf';
 import { PassportModule } from '@nestjs/passport';
-import { AuthUserController } from './user/auth-user.controller';
-import { AuthUserService } from './user';
+import { AuthUserService, FirebaseAuthUserService } from './firebase-service';
+import { AuthController } from './auth.controller';
 
 const Services = [
   {
     provide: AUTH_USER_SERVICE,
-    useClass: AuthUserService
+    useClass: AuthUserService,
   },
- 
+  {
+    provide: AUTH_FIREBASE_SERVICE,
+    useClass: FirebaseAuthUserService,
+  },
 ];
 
 @Module({
-  controllers: [AuthUserController],
+  controllers: [AuthController],
   providers: [...Services],
   imports: [
     PassportModule,

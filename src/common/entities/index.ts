@@ -1,14 +1,14 @@
 import EndUserEntity from './enduser.entity';
 import AuthEntity from './auth.entity';
 import AdminEntity from './admin.entity';
-import TodoList from './todoList.entity';
-import TodoItem from './todoItem.entity';
+import TodoListEntity from './todoList.entity';
+import TodoItemEntity from './todoItem.entity';
 import CredentialsEntity from './credentials.entity';
 
 export {
   EndUserEntity,
-  TodoItem,
-  TodoList,
+  TodoItemEntity,
+  TodoListEntity,
   AuthEntity,
   AdminEntity,
   CredentialsEntity,
@@ -16,8 +16,8 @@ export {
 
 export const Entities = [
   EndUserEntity,
-  TodoItem,
-  TodoList,
+  TodoItemEntity,
+  TodoListEntity,
   AuthEntity,
   AdminEntity,
   CredentialsEntity,

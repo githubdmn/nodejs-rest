@@ -20,7 +20,7 @@ const sqliteSettingEnv = {
   type: 'sqlite',
   database: 'db/tech-assignment.sqlite',
   synchronize: true,
-  entities: ['dist/src/entities/*.entity.{ts,js}'],
+  entities: ['dist/src/common/entities/*.entity.{ts,js}'],
 } as TypeOrmModuleOptions;
 
 
