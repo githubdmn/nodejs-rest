@@ -8,7 +8,7 @@ import { IUserDBAuth } from '@/database/interfaces';
 
 
 @Injectable()
-export class FirebaseAuthUserService implements IUserAuth {
+export class EnduserAuthFirebaseService implements IUserAuth {
   private app: any;
 
   constructor(@Inject(SQLITE_AUTH_USER) private userdb: IUserDBAuth) {

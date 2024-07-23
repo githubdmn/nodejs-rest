@@ -8,7 +8,7 @@ import {
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
-import { AUTH_FIREBASE_SERVICE } from '@/common/constants';
+import { AUTH_ENDUSER_FIREBASE_SERVICE } from '@/common/constants';
 import { AuthGuard } from '@/guard';
 import { IUserAuth } from './auth-user.interface';
 import { EndUserRegisterRequestDto } from '@/common/dto';
@@ -17,9 +17,9 @@ import { RegisterEndUserRequestDto } from './dto';
 
 @UseGuards(AuthGuard)
 @Controller('auth')
-export class AuthController {
+export class EndUserAuthController {
   constructor(
-    @Inject(AUTH_FIREBASE_SERVICE) protected authService: IUserAuth,
+    @Inject(AUTH_ENDUSER_FIREBASE_SERVICE) protected authService: IUserAuth,
   ) {}
 
   @Post('register')

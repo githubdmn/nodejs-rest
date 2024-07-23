@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { AllExceptionsFilter } from '@/exceptions';
-import { SwaggerService } from '@/swagger';
+import { SwaggerService } from '@/utils/swagger';
 
 async function bootstrap() {
   dotenv.config();
