@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { AUTH_ENDUSER_FIREBASE_SERVICE } from '@/common/constants';
 import { AuthGuard } from '@/guard';
-import { IUserAuth } from './auth-user.interface';
+import { IAuthService } from './auth.interface';
 import { EndUserRegisterRequestDto } from '@/common/dto';
 import { GeneralFilter } from '@/exceptions';
 import { RegisterEndUserRequestDto } from './dto';
@@ -19,7 +19,7 @@ import { RegisterEndUserRequestDto } from './dto';
 @Controller('auth')
 export class EndUserAuthController {
   constructor(
-    @Inject(AUTH_ENDUSER_FIREBASE_SERVICE) protected authService: IUserAuth,
+    @Inject(AUTH_ENDUSER_FIREBASE_SERVICE) protected authService: IAuthService,
   ) {}
 
   @Post('register')

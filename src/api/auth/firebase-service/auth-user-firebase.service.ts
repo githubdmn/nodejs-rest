@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { firebaseConfig } from '@/conf';
 import { initializeApp } from 'firebase/app';
-import { IUserAuth } from '../auth-user.interface';
+import { IAuthService } from '../auth.interface';
 import { SQLITE_AUTH_USER } from '@/common/constants';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { IUserDBAuth } from '@/database/interfaces';
 
 
 @Injectable()
-export class EnduserAuthFirebaseService implements IUserAuth {
+export class EnduserAuthFirebaseService implements IAuthService {
   private app: any;
 
   constructor(@Inject(SQLITE_AUTH_USER) private userdb: IUserDBAuth) {

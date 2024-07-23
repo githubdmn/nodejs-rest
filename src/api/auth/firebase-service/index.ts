@@ -1,5 +1,5 @@
+import { AdminAuthFirebaseService } from "./auth-admin-firebase.service";
 import { EnduserAuthFirebaseService } from "./auth-user-firebase.service";
-import { AuthUserService } from "../custom-service/auth-user.service";
 
 
-export { AuthUserService, EnduserAuthFirebaseService };
+export { AdminAuthFirebaseService, EnduserAuthFirebaseService };

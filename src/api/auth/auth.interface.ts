@@ -1,5 +1,5 @@
 
-export interface IUserAuth {
+export interface IAuthService {
   register(
     userRequest: any,
   ): Promise<any>;

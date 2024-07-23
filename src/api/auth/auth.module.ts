@@ -4,13 +4,16 @@ import { JwtModule } from '@nestjs/jwt';
 import { DatabaseModule } from '@/database/database.module';
 import { env } from '@/conf';
 import { PassportModule } from '@nestjs/passport';
-import { AuthUserService, EnduserAuthFirebaseService } from './firebase-service';
+import {
+  AdminAuthFirebaseService,
+  EnduserAuthFirebaseService,
+} from './firebase-service';
 import { EndUserAuthController } from './auth.controller';
 
 const Services = [
   {
     provide: AUTH_ADMIN_FIREBASE_SERVICE,
-    useClass: AuthUserService,
+    useClass: AdminAuthFirebaseService,
   },
   {
     provide: AUTH_ENDUSER_FIREBASE_SERVICE,
