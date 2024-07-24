@@ -8,7 +8,7 @@ import {
   AdminAuthFirebaseService,
   EnduserAuthFirebaseService,
 } from './firebase-service';
-import { EndUserAuthController } from './auth.controller';
+import { EndUserAuthController } from './auth-enduser.controller';
 
 const Services = [
   {
