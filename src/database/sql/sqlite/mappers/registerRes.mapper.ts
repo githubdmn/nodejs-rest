@@ -7,7 +7,7 @@ export function mapRegisterResultToUserResponse(
   savedUser: EndUserEntity,
 ): EndUserRegisterResponseDto {
   const enduser: EndUserRegisterResponseDto = {
-    enduserId: savedUser.enduserId,
+    enduserId: savedUser.authorId,
     name: savedUser.name,
     email: savedUser.email,
     createdAt: savedUser.createdAt,

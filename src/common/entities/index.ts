@@ -1,24 +1,30 @@
-import EndUserEntity from './enduser.entity';
+import AuthorEntity from './user-author.entity';
 import AuthEntity from './auth.entity';
-import AdminEntity from './admin.entity';
-import TodoListEntity from './todoList.entity';
-import TodoItemEntity from './todoItem.entity';
+import AdminEntity from './user-admin.entity';
 import CredentialsEntity from './credentials.entity';
+import ReaderEntity from './user-reader.entity';
+import PostEntity from './post.entity';
+import PostContentEntity from './post-content.entity';
+import PostCommentsEntity from './post-comments.entity';
 
 export {
-  EndUserEntity,
-  TodoItemEntity,
-  TodoListEntity,
+  AuthorEntity,
+  ReaderEntity,
   AuthEntity,
   AdminEntity,
   CredentialsEntity,
+  PostEntity,
+  PostCommentsEntity,
+  PostContentEntity,
 };
 
 export const Entities = [
-  EndUserEntity,
-  TodoItemEntity,
-  TodoListEntity,
+  AuthorEntity,
+  ReaderEntity,
   AuthEntity,
   AdminEntity,
   CredentialsEntity,
+  PostEntity,
+  PostCommentsEntity,
+  PostContentEntity,
 ];

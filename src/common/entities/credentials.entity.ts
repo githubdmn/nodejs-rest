@@ -1,8 +1,10 @@
 import { Entity, Column, OneToOne, JoinColumn, BeforeInsert } from 'typeorm';
 import Base from './base.entity';
-import EndUser from './enduser.entity';
-import Admin from './admin.entity';
+import Author from './user-author.entity';
+import Admin from './user-admin.entity';
 import { hashString } from '@/utils';
+import Reader from './user-reader.entity';
+import User from './user.entity';
 
 @Entity()
 export default class Credentials extends Base {
@@ -12,9 +14,13 @@ export default class Credentials extends Base {
   @Column()
   passwordHash: string;
 
-  @OneToOne(() => EndUser, (enduser) => enduser)
-  @JoinColumn({ name: 'enduserId', referencedColumnName: 'enduserId' })
-  enduser?: EndUser;
+  @OneToOne(() => Reader, (reader) => reader)
+  @JoinColumn({ name: 'readerId', referencedColumnName: 'readerId' })
+  reader?: Reader;
+
+  @OneToOne(() => Author, (author) => author)
+  @JoinColumn({ name: 'authorId', referencedColumnName: 'authorId' })
+  author?: Author;
 
   @OneToOne(() => Admin, (admin) => admin.credentials)
   @JoinColumn({ name: 'adminId', referencedColumnName: 'adminId' })

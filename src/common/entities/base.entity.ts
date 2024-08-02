@@ -6,8 +6,8 @@ export default abstract class Base {
   @PrimaryGeneratedColumn()
   id: number;
 
-  protected idGenerator(): string {
-    return customAlphabet(`1234567890`, 5)();
+  protected idGenerator(prefix: string = ''): string {
+    return prefix + customAlphabet(`1234567890`, 5)();
   }
 
   protected abstract generateId(): void;

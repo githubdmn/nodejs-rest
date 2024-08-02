@@ -1,11 +1,9 @@
 import {
   Column,
-  Entity,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import Base from './base.entity';
-
 export default abstract class User extends Base {
   @Column({ unique: true })
   email: string;

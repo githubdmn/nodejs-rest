@@ -1,22 +1,30 @@
-## Entities Overview
+# Entity Relationships
 
-### BaseEntity
-The `BaseEntity` is an abstract class that provides a primary generated column `id` and a method for generating unique IDs using the `nanoid` library. This class is extended by other entities in the application.
+## User Hierarchy
+- `User` is an abstract base class.
+- `Reader`, `Author`, and `Admin` extend `User`, inheriting common properties like email and name.
+- Each specialized user type (`Reader`, `Author`, `Admin`) has a unique identifier (readerId, authorId, adminId).
 
-### Admin
-The `Admin` entity represents an admin in the application. It has fields for `adminId`, `name`, `email`, `createdAt`, `updatedAt`, and relationships with `Credentials` and `Auth` entities.
+## Authentication and Credentials
+- `Auth` entity has one-to-one relationships with `Reader`, `Author`, and `Admin`.
+- `Credentials` entity also has one-to-one relationships with `Reader`, `Author`, and `Admin`.
+- This allows for separate storage of authentication tokens and password hashes.
 
-### Auth
-The `Auth` entity represents authentication details for a user or admin. It has fields for `authId`, `refreshToken`, `refreshTokenExpiration`, `last_login`, `method`, and relationships with `User` and `Admin` entities.
+## Post Structure
+- `Post` entity is the central element for content.
+- It has a one-to-one relationship with `PostContent`, separating the main post data from its full content.
+- It also has a one-to-one relationship with `PostComments`, allowing for easy management of comments.
 
-### Credentials
-The `Credentials` entity represents the credentials for a user or admin. It has fields for `credentialsId`, `passwordHash`, and relationships with `User` and `Admin` entities. The `passwordHash` is hashed before insertion.
+## Author-Post Relationship
+- `Author` entity has a one-to-many relationship with `Post`.
+- This is represented by the 'posts' property in the `Author` entity and the 'author' property in the `Post` entity.
 
-### EndUser
-The `EndUser` entity represents a user in the application. It has fields for `enduserId`, `email`, `name`, `createdAt`, `updatedAt`, and relationships with `TodoList`, `Credentials`, and `Auth` entities.
+## Inheritance and Polymorphism
+- The use of a base `User` class and specialized user types (`Reader`, `Author`, `Admin`) allows for polymorphic relationships.
+- This design enables role-based access control and specialized functionality for each user type.
 
-### TodoList
-The `TodoList` entity represents a todo list in the application. It has fields for `listId`, `title`, and relationships with `User` and `TodoItem` entities.
+## Separation of Concerns
+- The separation of `Post`, `PostContent`, and `PostComments` allows for efficient data management and querying.
+- It enables features like loading post summaries without full content or managing comments independently.
 
-### TodoItem
-The `TodoItem` entity represents a todo item in a todo list. It has fields for `itemId`, `text`, `isDone`, and a relationship with the `TodoList` entity.
+This structure provides a flexible and scalable foundation for a content management system with different user roles and associated functionalities.

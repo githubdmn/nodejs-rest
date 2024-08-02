@@ -22,7 +22,7 @@ export default class Admin extends User {
   @BeforeInsert()
   async generateId() {
     if (!Boolean(this.adminId)) {
-      this.adminId = super.idGenerator();
+      this.adminId = super.idGenerator('admin-');
     }
   }
 }

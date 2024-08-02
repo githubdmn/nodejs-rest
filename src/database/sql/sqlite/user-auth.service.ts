@@ -5,11 +5,7 @@ import {
   EndUserRegisterRequestDto,
   EndUserRegisterResponseDto,
 } from '@/common/dto';
-import {
-  AuthEntity,
-  CredentialsEntity,
-  EndUserEntity,
-} from '@/common/entities';
+import { AuthEntity, CredentialsEntity, AuthorEntity } from '@/common/entities';
 import { IUserDBAuth } from '@/database/interfaces/user-auth-db.interface';
 import {
   mapUserRegisterToEntities,
@@ -24,8 +20,8 @@ export default class UserAuthSqlite implements IUserDBAuth {
   constructor(
     @InjectRepository(AuthEntity)
     private authRepository: Repository<AuthEntity>,
-    @InjectRepository(EndUserEntity)
-    private userRepositoy: Repository<EndUserEntity>,
+    @InjectRepository(AuthorEntity)
+    private userRepositoy: Repository<AuthorEntity>,
     @InjectRepository(CredentialsEntity)
     private credentialsRepository: Repository<CredentialsEntity>,
   ) {}
@@ -37,19 +33,19 @@ export default class UserAuthSqlite implements IUserDBAuth {
     const userPrepared = this.userRepositoy.create(userEntity);
     const credentialsPrepared =
       this.credentialsRepository.create(credentialsEntity);
-    const authPrepared = this.authRepository.create({ enduser: userPrepared });
+    const authPrepared = this.authRepository.create({ author: userPrepared });
 
     try {
       return await this.authRepository.manager.transaction(
         async (transactionalEntityManager) => {
           const savedUser = await transactionalEntityManager.save(userPrepared);
-          authPrepared.enduser = savedUser;
-          credentialsPrepared.enduser = savedUser;
+          authPrepared.author = savedUser;
+          credentialsPrepared.author = savedUser;
           const savedCredentials =
             await transactionalEntityManager.save(credentialsPrepared);
           const savedAuth = await transactionalEntityManager.save(authPrepared);
           this.logger.log(
-            `User successfully saved ${savedUser.email} ${savedUser.enduserId}`,
+            `User successfully saved ${savedUser.email} ${savedUser.authorId}`,
           );
           return mapRegisterResultToUserResponse(savedUser);
         },
@@ -67,21 +63,21 @@ export default class UserAuthSqlite implements IUserDBAuth {
 
   register3rdParty(enduser: any): Promise<any> {
     const enduserEntity = mapUserRegisterToEndUserEntity(enduser);
-    try {      
+    try {
       const userPrepared = this.userRepositoy.create(enduserEntity);
       const authPrepared = this.authRepository.create({
-        enduser: userPrepared,
+        author: userPrepared,
       });
 
       return this.authRepository.manager.transaction(
         async (transactionalEntityManager) => {
           const savedUser = await transactionalEntityManager.save(userPrepared);
-          authPrepared.enduser = savedUser;
+          authPrepared.author = savedUser;
           authPrepared.authId = enduser.authId;
           authPrepared.method = enduser.method;
           const savedAuth = await transactionalEntityManager.save(authPrepared);
           this.logger.log(
-            `User successfully saved ${savedUser.email} ${savedUser.enduserId}`,
+            `User successfully saved ${savedUser.email} ${savedUser.authorId}`,
           );
           return mapRegisterResultToUserResponse(savedUser);
         },

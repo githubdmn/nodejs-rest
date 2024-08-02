@@ -1,7 +1,8 @@
 import { Entity, Column, JoinColumn, BeforeInsert, OneToOne } from 'typeorm';
 import Base from './base.entity';
-import Admin from './admin.entity';
-import EndUser from './enduser.entity';
+import Admin from './user-admin.entity';
+import Author from './user-author.entity';
+import Reader from './user-reader.entity';
 
 @Entity()
 export default class Auth extends Base {
@@ -27,9 +28,13 @@ export default class Auth extends Base {
     }
   }
 
-  @OneToOne(() => EndUser, (enduser) => enduser.auth)
-  @JoinColumn({ name: 'enduserId', referencedColumnName: 'enduserId' })
-  enduser?: EndUser;
+  @OneToOne(() => Reader, (reader) => reader)
+  @JoinColumn({ name: 'readerId', referencedColumnName: 'readerId' })
+  reader?: Reader;
+  
+  @OneToOne(() => Author, (author) => author.auth)
+  @JoinColumn({ name: 'authorId', referencedColumnName: 'authorId' })
+  author?: Author;
 
   @OneToOne(() => Admin, (admin) => admin.auth)
   @JoinColumn({ name: 'adminId', referencedColumnName: 'adminId' })
