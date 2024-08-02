@@ -1,6 +1,7 @@
 import { Entity, Column } from "typeorm";
 import Base from "./base.entity";
 
+//TODO: connect post-content, readers and author
 
 
 @Entity()

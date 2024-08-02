@@ -1,6 +1,7 @@
-import { Entity, Column, ManyToOne, OneToOne, BeforeInsert } from 'typeorm';
+import { Entity, Column, ManyToOne, OneToOne, BeforeInsert, JoinColumn } from 'typeorm';
 import Author from './user-author.entity';
 import Base from './base.entity';
+import PostContent from './post-content.entity';
 
 @Entity()
 export default class Post extends Base {
@@ -10,17 +11,16 @@ export default class Post extends Base {
   @Column()
   title: string;
 
-  //@OneToOne()
-  postContent: string;
+  @OneToOne(() => PostContent, (content) => content.post)
+  @JoinColumn({ name: 'postId', referencedColumnName: 'postId' })
+  content: PostContent;
 
-  //@OneToOne()
-  postComments: string;
+  @ManyToOne(() => Author, (author) => author.posts)
+  @JoinColumn({ name: 'authorId', referencedColumnName: 'authorId' })
+  author: Author;
 
   @BeforeInsert()
   generateId() {
     this.postId = super.idGenerator();
   }
-
-  @ManyToOne(() => Author, (author) => author.posts)
-  author: Author;
 }

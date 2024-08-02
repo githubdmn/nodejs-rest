@@ -5,7 +5,6 @@ import CredentialsEntity from './credentials.entity';
 import ReaderEntity from './user-reader.entity';
 import PostEntity from './post.entity';
 import PostContentEntity from './post-content.entity';
-import PostCommentsEntity from './post-comments.entity';
 
 export {
   AuthorEntity,
@@ -14,7 +13,6 @@ export {
   AdminEntity,
   CredentialsEntity,
   PostEntity,
-  PostCommentsEntity,
   PostContentEntity,
 };
 
@@ -25,6 +23,5 @@ export const Entities = [
   AdminEntity,
   CredentialsEntity,
   PostEntity,
-  PostCommentsEntity,
   PostContentEntity,
 ];
