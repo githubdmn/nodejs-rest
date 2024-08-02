@@ -7,11 +7,7 @@ import {
 } from '@/common/dto';
 import { AuthEntity, CredentialsEntity, AuthorEntity } from '@/common/entities';
 import { IUserDBAuth } from '@/database/interfaces/user-auth-db.interface';
-import {
-  mapUserRegisterToEntities,
-  mapRegisterResultToUserResponse,
-  mapUserRegisterToEndUserEntity,
-} from './mappers';
+
 
 @Injectable()
 export default class UserAuthSqlite implements IUserDBAuth {
@@ -28,69 +24,69 @@ export default class UserAuthSqlite implements IUserDBAuth {
 
   async register(
     user: EndUserRegisterRequestDto,
-  ): Promise<EndUserRegisterResponseDto> {
-    const [credentialsEntity, userEntity] = mapUserRegisterToEntities(user);
-    const userPrepared = this.userRepositoy.create(userEntity);
-    const credentialsPrepared =
-      this.credentialsRepository.create(credentialsEntity);
-    const authPrepared = this.authRepository.create({ author: userPrepared });
+  ): Promise<any> {
+    // const [credentialsEntity, userEntity] = mapUserRegisterToEntities(user);
+    // const userPrepared = this.userRepositoy.create(userEntity);
+    // const credentialsPrepared =
+    //   this.credentialsRepository.create(credentialsEntity);
+    // const authPrepared = this.authRepository.create({ author: userPrepared });
 
-    try {
-      return await this.authRepository.manager.transaction(
-        async (transactionalEntityManager) => {
-          const savedUser = await transactionalEntityManager.save(userPrepared);
-          authPrepared.author = savedUser;
-          credentialsPrepared.author = savedUser;
-          const savedCredentials =
-            await transactionalEntityManager.save(credentialsPrepared);
-          const savedAuth = await transactionalEntityManager.save(authPrepared);
-          this.logger.log(
-            `User successfully saved ${savedUser.email} ${savedUser.authorId}`,
-          );
-          return mapRegisterResultToUserResponse(savedUser);
-        },
-      );
-    } catch (error: any) {
-      this.logger.error(
-        `DB service: Failed to save user ${user.email} to database. Error: ${error.message}`,
-      );
-      throw new HttpException(
-        `DB service: Failed to save user to database.`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    // try {
+    //   return await this.authRepository.manager.transaction(
+    //     async (transactionalEntityManager) => {
+    //       const savedUser = await transactionalEntityManager.save(userPrepared);
+    //       authPrepared.author = savedUser;
+    //       credentialsPrepared.author = savedUser;
+    //       const savedCredentials =
+    //         await transactionalEntityManager.save(credentialsPrepared);
+    //       const savedAuth = await transactionalEntityManager.save(authPrepared);
+    //       this.logger.log(
+    //         `User successfully saved ${savedUser.email} ${savedUser.authorId}`,
+    //       );
+    //       return mapRegisterResultToUserResponse(savedUser);
+    //     },
+    //   );
+    // } catch (error: any) {
+    //   this.logger.error(
+    //     `DB service: Failed to save user ${user.email} to database. Error: ${error.message}`,
+    //   );
+    //   throw new HttpException(
+    //     `DB service: Failed to save user to database.`,
+    //     HttpStatus.INTERNAL_SERVER_ERROR,
+    //   );
+    // }
   }
 
-  register3rdParty(enduser: any): Promise<any> {
-    const enduserEntity = mapUserRegisterToEndUserEntity(enduser);
-    try {
-      const userPrepared = this.userRepositoy.create(enduserEntity);
-      const authPrepared = this.authRepository.create({
-        author: userPrepared,
-      });
+  async register3rdParty(enduser: any): Promise<any> {
+    // const enduserEntity = mapUserRegisterToEndUserEntity(enduser);
+    // try {
+    //   const userPrepared = this.userRepositoy.create(enduserEntity);
+    //   const authPrepared = this.authRepository.create({
+    //     author: userPrepared,
+    //   });
 
-      return this.authRepository.manager.transaction(
-        async (transactionalEntityManager) => {
-          const savedUser = await transactionalEntityManager.save(userPrepared);
-          authPrepared.author = savedUser;
-          authPrepared.authId = enduser.authId;
-          authPrepared.method = enduser.method;
-          const savedAuth = await transactionalEntityManager.save(authPrepared);
-          this.logger.log(
-            `User successfully saved ${savedUser.email} ${savedUser.authorId}`,
-          );
-          return mapRegisterResultToUserResponse(savedUser);
-        },
-      );
-    } catch (error: any) {
-      this.logger.error(
-        `DB service: Failed to save user ${enduser.email} to database. Error: ${error.message}`,
-      );
-      throw new HttpException(
-        `DB service: Failed to save user to database.`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    //   return this.authRepository.manager.transaction(
+    //     async (transactionalEntityManager) => {
+    //       const savedUser = await transactionalEntityManager.save(userPrepared);
+    //       authPrepared.author = savedUser;
+    //       authPrepared.authId = enduser.authId;
+    //       authPrepared.method = enduser.method;
+    //       const savedAuth = await transactionalEntityManager.save(authPrepared);
+    //       this.logger.log(
+    //         `User successfully saved ${savedUser.email} ${savedUser.authorId}`,
+    //       );
+    //       return mapRegisterResultToUserResponse(savedUser);
+    //     },
+    //   );
+    // } catch (error: any) {
+    //   this.logger.error(
+    //     `DB service: Failed to save user ${enduser.email} to database. Error: ${error.message}`,
+    //   );
+    //   throw new HttpException(
+    //     `DB service: Failed to save user to database.`,
+    //     HttpStatus.INTERNAL_SERVER_ERROR,
+    //   );
+    // }
   }
 
   // async saveAdmin(
