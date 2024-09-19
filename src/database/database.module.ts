@@ -6,7 +6,7 @@ import {
   PostgresUserService,
 } from './sql/postgresdb';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Entities } from '@/entities'; '@/entities';
+import { Entities } from '@/entities';
 
 
 export const entitiesList = Object.values(Entities);
