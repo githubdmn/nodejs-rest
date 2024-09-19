@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { TodoList, TodoItem, UserEntity } from '@/entities';
+import { Entities } from '@/entities';
 import { ITodoDatabase } from '@/database/database.inteface';
 import {
   CreateTodoItemRequestDto,
@@ -35,12 +35,12 @@ import {
 @Injectable()
 export default class PostgresTodoService implements ITodoDatabase {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
-    @InjectRepository(TodoList)
-    private readonly todoListRepository: Repository<TodoList>,
-    @InjectRepository(TodoItem)
-    private readonly todoItemRepository: Repository<TodoItem>,
+    @InjectRepository(Entities.UserEntity)
+    private readonly userRepository: Repository<typeof Entities.UserEntity>,
+    @InjectRepository(Entities.TodoListEntity)
+    private readonly todoListRepository: Repository<typeof Entities.UserEntity>,
+    @InjectRepository(Entities.TodoItemEntity)
+    private readonly todoItemRepository: Repository<typeof Entities.UserEntity>,
   ) {}
 
   private async handleException<T>(promise: Promise<T>): Promise<T> {

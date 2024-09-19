@@ -6,23 +6,12 @@ import {
   PostgresUserService,
 } from './sql/postgresdb';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import {
-  AdminEntity,
-  AuthEntity,
-  CredentialsEntity,
-  TodoItem,
-  TodoList,
-  UserEntity,
-} from '@/entities';
+import { Entities } from '@/entities'; '@/entities';
 
-const TypeOrmLocal = TypeOrmModule.forFeature([
-  UserEntity,
-  TodoItem,
-  TodoList,
-  AuthEntity,
-  CredentialsEntity,
-  AdminEntity,
-]);
+
+export const entitiesList = Object.values(Entities);
+
+const TypeOrmLocal = TypeOrmModule.forFeature(entitiesList);
 const PostgresServices = [
   {
     provide: POSTGRES_USER,
