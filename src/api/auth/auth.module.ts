@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './custom/auth.service';
 import { AUTH_SERVICE } from '@/utils/constants';
 import { JwtModule } from '@nestjs/jwt';
-import { DatabaseModule } from '@/database/database.module';
 import { env } from '@/conf';
 import { PassportModule } from '@nestjs/passport';
 import { AuthUserController } from './auth.controller.user';
@@ -20,7 +19,6 @@ const Services = [
 
 const DynamicImports = [
   PassportModule.register({ defaultStrategy: 'jwt' }),
-  DatabaseModule,
   JwtModule.registerAsync({
     useFactory: async () => ({
       secret: env.jwtSecret,

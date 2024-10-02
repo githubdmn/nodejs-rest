@@ -1,7 +1,7 @@
 import { BeforeInsert, Column, Entity, In, Index, OneToOne } from 'typeorm';
 import Base from './base.entity';
 import User from './user.entity';
-import AuthAdmin from './admin.entity';
+import AuthAdmin from './auth-admin.entity';
 
 @Entity()
 @Index('idx_refresh_token', ['refreshToken'])

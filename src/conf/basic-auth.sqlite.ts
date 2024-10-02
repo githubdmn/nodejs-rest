@@ -1,13 +1,12 @@
-import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
-
+// custom-auth-db.connection.ts
+import { TypeOrmModuleOptions, TypeOrmModule } from '@nestjs/typeorm';
 const basicAuth = 'db/basic-auth.sqlite';
-const basicAuthEntiities = 'dist/src/api/auth/custom/entities/*.entity.{ts,js}';
 
-const sqliteAuthSettingsEnv = {
+const sqliteAuthSettingsEnv: TypeOrmModuleOptions = {
   type: 'sqlite',
   database: basicAuth,
   synchronize: true,
-  entities: [basicAuthEntiities],
-} as TypeOrmModuleOptions;
+  entities: ['dist/src/api/auth/custom/entities/*.entity.{ts,js}'],
+};
 
 export default TypeOrmModule.forRoot(sqliteAuthSettingsEnv);

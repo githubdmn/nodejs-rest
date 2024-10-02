@@ -1,4 +1,6 @@
 import env from './dev.env';
 import TypeORMConfig from './postresql.connection';
 
-export { env, TypeORMConfig };
+import CustomAuthDBConnection from './basic-auth.sqlite';
+
+export { env, TypeORMConfig, CustomAuthDBConnection };

@@ -1,6 +1,6 @@
 import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import Base from "./base.entity";
-import Password from "./password.entiry";
+import Password from "./password.entity";
 import Roles from "./roles.entity";
 import Token from "./token.entity";
 
@@ -25,12 +25,12 @@ export default class AuthAdmin extends Base {
     this.authAdminId = super.idGenerator();
   }
 
-  @OneToOne(() => Password, (password) => password.user, { cascade: true })
-  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
+  @OneToOne(() => Password, (password) => password.authAdmin, { cascade: true })
+  @JoinColumn({ name: 'passwordId', referencedColumnName: 'passwordId' })
   password: Password;
 
-  @OneToOne(() => Token, (token) => token.user, { cascade: true })
-  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
+  @OneToOne(() => Token, (token) => token.authAdmin, { cascade: true })
+  @JoinColumn({ name: 'tokenId', referencedColumnName: 'tokenId' })
   token: Token;
 
   @ManyToOne(() => Roles)

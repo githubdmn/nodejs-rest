@@ -2,12 +2,12 @@ import { BeforeInsert, Column, Entity, OneToOne } from 'typeorm';
 import User from './user.entity';
 import Base from './base.entity';
 import { hashString } from '@/utils';
-import AuthAdmin from './admin.entity';
+import AuthAdmin from './auth-admin.entity';
 
 @Entity()
 export default class Password extends Base {
   @Column({ nullable: true })
-  password: string;
+  passwordId: string;
 
   @OneToOne(() => AuthAdmin, (authAdmin) => authAdmin.password)
   authAdmin: AuthAdmin;
@@ -17,7 +17,7 @@ export default class Password extends Base {
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = await hashString(this.password);
+    this.passwordId = await hashString(this.passwordId);
   }
 
   async generateId() {}
