@@ -11,15 +11,12 @@ import {
 import { RefreshTokenResponseDto } from './dto';
 
 export interface IAuthService {
-  registerUser(
+  register(
     userRequest: UserRegisterRequestDto,
   ): Promise<UserRegisterResponseDto>;
-  registerAdmin(
-    user: AdminRegisterRequestDto,
-  ): Promise<AdminRegisterResponseDto>;
   userExists(email: string): Promise<boolean>;
   validateUser(credentials: CredentialsDto): Promise<boolean>;
-  loginUser(isAdmin: boolean, email: string): Promise<RefreshTokenResponseDto>;
+  login(isAdmin: boolean, email: string): Promise<RefreshTokenResponseDto>;
   logout(refreshToken: string): Promise<string>;
   refreshAccessToken(
     id: string,
