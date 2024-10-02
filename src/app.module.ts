@@ -5,6 +5,6 @@ import { TodoModule } from './api/todo/todo.module';
 import { AuthModule } from './api/auth/auth.module';
 
 @Module({
-  imports: [TypeORMConfig, UserModule, TodoModule, AuthModule],
+  imports: [TypeORMConfig, /* UserModule, TodoModule, */ AuthModule],
 })
 export class AppModule {}

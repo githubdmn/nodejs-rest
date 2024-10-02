@@ -15,7 +15,10 @@ export default abstract class Base {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  protected idGenerator(alphabet: string = NUMBERS, length: number = ID_LENGTH): string {
+  protected idGenerator(
+    alphabet: string = NUMBERS,
+    length: number = ID_LENGTH,
+  ): string {
     return customAlphabet(alphabet, ID_LENGTH)();
   }
 

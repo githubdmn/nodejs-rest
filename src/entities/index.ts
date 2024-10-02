@@ -5,7 +5,7 @@ import TodoItemEntity from './todoList.entity';
 import TodoListEntity from './todoItem.entity';
 import CredentialsEntity from './credentials.entity';
 
-export const Entities ={
+export {
   UserEntity,
   TodoItemEntity,
   TodoListEntity,
@@ -13,4 +13,3 @@ export const Entities ={
   AdminEntity,
   CredentialsEntity,
 };
-

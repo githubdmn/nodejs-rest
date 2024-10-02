@@ -31,7 +31,8 @@ const DynamicImports = [
   }),
 ];
 
-if ('env.CustomAuth') {
+const todoRefactor = 'env.CustomAuth';
+if (todoRefactor == 'env.CustomAuth') {
   DynamicImports.push(TypeOrmCustomAuth);
 }
 

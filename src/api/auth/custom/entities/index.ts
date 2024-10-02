@@ -1,5 +1,5 @@
 
-import AuthEntity from "./auth.entity";
+import AuthEntity from "./user.entity";
 import RolesEntity from "./roles.entity";
 import TokenEntity from "./token.entity";
 
