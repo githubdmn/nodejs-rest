@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { AuthAdminEntity, UserEntity, PasswordEntity, RolesEntity, TokenEntity } from '../entities';
 
 @Injectable()
-export class AuthAdminSQLiteRepositoryService {
+export class AuthUserSQLiteRepositoryService {
   constructor(
     @InjectRepository(AuthAdminEntity)
     private readonly authAdminRepository: Repository<AuthAdminEntity>,
