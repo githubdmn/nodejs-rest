@@ -6,7 +6,7 @@ import RolesEntity from "./roles.entity";
 import TokenEntity from "./token.entity";
 
 
-export default {
+export {
   UserEntity,
   AuthAdminEntity,
   PasswordEntity,

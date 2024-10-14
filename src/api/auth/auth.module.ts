@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './custom/auth.service';
+import { AuthService } from './custom/auth-admin.service';
 import { AUTH_SERVICE } from '@/utils/constants';
 import { JwtModule } from '@nestjs/jwt';
 import { env } from '@/conf';
 import { PassportModule } from '@nestjs/passport';
-import { AuthUserController } from './auth.controller.user';
-import { AuthAdminController } from './auth.controller.admin';
+import { AuthUserController } from './auth-user.controller';
+import { AuthAdminController } from './auth-admin.controller';
 import { LocalStrategy } from './custom/local.strategy';
 import { TypeOrmCustomAuth } from './custom';
 

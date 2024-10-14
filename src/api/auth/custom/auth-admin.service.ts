@@ -10,7 +10,6 @@ import {
 import { POSTGRES_AUTH, POSTGRES_USER } from '@/utils/constants';
 import { env } from '@/conf';
 import { RefreshTokenResponseDto } from '../dto';
-import entities from './entities';
 
 const DB_USER = POSTGRES_USER;
 const DB_AUTH = POSTGRES_AUTH;
