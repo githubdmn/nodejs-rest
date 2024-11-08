@@ -1,7 +1,7 @@
 import { BeforeInsert, Column, Entity, Index, OneToOne } from 'typeorm';
 import Base from './base.entity';
 import User from './user.entity';
-import AuthAdmin from './auth-admin.entity';
+import Admin from './admin.entity';
 
 @Entity()
 export default class Roles extends Base {
@@ -25,8 +25,8 @@ export default class Roles extends Base {
     this.roleId = super.idGenerator();
   }
 
-  @OneToOne(() => AuthAdmin, (authAdmin) => authAdmin.role)
-  authAdmin: AuthAdmin;
+  @OneToOne(() => Admin, (authAdmin) => authAdmin.role)
+  authAdmin: Admin;
 
   @OneToOne(() => User, (user) => user.role)
   user: User;

@@ -3,5 +3,6 @@
   "prettier.useTabs": true,
   "prettier.configPath": ".prettierrc",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "deno.enable": false
+  "deno.enable": false,
+  "cSpell.enabled": false
 }

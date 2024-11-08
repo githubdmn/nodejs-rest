@@ -1,15 +1,7 @@
+import UserEntity from './user.entity';
+import AdminEntity from './admin.entity';
+import PasswordEntity from './password.entity';
+import RolesEntity from './roles.entity';
+import TokenEntity from './token.entity';
 
-import UserEntity from "./user.entity";
-import AuthAdminEntity from "./auth-admin.entity";
-import PasswordEntity from "./password.entity";
-import RolesEntity from "./roles.entity";
-import TokenEntity from "./token.entity";
-
-
-export {
-  UserEntity,
-  AuthAdminEntity,
-  PasswordEntity,
-  RolesEntity,
-  TokenEntity,
-};
+export { UserEntity, AdminEntity, PasswordEntity, RolesEntity, TokenEntity };

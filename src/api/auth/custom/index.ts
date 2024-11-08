@@ -1,7 +1,7 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   UserEntity,
-  AuthAdminEntity,
+  AdminEntity,
   PasswordEntity,
   RolesEntity,
   TokenEntity,
@@ -9,7 +9,7 @@ import {
 
 export const TypeOrmCustomAuth = TypeOrmModule.forFeature([
   UserEntity,
-  AuthAdminEntity,
+  AdminEntity,
   PasswordEntity,
   RolesEntity,
   TokenEntity,

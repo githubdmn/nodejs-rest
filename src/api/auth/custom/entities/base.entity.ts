@@ -1,5 +1,11 @@
-// const { v4: uuidv4 } = require('uuid'); // return uuidv4().replace(/-/g, '').slice(0, 6);
-import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+// const { v4: uuidv4 } = require('uuid');
+// return uuidv4().replace(/-/g, '').slice(0, 6);
+
+import {
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { customAlphabet } from 'nanoid';
 
 const NUMBERS = '0123456789';
