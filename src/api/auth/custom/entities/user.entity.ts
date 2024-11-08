@@ -1,4 +1,12 @@
-import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+} from 'typeorm';
 import Base from './base.entity';
 import Password from './password.entity';
 import Roles from './roles.entity';

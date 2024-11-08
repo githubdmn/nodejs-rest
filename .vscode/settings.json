@@ -1,6 +1,7 @@
 {
-	"prettier.singleQuote": true,
-	"prettier.useTabs": true,
-	"prettier.configPath": ".prettierrc",
-	"editor.defaultFormatter": "esbenp.prettier-vscode"
+  "prettier.singleQuote": true,
+  "prettier.useTabs": true,
+  "prettier.configPath": ".prettierrc",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "deno.enable": false
 }

@@ -6,31 +6,28 @@ import { GeneralFilter, UserExistsException } from '@/exceptions';
 
 @Controller('auth/user')
 export class AuthUserController extends AuthController {
-  @Post()
-  @UseFilters(GeneralFilter)
-  async register(
-    @Body() userRequest: CreateUserRequestDto,
-  ): Promise<CreateUserResponseDto> {
-    const user: UserRegisterRequestDto = {
-      email: userRequest.email,
-      password: userRequest.password,
-      firstName: userRequest.firstName,
-      lastName: userRequest.lastName,
-    };
-
-    const userExists = await this.authService.userExists(user.email);
-    if (userExists) {
-      throw new UserExistsException(`User with the email ${user.email}`);
-    }
-
-    const registeredUser = await this.authService.registerUser(user);
-
-    return {
-      userId: registeredUser.userId,
-      email: registeredUser.email,
-      firstName: registeredUser.firstName,
-      lastName: registeredUser.lastName,
-      createdAt: registeredUser.createdAt,
-    } as CreateUserResponseDto;
-  }
+  //   @Post()
+  //   @UseFilters(GeneralFilter)
+  //   async register(
+  //     @Body() userRequest: CreateUserRequestDto,
+  //   ): Promise<CreateUserResponseDto> {
+  //     const user: UserRegisterRequestDto = {
+  //       email: userRequest.email,
+  //       password: userRequest.password,
+  //       firstName: userRequest.firstName,
+  //       lastName: userRequest.lastName,
+  //     };
+  //     const userExists = await this.authService.userExists(user.email);
+  //     if (userExists) {
+  //       throw new UserExistsException(`User with the email ${user.email}`);
+  //     }
+  //     const registeredUser = await this.authService.registerUser(user);
+  //     return {
+  //       userId: registeredUser.userId,
+  //       email: registeredUser.email,
+  //       firstName: registeredUser.firstName,
+  //       lastName: registeredUser.lastName,
+  //       createdAt: registeredUser.createdAt,
+  //     } as CreateUserResponseDto;
+  //   }
 }
