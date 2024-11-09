@@ -7,13 +7,13 @@ import {
   PasswordEntity,
   RolesEntity,
   TokenEntity,
-} from '../entities';
+} from '../../entities';
 
 @Injectable()
-export class AuthUserSQLiteRepositoryService {
+export default class AuthAdminSQLiteRepositoryService {
   constructor(
     @InjectRepository(AdminEntity)
-    private readonly authAdminRepository: Repository<AdminEntity>,
+    private readonly adminRepository: Repository<AdminEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(PasswordEntity)
@@ -24,16 +24,22 @@ export class AuthUserSQLiteRepositoryService {
     private readonly rolesRepository: Repository<RolesEntity>,
   ) {}
 
-  //   // Create a new user
-  //   async createUser(userData: Partial<User>): Promise<User> {
-  //     const newUser = this.userRepository.create(userData);
-  //     return this.userRepository.save(newUser);
-  //   }
+  async findAdminByAdminId(adminId: string): Promise<AdminEntity | null> {
+    return await this.adminRepository.findOne({ where: { adminId } });
+  }
 
-  //   // Find user by email
-  //   async findUserByEmail(email: string): Promise<User | undefined> {
-  //     return this.userRepository.findOne({ where: { email } });
-  //   }
+  async findAdminByEmail(email: string): Promise<AdminEntity | null> {
+    return await this.adminRepository.findOne({ where: { email } });
+  }
+
+  async createAdmin(adminData: Partial<any>): Promise<AdminEntity> {
+    const checkAdmin = await this.findAdminByEmail(adminData.email);
+    if (checkAdmin === null) {
+      return new AdminEntity();
+    }
+    const preparedAdmin = await this.adminRepository.create(adminData);
+    return this.userRepository.save(preparedAdmin);
+  }
 
   //   // Update password for a user
   //   async updatePassword(userId: string, newPassword: string): Promise<Password> {

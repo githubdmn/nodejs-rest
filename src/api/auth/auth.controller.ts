@@ -8,7 +8,6 @@ import {
   Get,
   Headers,
 } from '@nestjs/common';
-import { IAuthService } from './auth.interface';
 import { AUTH_SERVICE } from '@/utils/constants';
 import {
   UserRegistrationRequestDto,

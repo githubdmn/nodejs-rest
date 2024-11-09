@@ -7,10 +7,10 @@ import {
   PasswordEntity,
   RolesEntity,
   TokenEntity,
-} from '../entities';
+} from './../../entities';
 
 @Injectable()
-export class AuthAdminSQLiteRepositoryService {
+export class AuthUserSQLiteRepositoryService {
   constructor(
     @InjectRepository(AdminEntity)
     private readonly authAdminRepository: Repository<AdminEntity>,

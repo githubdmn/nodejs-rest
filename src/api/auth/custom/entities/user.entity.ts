@@ -7,14 +7,15 @@ import {
   ManyToOne,
   OneToOne,
 } from 'typeorm';
-import Profile from './profile.entity';
 import Password from './password.entity';
 import Roles from './roles.entity';
 import Token from './token.entity';
+import Base from './base.entity';
 
 @Entity()
 @Index('idx_user_email', ['email'])
-export default class User extends Profile {
+@Index('idx_user_userId', ['userId'])
+export default class User extends Base {
   @Column({ unique: true })
   userId: string;
 

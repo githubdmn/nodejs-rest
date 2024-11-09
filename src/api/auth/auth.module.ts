@@ -1,20 +1,28 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './custom/auth-admin.service';
-import { AUTH_SERVICE } from '@/utils/constants';
+
 import { JwtModule } from '@nestjs/jwt';
 import { env } from '@/conf';
 import { PassportModule } from '@nestjs/passport';
 import { AuthUserController } from './auth-user.controller';
 import { AuthAdminController } from './auth-admin.controller';
-import { LocalStrategy } from './custom/local.strategy';
+import { LocalStrategy } from './custom/service/implementation/local.strategy';
 import { TypeOrmCustomAuth } from './custom';
+import {
+  AUTH_CUSTOM_ADMIN_REPOSITORY,
+  CUSTOM_AUTH_ADMIN_SERVICE,
+} from './custom/constants';
+import AuthAdminSQLiteRepositoryService from './custom/repository/sqlite/admin.sqlite.service';
+import { CustomAuthAdminServiceImplementation } from './custom/service/implementation';
 
 const Services = [
   {
-    provide: AUTH_SERVICE,
-    useClass: AuthService,
+    provide: AUTH_CUSTOM_ADMIN_REPOSITORY,
+    useClass: AuthAdminSQLiteRepositoryService,
   },
-  LocalStrategy,
+  {
+    provide: CUSTOM_AUTH_ADMIN_SERVICE,
+    useClass: CustomAuthAdminServiceImplementation,
+  },
 ];
 
 const DynamicImports = [
@@ -35,7 +43,7 @@ if (todoRefactor == 'env.CustomAuth') {
 }
 
 @Module({
-  controllers: [AuthUserController, AuthAdminController],
+  controllers: [AuthAdminController],
   providers: [...Services],
   imports: [...DynamicImports],
   exports: [],

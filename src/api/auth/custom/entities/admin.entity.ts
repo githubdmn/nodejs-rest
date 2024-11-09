@@ -14,9 +14,10 @@ import Token from './token.entity';
 
 @Entity()
 @Index('idx_admin_email', ['email'])
+@Index('idx_admin_adminId', ['adminId'])
 export default class Admin extends Base {
   @Column({ unique: true })
-  authAdminId: string;
+  adminId: string;
 
   @Column({ unique: true })
   @Index()
@@ -45,6 +46,6 @@ export default class Admin extends Base {
 
   @BeforeInsert()
   async generateId() {
-    this.authAdminId = super.idGenerator();
+    this.adminId = super.idGenerator();
   }
 }
