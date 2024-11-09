@@ -1,8 +1,19 @@
-import { Body, Controller, Inject, Post, UseFilters } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Inject,
+  Logger,
+  Post,
+  UseFilters,
+} from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { CreateAdminRequestDto, CreateAdminResponseDto } from './dto';
 import { AdminRegisterRequestDto } from '@/dto';
-import { GeneralFilter, UserExistsException } from '@/exceptions';
+import {
+  AllExceptionsFilter,
+  GeneralFilter,
+  UserExistsException,
+} from '@/exceptions';
 import { CustomAuthAdminService } from './custom/service';
 import { CUSTOM_AUTH_ADMIN_SERVICE } from './custom/constants';
 
@@ -10,13 +21,19 @@ import { CUSTOM_AUTH_ADMIN_SERVICE } from './custom/constants';
 export class AuthAdminController {
   constructor(
     @Inject(CUSTOM_AUTH_ADMIN_SERVICE)
-    protected adminService: CustomAuthAdminService,
+    private adminService: CustomAuthAdminService,
+    private logger: Logger,
   ) {}
 
+  @UseFilters(AllExceptionsFilter)
   @Post()
   async register(@Body() adminRequestBody: any): Promise<any> {
     const registeredAdmin =
       await this.adminService.registerAdmin(adminRequestBody);
+    this.logger.log(
+      `Admin with email ${registeredAdmin.email} registered successfully`,
+    );
+
     return registeredAdmin;
   }
 

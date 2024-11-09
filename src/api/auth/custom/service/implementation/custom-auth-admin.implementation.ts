@@ -11,9 +11,6 @@ export default class CustomAuthAdminServiceImplementation {
 
   async registerAdmin(adminData: any): Promise<any> {
     const savedAdmin = await this.adminRepository.createAdmin(adminData);
-    // convert AdminEntity to AdminDto
-    console.log(savedAdmin);
-
     return savedAdmin;
   }
 

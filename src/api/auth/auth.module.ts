@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 
 import { JwtModule } from '@nestjs/jwt';
 import { env } from '@/conf';
@@ -13,6 +13,9 @@ import {
 } from './custom/constants';
 import AuthAdminSQLiteRepositoryService from './custom/repository/sqlite/admin.sqlite.service';
 import { CustomAuthAdminServiceImplementation } from './custom/service/implementation';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { RolesEntity } from './custom/entities';
+import { RolesSeederService } from './custom/seed/RolesSeederService';
 
 const Services = [
   {
@@ -23,6 +26,8 @@ const Services = [
     provide: CUSTOM_AUTH_ADMIN_SERVICE,
     useClass: CustomAuthAdminServiceImplementation,
   },
+  RolesSeederService,
+  Logger,
 ];
 
 const DynamicImports = [
@@ -45,7 +50,7 @@ if (todoRefactor == 'env.CustomAuth') {
 @Module({
   controllers: [AuthAdminController],
   providers: [...Services],
-  imports: [...DynamicImports],
+  imports: [...DynamicImports, TypeOrmModule.forFeature([RolesEntity])],
   exports: [],
 })
 export class AuthModule {}

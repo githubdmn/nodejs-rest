@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
@@ -21,7 +21,8 @@ async function bootstrap() {
     })
     .setGlobalPrefix('api');
 
-  app.useGlobalFilters(new AllExceptionsFilter());
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
   app.enableCors({
     origin: 'http://localhost:4200',

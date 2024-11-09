@@ -1,6 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import {
   AdminEntity,
   UserEntity,
@@ -22,6 +28,7 @@ export default class AuthAdminSQLiteRepositoryService {
     private readonly tokenRepository: Repository<TokenEntity>,
     @InjectRepository(RolesEntity)
     private readonly rolesRepository: Repository<RolesEntity>,
+    private logger: Logger,
   ) {}
 
   async findAdminByAdminId(adminId: string): Promise<AdminEntity | null> {
@@ -32,13 +39,57 @@ export default class AuthAdminSQLiteRepositoryService {
     return await this.adminRepository.findOne({ where: { email } });
   }
 
+  async getAdminRoleId(roleId: string = '2'): Promise<RolesEntity> {
+    const adminRole = await this.rolesRepository.findOne({ where: { roleId } });
+    if (!adminRole) return new RolesEntity();
+    return adminRole;
+  }
+
   async createAdmin(adminData: Partial<any>): Promise<AdminEntity> {
-    const checkAdmin = await this.findAdminByEmail(adminData.email);
-    if (checkAdmin === null) {
-      return new AdminEntity();
+    try {
+      const checkAdmin = await this.findAdminByEmail(adminData.email);
+
+      if (checkAdmin) {
+        throw new ConflictException('Admin already exists');
+      }
+
+      return await this.adminRepository.manager.transaction(
+        async (entityManager: EntityManager) => {
+          const preparedAdmin = this.adminRepository.create(adminData);
+
+          const role = await this.getAdminRoleId();
+          if (!role) {
+            throw new NotFoundException('Admin role not found');
+          }
+          preparedAdmin.role = role;
+
+          const passwordPrepared = this.passwordRepository.create({
+            password: adminData.password,
+            authAdmin: preparedAdmin,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          });
+
+          const savedPassword = await entityManager.save(passwordPrepared);
+          const { authAdmin, ...passwordWithoutAuthAdmin } = savedPassword;
+          Object.assign(preparedAdmin, { password: passwordWithoutAuthAdmin });
+
+          const savedAdmin = await entityManager.save(preparedAdmin);
+          return savedAdmin;
+        },
+      );
+    } catch (error) {
+      this.logger.error('Failed to create admin:', error);
+
+      if (
+        error instanceof ConflictException ||
+        error instanceof NotFoundException
+      ) {
+        throw error;
+      }
+
+      throw new InternalServerErrorException('Failed to create admin');
     }
-    const preparedAdmin = await this.adminRepository.create(adminData);
-    return this.userRepository.save(preparedAdmin);
   }
 
   //   // Update password for a user

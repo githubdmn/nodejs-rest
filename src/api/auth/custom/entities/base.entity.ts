@@ -7,9 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { customAlphabet } from 'nanoid';
-
-const NUMBERS = '0123456789';
-const ID_LENGTH = 5;
+import { NUMBERS, ID_LENGTH } from './../constants';
 
 export default abstract class Base {
   @PrimaryGeneratedColumn()
@@ -25,7 +23,7 @@ export default abstract class Base {
     alphabet: string = NUMBERS,
     length: number = ID_LENGTH,
   ): string {
-    return customAlphabet(alphabet, ID_LENGTH)();
+    return customAlphabet(alphabet, length)();
   }
 
   protected abstract generateId(): void;

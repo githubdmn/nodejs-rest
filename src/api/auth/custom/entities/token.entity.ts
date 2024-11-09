@@ -6,7 +6,7 @@ import Admin from './admin.entity';
 @Entity()
 @Index('idx_refresh_token', ['refreshToken'])
 export default class Token extends Base {
-  @Column({ nullable: true })
+  @Column({ unique: true })
   tokenId: string;
 
   @Column({ nullable: true })

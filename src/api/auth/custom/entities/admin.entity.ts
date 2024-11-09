@@ -17,6 +17,7 @@ import Token from './token.entity';
 @Index('idx_admin_adminId', ['adminId'])
 export default class Admin extends Base {
   @Column({ unique: true })
+  @Index()
   adminId: string;
 
   @Column({ unique: true })
@@ -40,7 +41,7 @@ export default class Admin extends Base {
   @JoinColumn({ name: 'tokenId', referencedColumnName: 'tokenId' })
   token: Token;
 
-  @ManyToOne(() => Roles)
+  @ManyToOne(() => Roles, (roles) => roles.admins)
   @JoinColumn({ name: 'roleId', referencedColumnName: 'roleId' })
   role: Roles;
 

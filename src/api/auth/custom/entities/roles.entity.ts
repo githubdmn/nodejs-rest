@@ -1,11 +1,18 @@
-import { BeforeInsert, Column, Entity, Index, OneToOne } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import Base from './base.entity';
 import User from './user.entity';
 import Admin from './admin.entity';
 
 @Entity()
 export default class Roles extends Base {
-  @Column({ nullable: true })
+  @Column({ unique: true })
   roleId: string;
 
   @Column({ nullable: true })
@@ -21,13 +28,13 @@ export default class Roles extends Base {
   verified: boolean;
 
   @BeforeInsert()
-  async generateId() {
-    this.roleId = super.idGenerator();
+  async generateId(alphabet?: string, length?: number) {
+    if (!this.roleId) this.roleId = super.idGenerator(alphabet, length);
   }
 
-  @OneToOne(() => Admin, (authAdmin) => authAdmin.role)
-  authAdmin: Admin;
+  @OneToMany(() => Admin, (admin) => admin.role)
+  admins: Admin[];
 
-  @OneToOne(() => User, (user) => user.role)
-  user: User;
+  @OneToMany(() => User, (user) => user.role)
+  users: User[];
 }

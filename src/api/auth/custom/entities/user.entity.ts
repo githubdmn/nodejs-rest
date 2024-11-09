@@ -17,12 +17,8 @@ import Base from './base.entity';
 @Index('idx_user_userId', ['userId'])
 export default class User extends Base {
   @Column({ unique: true })
+  @Index()
   userId: string;
-
-  @BeforeInsert()
-  async generateId() {
-    this.userId = super.idGenerator();
-  }
 
   @Column({ unique: true })
   @Index()
@@ -45,7 +41,12 @@ export default class User extends Base {
   @JoinColumn({ name: 'tokenId', referencedColumnName: 'tokenId' })
   token: Token;
 
-  @ManyToOne(() => Roles)
+  @ManyToOne(() => Roles, (roles) => roles.users)
   @JoinColumn({ name: 'roleId', referencedColumnName: 'roleId' })
   role: Roles;
+
+  @BeforeInsert()
+  async generateId() {
+    this.userId = super.idGenerator();
+  }
 }
