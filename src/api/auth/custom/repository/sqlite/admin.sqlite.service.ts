@@ -71,8 +71,9 @@ export default class AuthAdminSQLiteRepositoryService {
           });
 
           const savedPassword = await entityManager.save(passwordPrepared);
-          const { authAdmin, ...passwordWithoutAuthAdmin } = savedPassword;
-          Object.assign(preparedAdmin, { password: passwordWithoutAuthAdmin });
+          // const { authAdmin, ...passwordWithoutAuthAdmin } = savedPassword;
+          // Object.assign(preparedAdmin, { password: passwordWithoutAuthAdmin });
+          preparedAdmin.password = savedPassword;
 
           const savedAdmin = await entityManager.save(preparedAdmin);
           return savedAdmin;
