@@ -4,5 +4,6 @@
   "prettier.configPath": ".prettierrc",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "deno.enable": false,
-  "cSpell.enabled": false
+  "cSpell.enabled": false,
+  "editor.fontFamily": "Consolas, 'Courier New', monospace"
 }
