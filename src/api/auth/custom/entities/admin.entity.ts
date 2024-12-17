@@ -7,18 +7,18 @@ import {
   ManyToOne,
   OneToOne,
 } from 'typeorm';
+import Base from './base.entity';
 import Password from './password.entity';
 import Roles from './roles.entity';
 import Token from './token.entity';
-import Base from './base.entity';
 
 @Entity()
-@Index('idx_user_email', ['email'])
-@Index('idx_user_userId', ['userId'])
-export default class User extends Base {
+@Index('idx_admin_email', ['email'])
+@Index('idx_admin_adminId', ['adminId'])
+export default class Admin extends Base {
   @Column({ unique: true })
   @Index()
-  userId: string;
+  adminId: string;
 
   @Column({ unique: true })
   @Index()
@@ -41,12 +41,12 @@ export default class User extends Base {
   @JoinColumn({ name: 'tokenId', referencedColumnName: 'tokenId' })
   token: Token;
 
-  @ManyToOne(() => Roles, (roles) => roles.users)
+  @ManyToOne(() => Roles, (roles) => roles.admins)
   @JoinColumn({ name: 'roleId', referencedColumnName: 'roleId' })
   role: Roles;
 
   @BeforeInsert()
   async generateId() {
-    this.userId = super.idGenerator();
+    this.adminId = super.idGenerator();
   }
 }

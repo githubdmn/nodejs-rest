@@ -1,25 +1,10 @@
-import {
-  BeforeInsert,
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-} from 'typeorm';
+import { Column, Index, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import Base from './base.entity';
 import Password from './password.entity';
 import Roles from './roles.entity';
 import Token from './token.entity';
-import Base from './base.entity';
 
-@Entity()
-@Index('idx_user_email', ['email'])
-@Index('idx_user_userId', ['userId'])
-export default class User extends Base {
-  @Column({ unique: true })
-  @Index()
-  userId: string;
-
+export default abstract class Profile extends Base {
   @Column({ unique: true })
   @Index()
   email: string;
@@ -41,12 +26,7 @@ export default class User extends Base {
   @JoinColumn({ name: 'tokenId', referencedColumnName: 'tokenId' })
   token: Token;
 
-  @ManyToOne(() => Roles, (roles) => roles.users)
+  @ManyToOne(() => Roles)
   @JoinColumn({ name: 'roleId', referencedColumnName: 'roleId' })
   role: Roles;
-
-  @BeforeInsert()
-  async generateId() {
-    this.userId = super.idGenerator();
-  }
 }
