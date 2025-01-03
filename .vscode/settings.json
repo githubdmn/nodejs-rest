@@ -5,5 +5,8 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "deno.enable": false,
   "cSpell.enabled": false,
-  "editor.fontFamily": "Consolas, 'Courier New', monospace"
+  "editor.fontFamily": "Consolas, 'Courier New', monospace",
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  }
 }

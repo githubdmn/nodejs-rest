@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RolesEntity } from '../entities';
@@ -9,6 +9,7 @@ export class RolesSeederService implements OnModuleInit {
   constructor(
     @InjectRepository(RolesEntity)
     private readonly roleRepository: Repository<RolesEntity>,
+    private readonly logger: Logger,
   ) {}
 
   async onModuleInit() {
@@ -21,6 +22,6 @@ export class RolesSeederService implements OnModuleInit {
     if (roleCount === 0) {
       await this.roleRepository.save(preparedAdminRole);
     }
-    console.log('Roles Seeded!');
+    this.logger.log('Roles Seeded!');
   }
 }

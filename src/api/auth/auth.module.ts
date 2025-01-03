@@ -33,12 +33,7 @@ const Services = [
 const DynamicImports = [
   PassportModule.register({ defaultStrategy: 'jwt' }),
   JwtModule.registerAsync({
-    useFactory: async () => ({
-      secret: env.jwtSecret,
-      signOptions: {
-        expiresIn: '60s',
-      },
-    }),
+    useFactory: async () => ({}),
   }),
 ];
 

@@ -16,6 +16,16 @@ const requiredEnv = [
   'JWT_ACCESS',
   'JWT_REFRESH',
   'JWT_SECRET',
+  'JWT_ACCESS_ADMIN',
+  'JWT_REFRESH_ADMIN',
+  'JWT_SECRET_ADMIN',
+  'JWT_ACCESS_EXPIRES_ADMIN',
+  'JWT_REFRESH_EXPIRES_ADMIN',
+  'JWT_ACCESS_USER',
+  'JWT_REFRESH_USER',
+  'JWT_SECRET_USER',
+  'JWT_ACCESS_EXPIRES_USER',
+  'JWT_REFRESH_EXPIRES_USER',
   'ACCESS_TOKEN_EXPIRATION',
   'REFRESH_TOKEN_EXPIRATION',
 ];
@@ -47,5 +57,23 @@ export default {
   ),
   refreshTokenExpiration: parseInt(
     process.env.REFRESH_TOKEN_EXPIRATION || '86400',
+  ),
+  jwtAccessAdmin: process.env.JWT_ACCESS_ADMIN || '',
+  jwtRefreshAdmin: process.env.JWT_REFRESH_ADMIN || '',
+  jwtSecretAdmin: process.env.JWT_SECRET_ADMIN,
+  accessTokenExpirationAdmin: parseInt(
+    process.env.ACCESS_TOKEN_EXPIRATION_ADMIN || '3600',
+  ),
+  refreshTokenExpirationAdmin: parseInt(
+    process.env.REFRESH_TOKEN_EXPIRATION_ADMIN || '86400',
+  ),
+  jwtAccessUser: process.env.JWT_ACCESS_USER || '',
+  jwtRefreshUser: process.env.JWT_REFRESH_USER || '',
+  jwtSecretUser: process.env.JWT_SECRET_USER,
+  accessTokenExpirationUser: parseInt(
+    process.env.ACCESS_TOKEN_EXPIRATION_USER || '3600',
+  ),
+  refreshTokenExpirationUser: parseInt(
+    process.env.REFRESH_TOKEN_EXPIRATION_USER || '86400',
   ),
 };

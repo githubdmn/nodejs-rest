@@ -1,17 +1,39 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AUTH_CUSTOM_ADMIN_REPOSITORY } from '../../constants';
 import { AdminRepository } from '../../repository';
+import { JwtService } from '@nestjs/jwt';
+import { env } from '@/conf';
 
 @Injectable()
 export default class CustomAuthAdminServiceImplementation {
   constructor(
     @Inject(AUTH_CUSTOM_ADMIN_REPOSITORY)
     private adminRepository: AdminRepository,
+    private jwtService: JwtService,
   ) {}
 
   async registerAdmin(adminData: any): Promise<any> {
     const savedAdmin = await this.adminRepository.createAdmin(adminData);
     return savedAdmin;
+  }
+
+  generateAdminJWT(
+    adminId: string,
+    role: string,
+  ): { accessToken: string; refreshToken: string } {
+    const payload = { sub: adminId, role: role };
+
+    const accessToken = this.jwtService.sign(payload, {
+      secret: env.jwtAccessAdmin,
+      expiresIn: env.accessTokenExpirationAdmin,
+    });
+
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: env.jwtRefreshAdmin,
+      expiresIn: env.refreshTokenExpirationAdmin,
+    });
+
+    return { accessToken, refreshToken };
   }
 
   // async registerUser(
