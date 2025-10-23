@@ -163,6 +163,8 @@ install_dependencies() {
     if [[ "$ADD_DATABASE" =~ ^[Yy]$ ]]; then
         print_message "Installing database dependencies..." "$BLUE"
         yarn add @fastify/postgres \
+            @fastify/mysql \
+            @fastify/sqlite \
             @fastify/mongodb \
             @fastify/redis
     fi
